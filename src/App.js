@@ -1,9 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-    return (
-
+    return ( <
+        div >
+        <
+        h1 > E - commerce website < /h1> <
+        /div>
     );
 }
 
