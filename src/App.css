@@ -1,8 +1,7 @@
-/* Resetting margins and paddings */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Ensure padding and borders do not affect element's width */
+    box-sizing: border-box; 
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
@@ -14,13 +13,12 @@ body {
 }
 
 .header-container {
-    max-width: 1200px; /* Limit width to compress the layout */
     width: 100%;
-    margin: 0 auto; /* Center the content horizontally */
+    margin: 0 auto; 
     display: flex;
-    justify-content: space-between; /* Space out the content */
-    align-items: center; /* Vertically center content */
-    padding: 0 20px; /* Add space at both ends */
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 20px; 
 }
 
 .navbar {
@@ -124,20 +122,36 @@ button.add-cart-btn {
 }
 
 button.add-cart-btn:hover {
-    background-color: #0056b3; /* Darker shade of blue on hover */
+    background-color: #0056b3;
 }
-.orders-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: azure; /* Match the style of the Cart button */
+
+.orders-container:hover {
+    background-color: #d1e7e7; 
+}
+.general-button {
+    background-color: rgb(216, 255, 255);
     border-radius: 10px;
     padding: 8px 12px;
     border: none;
     cursor: pointer;
-    font-size: 16px; /* Same font size as the other buttons */
+    font-size: 16px;
 }
 
-.orders-container:hover {
-    background-color: #d1e7e7; /* Hover effect for Orders button */
+.general-button:hover {
+    background-color: #d1e7e7;
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: rgb(239, 243, 19);
+    color: rgb(8, 5, 5);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
 }
