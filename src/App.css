@@ -1,27 +1,143 @@
-.App {
-  text-align: center;
+/* Resetting margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensure padding and borders do not affect element's width */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap');
+
+body {
+    font-family: 'Lato', 'Roboto', sans-serif;
+    background-color: rgb(209, 247, 247);
 }
 
-.App-link {
-  color: #61dafb;
+.header-container {
+    max-width: 1200px; /* Limit width to compress the layout */
+    width: 100%;
+    margin: 0 auto; /* Center the content horizontally */
+    display: flex;
+    justify-content: space-between; /* Space out the content */
+    align-items: center; /* Vertically center content */
+    padding: 0 20px; /* Add space at both ends */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navbar {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #d9eae9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    position: relative;
+    z-index: 1000; /* Ensure the header stays on top */
+    margin-bottom: 20px;
+}
+
+/* Sticky header to stay on top when scrolling */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Shop Name centered */
+.Shop-Name {
+    font-family: 'Lato', 'Roboto', sans-serif;
+    font-size: 30px; /* Adjusted size */
+    color: rgb(10, 1, 21);
+    text-align: center; /* Center the text */
+    flex-grow: 1; /* Ensure it takes available space */
+    margin-left: -60px; /* Center the shop name between logo and cart */
+}
+
+.company-logo {
+    width: 60px;
+    height: 40px;
+}
+
+.logo-container {
+    background-color: transparent;
+}
+
+.login-container, .Cart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: azure;
+    border-radius: 10px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px; /* Slight increase in font size for better readability */
+}
+
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #d1e7e7; /* Add hover effect for buttons */
+}
+
+.Account-container {
+    display: flex;
+    gap: 20px; /* Ensure consistent gap between buttons */
+    margin-right: 20px;
+}
+
+
+/* Add margin to both ends of the header */
+.container-fluid {
+    padding: 0 20px;
+}
+
+/* MEDIA QUERY for Small Screens (or when zoomed in too much) */
+@media (max-width: 768px) {
+    .Shop-Name {
+        display: none; /* Hide the "Electronics" text on small screens */
+    }
+
+    .header-container {
+        justify-content: space-between; /* Ensure logo, login, and cart stay spaced out */
+    }
+
+    .company-logo {
+        width: 50px;
+        height: 30px; /* Make the logo slightly smaller for small screens */
+    }
+}
+button.add-cart-btn {
+    padding: 6px 6px; /* Adjust padding to make the button smaller */
+    font-size: 5px; /* Smaller font size */
+    margin: 10px 0; /* Add small margin around the button */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.add-cart-btn:hover {
+    background-color: #0056b3; /* Darker shade of blue on hover */
+}
+.orders-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: azure; /* Match the style of the Cart button */
+    border-radius: 10px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px; /* Same font size as the other buttons */
+}
+
+.orders-container:hover {
+    background-color: #d1e7e7; /* Hover effect for Orders button */
 }
