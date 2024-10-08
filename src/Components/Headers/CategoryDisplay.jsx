@@ -40,13 +40,16 @@ const CategoryDisplay = () => {
             <div className="MobileWrapper col-sm-3 d-flex align-items-center justify-content-center">
               <div className="MobileCategory d-flex flex-column align-items-center">
                 <Link to={"/"}>
-                  <img src={MobilePhoto} alt="TVPhoto" className="category-img" />
+                  <img
+                    src={MobilePhoto}
+                    alt="TVPhoto"
+                    className="category-img"
+                  />
                 </Link>
-                <p>Televisions</p> {/* Adding the new product */}
+                <p>Televisions</p>
               </div>
             </div>
 
-            {/* Adding one more product */}
             <div className="MobileWrapper col-sm-3 d-flex align-items-center justify-content-center">
               <div className="MobileCategory d-flex flex-column align-items-center">
                 <Link to={"/"}>
