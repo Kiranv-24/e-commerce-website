@@ -1,111 +1,115 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500,700&family=Roboto:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500,700&family=Roboto:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap");
 
 body {
-    font-family: 'Lato', 'Roboto', sans-serif;
-    background-color: rgb(202, 201, 238);
+  font-family: "Lato", "Roboto", sans-serif;
+  background-color: rgba(21, 212, 96, 0.25);
 }
 
 .headerWrapper {
-    width: 100%;
-    background: #f6f4f4; 
+  width: 100%;
+  padding-top: 5px;
+  background: #f6f4f4;
 }
 
 .logoWrapper img {
-    width: 100%;
+  width: 100%;
 }
 
 .logoWrapper {
-    text-align: center;
+  text-align: center;
 }
 
 .welcome-title {
-    font-weight: bold; 
-    color: #333; 
-    text-transform: uppercase; 
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
 }
 
 .welcome-title b {
-    color: #8ebff3;
+  color: #8ebff3;
 }
 
 header .headerSearch {
-    width: 100%;
-    height: 45px; 
-    padding: 8px;
-    border-radius: 10px;
-    background-color: rgb(210, 246, 235);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    position: relative;
+  width: 100%;
+  height: 45px;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: rgb(210, 246, 235);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 header .headerSearch svg {
-    width: 28px;
-    height: 18px;
-    position: absolute; 
-    left: 10px; 
-    top: 50%; 
-    transform: translateY(-50%);
+  width: 28px;
+  height: 18px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 header .headerSearch input {
-    background: transparent;
-    width: calc(100% - 48px);
-    height: 100%;
-    border: 0;
-    padding: 0 20px; 
-    padding-left: 42px; 
-    font-weight: 600;
-    font-size: 15px;
+  background: transparent;
+  width: calc(100% - 48px);
+  height: 100%;
+  border: 0px;
+  padding: 0 20px;
+  padding-left: 42px;
+  font-weight: 600;
+  font-size: 15px;
 }
 
 header .headerSearch input::placeholder {
-    color: rgba(7, 7, 7, 0.3);
+  color: rgba(7, 7, 7, 0.3);
 }
 
-header .part3 .circle, header .part4 .circle {
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    height: 45px;
-    border-radius: 12px;
-    border: 0px solid blue;
-    background-color: rgb(210, 246, 235);
-    width: 85px; 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); 
-    transition: all 0.3s ease; 
+header .part3 .circle,
+header .part4 .circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  border-radius: 12px;
+  border: none;
+  background-color: rgb(210, 246, 235);
+  width: 85px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
 }
 
-header .part3 .circle:hover, header .part4 .circle:hover {
-    background-color: rgb(197, 236, 224); 
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-    transform: translateY(-1px); 
+header .part3 .circle:hover,
+header .part4 .circle:hover {
+  background-color: rgb(197, 236, 224);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
 }
 
-header .part3 .circle > svg, header .part4 .circle svg {
-    width: 28px; 
-    height: auto; 
+header .part3 .circle > svg,
+header .part4 .circle svg {
+  width: 28px;
+  height: auto;
 }
 
 header .part4 .cart-count {
-    width: 18px; 
-    height: 18px;
-    line-height: 18px; 
-    position: absolute;
-    top: -5px;
-    right: -8px; 
-    background-color: rgb(187, 250, 139); 
-    color: rgb(22, 10, 10); 
-    border-radius: 50%; 
-    font-size: 11px; 
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-    font-weight: 700;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background-color: rgb(187, 250, 139);
+  color: rgb(22, 10, 10);
+  border-radius: 50%;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
 }
