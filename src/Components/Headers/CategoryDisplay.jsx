@@ -1,9 +1,11 @@
 import React from "react";
 import MobilePhoto from "../../assets/images/Mobile.jpg";
+import Tablets from "../../assets/images/Tablets.jpg";
 import LaptopPhoto from "../../assets/images/Laptop.jpg";
-// import TVPhoto from "../../assets/images/TV.jpg"; // Adding another product image
-import { Link } from "react-router-dom";
+import Watch from "../../assets/images/Watch.jpg"; // Adding another product image
+
 import "../../Css-files/CategoryDisplay.css";
+import CategoryComponent from "./CategoryComponent";
 
 const CategoryDisplay = () => {
   return (
@@ -11,57 +13,26 @@ const CategoryDisplay = () => {
       <div className="Category">
         <div className="container">
           <div className="Category-row row d-flex justify-content-evenly">
-            <div className="MobileWrapper col-sm-3 d-flex align-items-center justify-content-center">
-              <div className="MobileCategory d-flex flex-column align-items-center">
-                <Link to={"/"}>
-                  <img
-                    src={MobilePhoto}
-                    alt="MobilePhoto"
-                    className="category-img"
-                  />
-                </Link>
-                <p>Mobiles</p>
-              </div>
-            </div>
-
-            <div className="MobileWrapper col-sm-3 d-flex align-items-center justify-content-center">
-              <div className="MobileCategory d-flex flex-column align-items-center">
-                <Link to={"/"}>
-                  <img
-                    src={LaptopPhoto}
-                    alt="LaptopPhoto"
-                    className="category-img"
-                  />
-                </Link>
-                <p>Laptops</p>
-              </div>
-            </div>
-
-            <div className="MobileWrapper col-sm-3 d-flex align-items-center justify-content-center">
-              <div className="MobileCategory d-flex flex-column align-items-center">
-                <Link to={"/"}>
-                  <img
-                    src={MobilePhoto}
-                    alt="TVPhoto"
-                    className="category-img"
-                  />
-                </Link>
-                <p>Televisions</p>
-              </div>
-            </div>
-
-            <div className="MobileWrapper col-sm-3 d-flex align-items-center justify-content-center">
-              <div className="MobileCategory d-flex flex-column align-items-center">
-                <Link to={"/"}>
-                  <img
-                    src={MobilePhoto}
-                    alt="MobilePhoto"
-                    className="category-img"
-                  />
-                </Link>
-                <p>Mobiles</p>
-              </div>
-            </div>
+                <CategoryComponent
+                image={MobilePhoto}
+                label="Mobiles"
+                link="/"
+                />
+                <CategoryComponent
+                image={LaptopPhoto}
+                label="Laptops"
+                link="/"
+                />
+               <CategoryComponent
+                image={Watch}
+                label="Watches"
+                link="/"
+                />
+                <CategoryComponent
+                image={Tablets}
+                label="Tablets"
+                link="/"
+                />
           </div>
         </div>
       </div>

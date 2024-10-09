@@ -9,7 +9,7 @@
 
 body {
   font-family: "Lato", "Roboto", sans-serif;
-  background-color: rgba(21, 212, 96, 0.25);
+  background-color: rgba(140, 225, 133, 0.41);
 }
 
 .headerWrapper {
@@ -78,7 +78,7 @@ header .part4 .circle {
   height: 45px;
   border-radius: 12px;
   border: none;
-  background-color: rgb(210, 246, 235);
+  background-color: rgba(192, 245, 236, 0.871);
   width: 85px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
