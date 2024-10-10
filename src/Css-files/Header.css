@@ -9,7 +9,7 @@
 
 body {
   font-family: "Lato", "Roboto", sans-serif;
-  background-color: rgba(140, 225, 133, 0.41);
+  background-color: rgba(158, 238, 151, 0.39);
 }
 
 .headerWrapper {
@@ -84,6 +84,13 @@ header .part4 .circle {
   transition: all 0.3s ease;
 }
 
+/* Add clicking effect for buttons */
+header .part3 .circle:active,
+header .part4 .circle:active {
+  background-color: rgba(150, 240, 230, 0.8); /* Change background color on click */
+  transform: scale(0.95); /* Slightly shrink the button */
+}
+
 header .part3 .circle:hover,
 header .part4 .circle:hover {
   background-color: rgb(197, 236, 224);
@@ -112,4 +119,79 @@ header .part4 .cart-count {
   align-items: center;
   justify-content: center;
   font-weight: 700;
+}
+header .part3 {
+  position: relative; /* Anchor the dropdown relative to the parent */
+}
+
+header .part3 .circle.account-button {
+  position: relative; /* Ensure the button is the anchor for the dropdown */
+}
+
+.Dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(128, 0, 128, 0.4), 0 0 15px rgba(128, 0, 128, 0.6); /* Purple shadow */
+  z-index: 100;
+  display: none;
+  width: 250px;
+  border-radius: 8px;
+  border: 1px solid rgba(128, 0, 128, 0.3); /* Light purple border */
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.part3:hover .Dropdown {
+  display: block;
+  opacity: 1;
+  transform: translateY(0); /* Smooth transition to make the dropdown appear */
+}
+
+.Dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Dropdown li {
+  padding: 12px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add clicking effect for dropdown items */
+.Dropdown li:active {
+  background-color: rgba(200, 200, 255, 0.6); /* Change background color on click */
+  transform: scale(0.95); /* Slightly shrink the item */
+}
+
+.Dropdown li:last-child {
+  border-bottom: none;
+}
+
+.Dropdown li:hover {
+  background-color: rgba(230, 230, 255, 0.6); /* Subtle purple-tinted background on hover */
+  color: #6a0dad; /* Purple text color on hover */
+}
+
+.Dropdown li svg {
+  width: 16px;
+  height: auto;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.Dropdown li:hover svg {
+  color: #6a0dad; /* Change icon color to purple on hover */
 }

@@ -8,19 +8,24 @@
   width: 100%;
   margin-top: 20px;
   height: auto;
+  
 }
 
 .Category-row {
   background-color: white;
   padding: 20px 0;
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping on smaller screens */
-  justify-content: space-evenly; /* Even spacing between items */
+  flex-wrap: wrap; 
+  justify-content: space-evenly; 
+  position: relative; 
+  overflow: hidden;
+  
+  animation: pulseShadow 2s infinite; 
 }
 
 .MobileWrapper {
-  flex: 1 1 240px; /* Flex-grow: 1, flex-shrink: 1, min-width: 240px */
-  max-width: 240px; /* Ensures max width of 240px */
+  flex: 1 1 240px; 
+  max-width: 240px; 
   margin: 10px;
   display: flex;
   flex-direction: column;
@@ -37,11 +42,15 @@
   border-top-right-radius: 20px;
 }
 
-.MobileCategory:hover {
+/* Add clicking effect for MobileCategory */
+.MobileCategory:active {
+  transform: scale(0.95); /* Slightly shrink the category card */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Change the shadow on click */
+}
 
+.MobileCategory:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 0 8px rgba(161, 80, 206, 0.6);
- 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 0 8px rgba(157, 19, 231, 0.997) !important;
 }
 
 .category-img {
@@ -51,6 +60,12 @@
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+}
+
+/* Add clicking effect for category-img */
+.category-img:active {
+  transform: scale(0.95); /* Slightly shrink the image */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Change the shadow on click */
 }
 
 .category-img:hover {
@@ -65,11 +80,10 @@
   text-align: center;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   .MobileWrapper {
-    flex: 1 1 160px; /* Flex basis for smaller screens */
-    max-width: 160px; /* Reduce size for mobile */
+    flex: 1 1 160px;
+    max-width: 160px; 
   }
 
   .category-img {
