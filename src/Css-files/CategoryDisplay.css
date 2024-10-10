@@ -8,7 +8,6 @@
   width: 100%;
   margin-top: 20px;
   height: auto;
-  
 }
 
 .Category-row {
@@ -24,9 +23,9 @@
 }
 
 .MobileWrapper {
-  flex: 1 1 240px; 
-  max-width: 240px; 
-  margin: 10px;
+  flex: 1 1 180px; 
+  max-width: 360px; 
+  margin: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +40,6 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
-
 
 .MobileCategory:active {
   transform: scale(0.95);
@@ -62,10 +60,9 @@
   transition: all 0.3s ease;
 }
 
-
 .category-img:active {
-  transform: scale(0.95); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transform: scale(0.95);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .category-img:hover {
@@ -74,7 +71,7 @@
 
 .MobileWrapper p {
   margin-top: 10px;
-  font-size: 16px;
+  font-size: 14px; 
   font-weight: 600;
   color: #333;
   text-align: center;
@@ -82,15 +79,15 @@
 
 @media (max-width: 768px) {
   .MobileWrapper {
-    flex: 1 1 160px;
-    max-width: 160px; 
+    flex: 1 1 120px; /* Further reduced width for smaller screens */
+    max-width: 120px; /* Further reduced max width */
   }
 
   .category-img {
-    max-width: 160px;
+    max-width: 120px; /* Adjusted max width */
   }
 
   .MobileWrapper p {
-    font-size: 14px;
+    font-size: 12px; /* Adjusted font size for better readability */
   }
 }

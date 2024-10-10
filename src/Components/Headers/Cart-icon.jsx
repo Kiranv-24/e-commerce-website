@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoIosCart } from "react-icons/io";
-import cart from"../../assets/images/cart.gif"
+
 
 const CartIcon = () => {
     const [cartCount, setCartCount] = useState(0);

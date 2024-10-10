@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Accountbutton from "./Accountbutton";
 import CartIcon from "./Cart-icon";
 import SearchButton from './SearchButton';
-import CategoryDisplay from './CategoryDisplay';
 import "../../Css-files/CategoryDisplay.css";
 const Header = () => {
   return (
