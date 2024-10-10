@@ -16,6 +16,7 @@ body {
   width: 100%;
   padding-top: 5px;
   background: #f6f4f4;
+  border-bottom: #333;
 }
 
 .logoWrapper img {
@@ -84,11 +85,11 @@ header .part4 .circle {
   transition: all 0.3s ease;
 }
 
-/* Add clicking effect for buttons */
+
 header .part3 .circle:active,
 header .part4 .circle:active {
-  background-color: rgba(150, 240, 230, 0.8); /* Change background color on click */
-  transform: scale(0.95); /* Slightly shrink the button */
+  background-color: rgba(150, 240, 230, 0.8); 
+  transform: scale(0.95); 
 }
 
 header .part3 .circle:hover,
@@ -121,11 +122,11 @@ header .part4 .cart-count {
   font-weight: 700;
 }
 header .part3 {
-  position: relative; /* Anchor the dropdown relative to the parent */
+  position: relative; 
 }
 
 header .part3 .circle.account-button {
-  position: relative; /* Ensure the button is the anchor for the dropdown */
+  position: relative; 
 }
 
 .Dropdown {
@@ -139,7 +140,7 @@ header .part3 .circle.account-button {
   display: none;
   width: 250px;
   border-radius: 8px;
-  border: 1px solid rgba(128, 0, 128, 0.3); /* Light purple border */
+  border: 1px solid rgba(128, 0, 128, 0.3); 
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -148,7 +149,7 @@ header .part3 .circle.account-button {
 .part3:hover .Dropdown {
   display: block;
   opacity: 1;
-  transform: translateY(0); /* Smooth transition to make the dropdown appear */
+  transform: translateY(0); 
 }
 
 .Dropdown ul {
@@ -170,10 +171,10 @@ header .part3 .circle.account-button {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Add clicking effect for dropdown items */
+
 .Dropdown li:active {
-  background-color: rgba(200, 200, 255, 0.6); /* Change background color on click */
-  transform: scale(0.95); /* Slightly shrink the item */
+  background-color: rgba(200, 200, 255, 0.6); 
+  transform: scale(0.95);
 }
 
 .Dropdown li:last-child {
@@ -181,8 +182,8 @@ header .part3 .circle.account-button {
 }
 
 .Dropdown li:hover {
-  background-color: rgba(230, 230, 255, 0.6); /* Subtle purple-tinted background on hover */
-  color: #6a0dad; /* Purple text color on hover */
+  background-color: rgba(230, 230, 255, 0.6); 
+  color: #6a0dad; 
 }
 
 .Dropdown li svg {
@@ -193,5 +194,5 @@ header .part3 .circle.account-button {
 }
 
 .Dropdown li:hover svg {
-  color: #6a0dad; /* Change icon color to purple on hover */
+  color: #6a0dad; 
 }
