@@ -9,7 +9,7 @@
 
 body {
   font-family: "Lato", "Roboto", sans-serif;
-  background-color: rgba(158, 238, 151, 0.39);
+  background-color: rgba(232, 214, 214, 0.363)
 }
 
 .headerWrapper {
@@ -17,6 +17,10 @@ body {
   padding-top: 5px;
   background: #f6f4f4;
   border-bottom: #333;
+  box-shadow: 1px 2px 5px rgb(208, 185, 220);
+  position: sticky !important;
+  top:0;
+  z-index: 1000;
 }
 
 .logoWrapper img {
@@ -41,10 +45,11 @@ header .headerSearch {
   width: 100%;
   height: 45px;
   padding: 8px;
-  border-radius: 10px;
-  background-color: rgb(210, 246, 235);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+ 
+  background-color: rgb(229, 216, 216);
+ 
   position: relative;
+
 }
 
 header .headerSearch svg {
@@ -77,9 +82,9 @@ header .part4 .circle {
   align-items: center;
   justify-content: center;
   height: 45px;
-  border-radius: 12px;
+ 
   border: none;
-  background-color: rgba(192, 245, 236, 0.871);
+  background-color: rgba(222, 233, 231, 0.871);
   width: 85px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
