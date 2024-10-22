@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { VscAccount } from "react-icons/vsc";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
-
+import { Link } from "react-router-dom";
 const AccountButton = () => {
     const [isHovered, setIsHovered] = useState(false);
 
@@ -19,12 +19,25 @@ const AccountButton = () => {
             </div>
             <div className='Dropdown'>
                 <ul>
+                <button className="btn btn-link p-0 w-100" >
+                <Link to="/Signup" className="no-underline" style={{textDecoration:"none"}} >
                     <li>
                      New Customer? 
-                      <t />
+                      <t/>
                         <b style={{ color: "#0202aa", fontWeight: 700 }}>Signup</b>
                     </li>
-                    <li>Login</li>
+                    </Link>
+                    </button>
+                    <button className="btn btn-link p-0 w-100" >
+                        <Link to="/Login" className="no-underline" >
+                        <li>
+                        Login
+                        </li>
+                        </Link>
+                       
+                    </button>
+                 
+                    
                     <li>Logout</li>
                 </ul>
             </div>

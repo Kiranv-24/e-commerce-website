@@ -149,18 +149,21 @@ header .part3 .circle.account-button {
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  text-decoration: none !important;
 }
 
 .part3:hover .Dropdown {
   display: block;
   opacity: 1;
   transform: translateY(0); 
+  text-decoration: none !important;
 }
 
 .Dropdown ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  text-decoration: none !important;
 }
 
 .Dropdown li {
@@ -174,6 +177,7 @@ header .part3 .circle.account-button {
   font-weight: 500;
   color: #333;
   transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none !important;
 }
 
 
@@ -189,6 +193,7 @@ header .part3 .circle.account-button {
 .Dropdown li:hover {
   background-color: rgba(230, 230, 255, 0.6); 
   color: #6a0dad; 
+  text-decoration: none !important;
 }
 
 .Dropdown li svg {
@@ -200,4 +205,7 @@ header .part3 .circle.account-button {
 
 .Dropdown li:hover svg {
   color: #6a0dad; 
+}
+.no-underline{
+  text-decoration: none !important;
 }

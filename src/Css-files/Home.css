@@ -24,8 +24,8 @@
   transition: box-shadow 0.3s ease-in-out;
   max-width: 1200px;
   width: 100%;
-  box-shadow: 6px 3px 11px rgba(116, 8, 238, 0.785), 0 4px 6px rgba(0, 0, 0, 0.15);
-}
+
+ } 
 
 .banner img {
   height: 331px !important;

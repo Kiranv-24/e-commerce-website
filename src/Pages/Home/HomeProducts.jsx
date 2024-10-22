@@ -18,9 +18,9 @@ const HomeProducts = () => {
                                 <p className='tagline'>Popular items this season</p>
                             </div>
                         </div>
-                        <div className='Product_row'>
+                      
                             <SwiperSlider/>
-                        </div>
+                  
                        
                     </div>
                    

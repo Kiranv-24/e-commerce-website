@@ -285,7 +285,7 @@
   .ProductItem .actions button svg {
     color: #000;
     font-size: 20px;
-    pointer-events: none; /* Ensure only button is clickable, not the SVG itself */
+    pointer-events: none; 
   }
   
   .ProductItem .actions button:hover svg{
