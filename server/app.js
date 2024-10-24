@@ -3,22 +3,22 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
-// const categoryRouter = require('./routes/category');
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(bodyParser.json());
 
-//Router
+// Router imports and mounting
 const categoryRouter = require("./routes/category");
 const productRouter = require("./routes/product");
+const CartRouter = require("./routes/Cart");
 
-// Mount the category router
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
+app.use("/api/Cart", CartRouter);
 
 // Connect to MongoDB
 mongoose

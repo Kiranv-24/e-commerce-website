@@ -1,119 +1,124 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MicrosoftSurfacePro from "../../assets/images/MicrosoftSurfacePro.png";
 import "../../Css-files/Cart.css";
 import { Link } from "react-router-dom";
+import { fetchDataFromApi } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-    const [quantities, setQuantities] = useState([1, 1]); 
+  const [cartItems, setCartItems] = useState([]); // Store cart items
+  const [quantities, setQuantities] = useState([]); // Store quantities
+  const navigate = useNavigate();
 
-    const handleQuantityChange = (index, value) => {
-        const newQuantities = [...quantities];
-        newQuantities[index] = value !== "" ? value : "";
-        setQuantities(newQuantities);
-    };
+  // Fetch cart items from API
+  useEffect(() => {
+    fetchDataFromApi("/api/Cart/").then((res) => {
+      if (res && res.length > 0) {
+        setCartItems(res);
+        // Initialize quantities based on fetched cart items
+        setQuantities(res.map((item) => item.quantity || 1)); // Ensure each quantity has a default
+      }
+    });
+  }, []);
 
-    const handleBlur = (index) => {
-        const newQuantities = [...quantities];
-      
-        newQuantities[index] = quantities[index] <= 0 ? 1 : quantities[index];
-        setQuantities(newQuantities);
-    };
+  const handleQuantityChange = (index, value) => {
+    const newQuantities = [...quantities];
+    // Allow empty input
+    if (value === "") {
+      newQuantities[index] = ""; // Set to empty string
+    } else {
+      newQuantities[index] = Math.max(1, value); // Ensure minimum is 1
+    }
+    setQuantities(newQuantities);
+  };
 
-    const priceList = [27999, 305]; 
-    const total = quantities.reduce((sum, qty, index) => sum + (qty > 0 ? qty * priceList[index] : 0), 0);
+  const handleBlur = (index) => {
+    const newQuantities = [...quantities];
+    // If quantity is empty, set it to 1
+    newQuantities[index] =
+      newQuantities[index] === "" ? 1 : Math.max(1, newQuantities[index]);
+    setQuantities(newQuantities);
+  };
 
-    return (
-        <>
-            <section className="Cart-section">
-                <div className="row row-section">
-                    <div className="col-md-8 Shopping-Cart">
-                        <h4 className="hd">Shopping Cart</h4>
+  const total = cartItems.reduce(
+    (sum, item, index) =>
+      sum + (quantities[index] > 0 ? quantities[index] * item.price : 0),
+    0
+  );
 
-                        <div className="Table">
-                            <table>
-                                <tbody>
-                                    {/* First Product */}
-                                    <tr>
-                                        <td>
-                                            <Link to="/cat/1" style={{ textDecoration: "none" }}>
-                                                <div className="d-flex align-items-center CartimgWrapper">
-                                                    <div className="imgWrapper">
-                                                        <img
-                                                            src={MicrosoftSurfacePro}
-                                                            className="w-100"
-                                                            alt="Microsoft Surface Pro"
-                                                        />
-                                                    </div>
-                                                    <div className="Description d-flex flex-column align-items-center">
-                                                        <h4>Microsoft Surface Pro</h4>
-                                                        <p>by Microsoft</p>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </td>
-                                        <td className="quantity-column">
-                                            <input
-                                                type="number"
-                                                min="1"
-                                                value={quantities[0]}
-                                                onChange={(e) => handleQuantityChange(0, e.target.value)}
-                                                onBlur={() => handleBlur(0)} // Validate on blur
-                                            />
-                                        </td>
-                                        <td className="price-column">
-                                            ₹{priceList[0] * (quantities[0] || 0)}
-                                        </td>
-                                    </tr>
+  const ProductDetails = (id) => {
+    navigate(`/product/${id}`); // Navigate to product detail page with product ID
+  };
 
-                                    {/* Second Product */}
-                                    <tr>
-                                        <td>
-                                            <Link to="/cat/2" style={{ textDecoration: "none" }}>
-                                                <div className="d-flex align-items-center CartimgWrapper">
-                                                    <div className="imgWrapper">
-                                                        <img
-                                                            src={MicrosoftSurfacePro}
-                                                            className="w-100"
-                                                            alt="ASUS Proart Display"
-                                                        />
-                                                    </div>
-                                                    <div className="Description d-flex flex-column align-items-center">
-                                                        <h4>ASUS Proart Display PA278QV WQHD, 27 Inch Monitor</h4>
-                                                        <p>by ASUS</p>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </td>
-                                        <td className="quantity-column">
-                                            <input
-                                                type="number"
-                                                min="1"
-                                                value={quantities[1]}
-                                                onChange={(e) => handleQuantityChange(1, e.target.value)}
-                                                onBlur={() => handleBlur(1)} // Validate on blur
-                                            />
-                                        </td>
-                                        <td className="price-column">
-                                            ₹{priceList[1] * (quantities[1] || 0)}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+  return (
+    <>
+      <section className="Cart-section">
+        <div className="row row-section">
+          <div className="col-md-8 Shopping-Cart">
+            <h4 className="hd">Shopping Cart</h4>
+            <div className="Table">
+              <table>
+                <tbody>
+                  {cartItems.map((item, index) => (
+                    <tr key={item.id}>
+                      <td>
+                        {/* <Link
+                          onClick={() => ProductDetails(item.id)} // Correctly pass the function reference
+                          style={{ textDecoration: "none" }}
+                        > */}
+                        <div className="d-flex align-items-center CartimgWrapper">
+                          <div className="imgWrapper">
+                            <img
+                              src={item.images?.[0] || MicrosoftSurfacePro} // Use optional chaining and fallback image
+                              className="w-100"
+                              alt={item.name}
+                            />
+                          </div>
+                          <div className="Description d-flex flex-column align-items-center">
+                            <h4>{item.name}</h4>
+                            <p>by Microsoft</p>
+                          </div>
                         </div>
-                    </div>
+                        {/* </Link> */}
+                      </td>
+                      <td className="quantity-column">
+                        <input
+                          type="number"
+                          min="1"
+                          value={quantities[index]} // Bind to quantities state
+                          onChange={(e) =>
+                            handleQuantityChange(index, e.target.value)
+                          } // Update correct index
+                          onBlur={() => handleBlur(index)} // Validate on blur
+                          placeholder="Quantity" // Optional placeholder for better UX
+                        />
+                      </td>
+                      <td className="price-column">
+                        ₹{item.price * (quantities[index] || 0)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-                    {/* Summary Section */}
-                    <div className="col-md-3 summary-section">
-                        <h4>Order Summary</h4>
-                        <div className="summary-content">
-                            <p>Subtotal ({quantities.reduce((a, b) => parseInt(a) + parseInt(b || 0), 0)} items): ₹{total}</p>
-                            <button className="checkout-btn">Proceed to Checkout</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </>
-    );
+          {/* Summary Section */}
+          <div className="col-md-3 summary-section">
+            <h4>Order Summary</h4>
+            <div className="summary-content">
+              <p>
+                Subtotal (
+                {quantities.reduce((a, b) => parseInt(a) + parseInt(b || 0), 0)}{" "}
+                items): ₹{total}
+              </p>
+              <button className="checkout-btn">Proceed to Checkout</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default Cart;

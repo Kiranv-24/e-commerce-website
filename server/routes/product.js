@@ -57,45 +57,50 @@ router.delete("/:id", async (req, res) => {
 });
 
 // POST to create a new product
+// POST to create a new product
 router.post("/create", async (req, res) => {
   const limit = pLimit(2);
 
+  // Array to hold the promises for image uploads
   const imagesToUpload = req.body.images.map((image) => {
     return limit(async () => {
-      const result = await cloudinary.uploader.upload(image);
-      return result;
+      try {
+        const result = await cloudinary.uploader.upload(image);
+        return result;
+      } catch (uploadError) {
+        console.error("Error uploading image:", uploadError);
+        throw new Error("Image upload failed"); // Rethrow to be caught in the main try-catch
+      }
     });
   });
 
-  const uploadStatus = await Promise.all(imagesToUpload);
-  const imgurl = uploadStatus.map((item) => item.secure_url);
-  if (!uploadStatus) {
-    return res.status(500).json({
-      error: "images cannot upload!",
-      status: false,
+  try {
+    const uploadStatus = await Promise.all(imagesToUpload);
+    const imgurl = uploadStatus.map((item) => item.secure_url);
+    
+    // Create a new product with the uploaded images
+    let product = new Product({
+      name: req.body.name,
+      description: req.body.description,
+      brand: req.body.brand,
+      price: req.body.price,
+      countofstocks: req.body.countofstocks,
+      rating: req.body.rating,
+      images: imgurl,
+      specifications:req.body.specifications
     });
-  }
 
-  let product = new Product({
-    name: req.body.name,
-    description: req.body.description,
-    brand: req.body.brand,
-    price: req.body.price,
-    countofstocks: req.body.countofstocks,
-    rating: req.body.rating,
-    images: imgurl,
-  });
-
-  // Save the product in the database
-  product = await product.save();
-  if (!product) {
+    // Save the product in the database
+    product = await product.save();
+    res.status(201).json(product);
+  } catch (error) {
+    console.error("Error creating product:", error);
     res.status(500).json({
-      error: err,
+      error: error.message || "An error occurred while creating the product.",
       success: false,
     });
   }
-
-  res.status(201).json(product);
 });
+
 
 module.exports = router;

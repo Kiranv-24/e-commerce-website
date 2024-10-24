@@ -1,75 +1,109 @@
-import React, { useState } from "react";
-
-import { Button } from "@mui/material"; 
-
-import InnerImageZoom from 'react-inner-image-zoom';
-import AsusProart from "../../assets/images/Asusproart.jpg";
-import "../../Css-files/ProductDetails.css";
+import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import InnerImageZoom from "react-inner-image-zoom";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-
+import { fetchDataFromApi, postData } from "../../api"; // Ensure postData is imported
+import { useParams } from "react-router-dom"; // To get the product ID from URL
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+import "../../Css-files/ProductDetails.css";
+import CartIcon from "../../Components/Headers/Cart-icon";
 const ProductDetail = () => {
-    const [quantity, setQuantity] = useState(1); 
+  const [quantity, setQuantity] = useState(1);
+  const [proData, setProData] = useState(null);
+  const { id } = useParams(); // Get the product ID from the URL
 
+  const incrementQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
 
-    const incrementQuantity = () => {
-        setQuantity(prev => prev + 1);
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+
+  // Fetch product data by ID
+  useEffect(() => {
+    fetchDataFromApi(`/api/product/${id}`).then((res) => {
+      if (res) {
+        setProData(res); // Set the fetched product data
+      }
+    });
+  }, [id]);
+
+  // Function to add the product to the cart
+  const addToCart = async () => {
+    const cartItem = {
+      productId: id, // Include the product ID
+      quantity: quantity,
     };
 
-   
-    const decrementQuantity = () => {
-        if (quantity > 1) {
-            setQuantity(prev => prev - 1);
-        }
-    };
+    const response = await postData("/api/cart/add", cartItem); // Make sure this endpoint is correct
 
-    return (
-    
-            <div className="dialog-content">
-               
-                <div className="ProductDetail">
-                    <div className="ProductDetail-image">
-                       
-                        <InnerImageZoom
-                            src={AsusProart}  
-                            zoomSrc={AsusProart} 
-                            alt="AsusProart"
-                            zoomScale={2}  
-                            zoomType="hover"  
-                        />
-                    </div>
-                    <div className="detailBox">
-                        <h4>ASUS Proart Display PA278QV WQHD, 27 Inch Monitor</h4>
-                        <h4 className="Price-tag">₹27,890</h4>
-                        <div className="button-group">
-                            <Button className="action-btn" style={{ color: "black" }}>ADD TO CART</Button>
-                            <Button className="buy-now" style={{ color: "black" }}>BUY NOW</Button>
+    if (response.message) {
+      alert(response.message); // Show a message based on the response
+    }
+    <CartIcon />;
+  };
 
-                          
-                            <div className="quantity-group">
-                                <Button className="quantity-btn" onClick={decrementQuantity}><FaMinus /></Button>
-                                <input type="text" value={quantity} readOnly className="quantity-input" />
-                                <Button className="quantity-btn" onClick={incrementQuantity}><FaPlus /></Button>
-                            </div>
-                        </div>
-                        <ul className="product-specs">
-                            <li><strong>Brand:</strong> ASUS</li>
-                            <li><strong>Screen Size:</strong> 27 Inches</li>
-                            <li><strong>Resolution:</strong> QHD Wide 1440p</li>
-                            <li><strong>Aspect Ratio:</strong> 16:9</li>
-                            <li><strong>Screen Surface:</strong> Flat</li>
-                            <li><strong>Color Gamut:</strong> 100% sRGB, 100% Rec. 709</li>
-                            <li><strong>Viewing Angle:</strong> 178°/178°</li>
-                            <li><strong>ProArt Palette:</strong> Adjustable color parameters</li>
-                            <li><strong>Calman Verified:</strong> Delta E color accuracy</li>
-                            <li><strong>Ergonomic Stand:</strong> Tilt, swivel, pivot, and height adjustments</li>
-                            <li><strong>Connectivity:</strong> Mini DisplayPort, DisplayPort, HDMI, DVI-D, USB 3.0 ports</li>
-                        </ul>
-                    </div>
-                </div>
+  if (!proData) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="dialog-content">
+      <div className="ProductDetail">
+        <div className="ProductDetail-image">
+          <InnerImageZoom
+            src={proData.images[0]}
+            zoomSrc={proData.images[0]}
+            zoomScale={1.5}
+            zoomType="hover"
+            className="ProductDetail-image"
+          />
+        </div>
+        <div className="detailBox">
+          <h4>{proData.name}</h4>
+          <h4 className="Price-tag">₹{proData.price}</h4>
+          <div className="button-group">
+            <Button
+              className="action-btn"
+              style={{ color: "black" }}
+              onClick={addToCart} // Call the addToCart function
+            >
+              ADD TO CART
+            </Button>
+            <Button className="buy-now" style={{ color: "black" }}>
+              BUY NOW
+            </Button>
+
+            <div className="quantity-group">
+              <Button className="quantity-btn" onClick={decrementQuantity}>
+                <FaMinus />
+              </Button>
+              <input
+                type="text"
+                value={quantity}
+                readOnly
+                className="quantity-input"
+              />
+              <Button className="quantity-btn" onClick={incrementQuantity}>
+                <FaPlus />
+              </Button>
             </div>
-      
-    );
+          </div>
+          <ul className="product-specs">
+            {proData.specifications &&
+              Object.entries(proData.specifications).map(([key, value]) => (
+                <li key={key}>
+                  <strong>{key}:</strong> {value}
+                </li>
+              ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProductDetail;
