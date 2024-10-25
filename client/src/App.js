@@ -12,9 +12,17 @@ import Mycontext from "./Mycontext/index.js"; // Corrected import
 import Signup from "./Pages/Signup/index.js";
 function App() {
   const [issetHeaderFooter, setisHeaderFooter] = useState(true);
+  const [alertBox, setAlertBox] = useState({
+        open: false,
+        error: false,
+        msg: "",
+        severity: "success",
+    });
   const values = {
     issetHeaderFooter,
     setisHeaderFooter,
+    setAlertBox,
+    alertBox
   };
 
   return (

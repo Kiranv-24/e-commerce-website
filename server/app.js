@@ -3,24 +3,39 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const authJwt = require("./helper/jwt");
 
 dotenv.config();
 
 const app = express();
 
+// Middleware setup
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(authJwt());  // JWT authentication middleware
 
-// Router imports and mounting
+// Router imports
 const categoryRouter = require("./routes/category");
 const productRouter = require("./routes/product");
-const CartRouter = require("./routes/Cart");
+const cartRouter = require("./routes/cart");
+const userRouter = require("./routes/user");
 
+// Mounting routers
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
-app.use("/api/Cart", CartRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/user", userRouter);
 
-// Connect to MongoDB
+// Error Handling Middleware for Unauthorized Errors
+app.use((err, req, res, next) => {
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+  next(err);
+});
+
+// MongoDB connection
 mongoose
   .connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
@@ -35,5 +50,5 @@ mongoose
     });
   })
   .catch((err) => {
-    console.log(err);
+    console.log("Database connection error:", err);
   });

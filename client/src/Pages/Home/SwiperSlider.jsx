@@ -16,6 +16,7 @@ const SwiperSlider = () => {
   const navigate = useNavigate();
 
   const ProductDetails1 = (product) => {
+    // console.log(product._id)
     setSelectedProduct(product); // Set the clicked product as selected
     setOpen(true); // Open the modal
   };

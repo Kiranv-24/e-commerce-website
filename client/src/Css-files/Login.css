@@ -14,6 +14,31 @@
     bottom: 0;
 }
 
+.alert-container {
+    position: absolute; /* Positioning the alert */
+    bottom: 0px; /* Space from the bottom */
+    left: -800px; /* Space from the left */
+     width: 400px;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+/* Add transition effects for alert */
+.alert-slide-in {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.alert-slide-in-active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.alert-slide-out {
+    transform: translateY(20px);
+    opacity: 0;
+}
+
 .welcome-message {
     
     background:none;
@@ -52,7 +77,9 @@ h1 {
 }
 
 
-
+.alert{
+    margin-top: -40px;
+}
 .form-outline {
     position: relative;
 }
@@ -83,3 +110,4 @@ h1 {
     font-size: 18px;
     transition: color 0.3s ease;
 }
+

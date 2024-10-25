@@ -6,10 +6,12 @@ import InnerImageZoom from 'react-inner-image-zoom';
 import "../../Css-files/ProductDetails.css";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-
+import { useParams } from "react-router-dom";
+import { fetchDataFromApi, postData } from "../../api";
 const ItemDetailsPage = ({ product, onClose }) => {
     const [quantity, setQuantity] = useState(1); 
-
+  const id  = product._id;
+  console.log(id);
     const incrementQuantity = () => {
         setQuantity(prev => prev + 1);
     };
@@ -19,6 +21,19 @@ const ItemDetailsPage = ({ product, onClose }) => {
             setQuantity(prev => prev - 1);
         }
     };
+    const addToCart = async () => {
+    const cartItem = {
+      productId: id, // Include the product ID
+      quantity: quantity,
+    };
+  console.log(id);
+    const response = await postData("/api/cart/add", cartItem); // Make sure this endpoint is correct
+
+    if (response.message) {
+      alert(response.message); // Show a message based on the response
+    }
+    // <CartIcon />;
+  };
 
     if (!product) {
         return null;  // If no product is passed, don't render anything
@@ -44,7 +59,11 @@ const ItemDetailsPage = ({ product, onClose }) => {
                         <h4>{product.name}</h4>
                         <h4 className="Price-tag">₹{product.price}</h4>
                         <div className="button-group">
-                            <Button className="action-btn" style={{ color: "black" }}>ADD TO CART</Button>
+                           <Button
+                              className="action-btn"
+                              style={{ color: "black" }}
+                              onClick={addToCart} // Call the addToCart function
+                            >ADD TO CART</Button>
                             <Button className="buy-now" style={{ color: "black" }}>BUY NOW</Button>
                             <div className="quantity-group">
                                 <Button className="quantity-btn" onClick={decrementQuantity}><FaMinus /></Button>
