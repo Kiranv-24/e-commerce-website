@@ -3,29 +3,37 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const authJwt = require("./helper/jwt");
 
 dotenv.config();
 
 const app = express();
 
 // Middleware setup
-app.use(cors({ origin: "http://localhost:3000" }));
+const corsOptions = {
+    origin: 'http://localhost:3000', // Your frontend URL
+    methods: ['GET', 'POST'], // Allowed methods
+    credentials: true, // Allow cookies to be sent with requests
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(authJwt());  // JWT authentication middleware
 
 // Router imports
 const categoryRouter = require("./routes/category");
 const productRouter = require("./routes/product");
 const cartRouter = require("./routes/cart");
 const userRouter = require("./routes/user");
+const checkoutRouter = require("./routes/checkout");
+const orderPaymentRouter = require("./routes/orderpayment");
 
 // Mounting routers
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/user", userRouter);
+app.use("/api/checkout", checkoutRouter);
+app.use("/api/orderpayment", orderPaymentRouter);
 
 // Error Handling Middleware for Unauthorized Errors
 app.use((err, req, res, next) => {
@@ -52,3 +60,8 @@ mongoose
   .catch((err) => {
     console.log("Database connection error:", err);
   });
+
+// 404 Not Found handler
+app.use((req, res) => {
+  res.status(404).send("404 Not Found");
+});

@@ -10,7 +10,7 @@ import "../../Css-files/CategoryDisplay.css";
 const Header = () => {
   return (
     <>
-    <header className='headerWrapper'>
+    <header className='headerWrapper  '>
         <div className='header'>
           <div className='container'>
             <div className='row'>

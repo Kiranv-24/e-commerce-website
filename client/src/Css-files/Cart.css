@@ -11,7 +11,11 @@ body {
     font-family: "Lato", "Roboto", sans-serif;
     background-color: #f5f5f5;
 }
-
+body, h1, h2, h3, h4, h5, h6, p {
+  
+    z-index: 1000; /* Set a high z-index */
+   
+}
 .Cart-section {
     margin-top: 40px;
     padding: 0 40px;

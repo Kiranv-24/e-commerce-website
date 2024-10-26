@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MicrosoftSurfacePro from "../../assets/images/MicrosoftSurfacePro.png";
 import "../../Css-files/Cart.css";
-import { fetchDataFromApi, deleteData } from "../../api"; // Import deleteData function
+import { fetchDataFromApi, deleteData } from "../../api"; 
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
@@ -21,10 +21,10 @@ const Cart = () => {
 
   const handleQuantityChange = (index, value) => {
     const newQuantities = [...quantities];
-    if (value === "") {
+    if (value === "" || isNaN(value)) {
       newQuantities[index] = "";
     } else {
-      newQuantities[index] = Math.max(1, value);
+      newQuantities[index] = Math.max(1, parseInt(value));
     }
     setQuantities(newQuantities);
   };
@@ -43,14 +43,11 @@ const Cart = () => {
   );
 
   const handleRemoveItem = async (index) => {
-    const itemId = cartItems[index]._id; // Assuming _id is the unique identifier
+    const itemId = cartItems[index]._id; 
     try {
-      await deleteData(`/api/Cart/${itemId}`); // Call API to delete the item
-      // Remove item from cartItems and quantities based on index
+      await deleteData(`/api/Cart/${itemId}`); 
       const updatedCartItems = cartItems.filter((_, i) => i !== index);
       const updatedQuantities = quantities.filter((_, i) => i !== index);
-
-      // Update the state
       setCartItems(updatedCartItems);
       setQuantities(updatedQuantities);
     } catch (error) {
@@ -58,25 +55,30 @@ const Cart = () => {
     }
   };
 
-// Add this function inside your Cart component
-const handleRemoveAllItems = async () => {
-  try {
-    // Loop through cartItems to delete each item
-    await Promise.all(cartItems.map(item => deleteData(`/api/Cart/${item._id}`)));
-    setCartItems([]);
-    setQuantities([]);
-  } catch (error) {
-    console.error("Failed to remove all items from cart:", error);
-  }
+  const handleRemoveAllItems = async () => {
+    try {
+      await Promise.all(cartItems.map(item => deleteData(`/api/Cart/${item._id}`)));
+      setCartItems([]);
+      setQuantities([]);
+    } catch (error) {
+      console.error("Failed to remove all items from cart:", error);
+    }
+  };
+
+ const orderDetails = () => {
+  navigate("/Checkout", {
+    state: {
+      cartItems: cartItems,
+      quantities: quantities,
+    },
+  });
 };
 
-return (
-  <>
+  return (
     <section className="Cart-section">
       <div className="row row-section">
         <div className="col-md-8 Shopping-Cart">
           <h4 className="hd">Shopping Cart</h4>
-          {/* Add the Remove All button */}
           <button className="remove-all-btn" onClick={handleRemoveAllItems}>
             Remove All
           </button>
@@ -139,13 +141,14 @@ return (
               {quantities.reduce((a, b) => parseInt(a) + parseInt(b || 0), 0)}{" "}
               items): ₹{total}
             </p>
-            <button className="checkout-btn">Proceed to Checkout</button>
+            <button className="checkout-btn" onClick={orderDetails}>
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       </div>
     </section>
-  </>
-);
+  );
 };
 
 export default Cart;

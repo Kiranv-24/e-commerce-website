@@ -1,0 +1,235 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Import Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap");
+
+/* Body Style */
+body {
+    font-family: "Poppins", "Roboto", sans-serif;
+    background-color: #f3f4f6;
+    color: #333;
+}
+
+/* Checkout Container */
+.checkout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 40px 20px;
+    background-color: #f0f0f3;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styles */
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #1a1a1a;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Checkout Content */
+.checkout-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Form Section & Order Details */
+.form-section, .order-details {
+    flex: 1;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Section Header Styles */
+h3 {
+    margin-bottom: 15px;
+    color: #444;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Input Field Styles */
+.input-group input,
+.payment-method input[type="text"] {
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    flex: 1; /* Makes inputs take equal width */
+}
+
+/* Input Focus State */
+input:focus, .input-group input:focus, .payment-method input[type="text"]:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+    outline: none;
+}
+
+/* Order Summary */
+.order-summary {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px; /* Spacing between items and summary */
+    
+}
+.order-item{
+    display: flex;
+    justify-content: space-evenly;
+}
+/* Order Item & Summary Total */
+.order-item, .order-summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0; /* Divider for items */
+}
+
+/* Text Styles */
+.order-item p, .order-summary-total p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
+
+/* Strong Text Styles */
+.order-summary-total p:last-child,
+.order-summary-total p strong {
+    font-weight: 600;
+}
+
+/* Confirm Button Styles */
+.confirm-button {
+    width: 100%;
+    padding: 18px;
+    background-color: #d4af37;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    margin-top: 20px; /* Space above the button */
+}
+
+.confirm-button:hover {
+    background-color: #b7950b;
+}
+
+.confirm-button:active {
+    transform: scale(0.98);
+}
+
+/* Button Styles for Remove and Increment */
+.remove-button {
+    background-color: #ff4d4d; /* Red color for removal */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.remove-button:hover {
+    background-color: #ff1a1a; /* Darker red on hover */
+    transform: translateY(-1px);
+}
+
+.increment-button {
+    background-color: #4caf50; /* Green color for increment */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-left: 10px; /* Space between buttons */
+}
+
+.increment-button:hover {
+    background-color: #388e3c; /* Darker green on hover */
+    transform: translateY(-1px);
+}
+
+/* Specific styles for quantity input */
+.quantity-input {
+    width: 60px; /* Fixed width for quantity input */
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    text-align: center; /* Center the text */
+    font-size: 1rem;
+    margin-right: 10px; /* Spacing to the right */
+}
+
+.quantity-input:focus {
+    border-color: #d4af37;
+    outline: none;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .checkout-content {
+        flex-direction: row;
+    }
+
+    .form-section, .order-details {
+        width: 48%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .form-section {
+        width: 55%; /* Adjusted width for larger screens */
+        margin-right: 20px; /* Adding right margin for spacing */
+    }
+
+    .order-details {
+        width: 40%; /* Adjusted width for order details */
+    }
+
+    .input-group {
+        gap: 20px; /* Increased gap between fields */
+    }
+}
+.update-button {
+    background-color: #4caf50; /* Green background */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}

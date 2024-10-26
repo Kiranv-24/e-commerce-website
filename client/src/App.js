@@ -10,6 +10,8 @@ import Login from "./Pages/Login/index.js";
 import { useState } from "react";
 import Mycontext from "./Mycontext/index.js"; // Corrected import
 import Signup from "./Pages/Signup/index.js";
+import Checkout from "./Pages/Checkout/index.js";
+import OrderSummary from "./Pages/OrderSummary/index.js";
 function App() {
   const [issetHeaderFooter, setisHeaderFooter] = useState(true);
   const [alertBox, setAlertBox] = useState({
@@ -35,6 +37,8 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Signup" element={<Signup />} />
+          <Route path="/Checkout" element={<Checkout />} />
+          <Route path="/OrderSummary" element={<OrderSummary />} />
         </Routes>
         {issetHeaderFooter && <Footer />}
       </Mycontext.Provider>
