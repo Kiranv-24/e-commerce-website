@@ -8,16 +8,26 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState([]);
   const navigate = useNavigate();
+  const username = localStorage.getItem("username"); // Get username from local storage
 
   // Fetch cart items from API
   useEffect(() => {
-    fetchDataFromApi("/api/Cart/").then((res) => {
-      if (res && res.length > 0) {
-        setCartItems(res);
-        setQuantities(res.map((item) => item.quantity || 1));
-      }
-    });
-  }, []);
+    if (!username) {
+      console.error("Username not found");
+      return;
+    }
+    
+    fetchDataFromApi(`/api/Cart/${username}`) // Include username in API call
+      .then((res) => {
+        if (res && res.cartitems && res.cartitems.length > 0) {
+          setCartItems(res.cartitems);
+          setQuantities(res.cartitems.map((item) => item.quantity || 1));
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch cart items:", error);
+      });
+  }, [username]);
 
   const handleQuantityChange = (index, value) => {
     const newQuantities = [...quantities];
@@ -43,9 +53,11 @@ const Cart = () => {
   );
 
   const handleRemoveItem = async (index) => {
-    const itemId = cartItems[index]._id; 
+    const itemId = cartItems[index]._id; // Use the correct identifier
+    const id=cartItems.id;
+    console.log(id);
     try {
-      await deleteData(`/api/Cart/${itemId}`); 
+      await deleteData(`/api/Cart/${username}/${itemId}`); // Update the API call to use username and itemId
       const updatedCartItems = cartItems.filter((_, i) => i !== index);
       const updatedQuantities = quantities.filter((_, i) => i !== index);
       setCartItems(updatedCartItems);
@@ -55,24 +67,30 @@ const Cart = () => {
     }
   };
 
-  const handleRemoveAllItems = async () => {
-    try {
-      await Promise.all(cartItems.map(item => deleteData(`/api/Cart/${item._id}`)));
-      setCartItems([]);
-      setQuantities([]);
-    } catch (error) {
-      console.error("Failed to remove all items from cart:", error);
-    }
-  };
 
- const orderDetails = () => {
-  navigate("/Checkout", {
-    state: {
-      cartItems: cartItems,
-      quantities: quantities,
-    },
-  });
+const handleRemoveAllItems = async () => {
+  try {
+    // Use Promise.all to delete each item by its unique ID
+    await Promise.all(
+      cartItems.map(item => deleteData(`/api/Cart/${username}/${item._id}`))
+    );
+    // Clear state after successful deletion of all items
+    setCartItems([]);
+    setQuantities([]);
+  } catch (error) {
+    console.error("Failed to remove all items from cart:", error);
+  }
 };
+
+
+  const orderDetails = () => {
+    navigate("/Checkout", {
+      state: {
+        cartItems: cartItems,
+        quantities: quantities,
+      },
+    });
+  };
 
   return (
     <section className="Cart-section">

@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import InnerImageZoom from "react-inner-image-zoom";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import { fetchDataFromApi, postData } from "../../api"; // Ensure postData is imported
-import { useParams } from "react-router-dom"; // To get the product ID from URL
+import { fetchDataFromApi, postData } from "../../api";
+import { useParams, useNavigate } from "react-router-dom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import "../../Css-files/ProductDetails.css";
 import CartIcon from "../../Components/Headers/Cart-icon";
+ const username = localStorage.getItem("username");
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [proData, setProData] = useState(null);
   const { id } = useParams(); // Get the product ID from the URL
+  const navigate = useNavigate();
+  const username = localStorage.getItem("username"); // Get username from localStorage
 
   const incrementQuantity = () => {
     setQuantity((prev) => prev + 1);
@@ -22,26 +25,33 @@ const ProductDetail = () => {
     }
   };
 
-  // Fetch product data by ID
   useEffect(() => {
     fetchDataFromApi(`/api/product/${id}`).then((res) => {
       if (res) {
-        setProData(res); // Set the fetched product data
+        setProData(res);
       }
     });
   }, [id]);
 
-  // Function to add the product to the cart
   const addToCart = async () => {
+   
+
+
+    if (!username) {
+      alert("Login to your account");
+      navigate("/login"); // Redirect to login if not logged in
+      return;
+    }
+
     const cartItem = {
-      productId: id, // Include the product ID
+      productId: id,
       quantity: quantity,
+      username // Include the username for the cart item
     };
 
-    const response = await postData("/api/cart/add", cartItem); // Make sure this endpoint is correct
-
+    const response = await postData("/api/cart/add", cartItem);
     if (response.message) {
-      alert(response.message); // Show a message based on the response
+      alert(response.message);
     }
     <CartIcon />;
   };
@@ -76,7 +86,6 @@ const ProductDetail = () => {
             <Button className="buy-now" style={{ color: "black" }}>
               BUY NOW
             </Button>
-
             <div className="quantity-group">
               <Button className="quantity-btn" onClick={decrementQuantity}>
                 <FaMinus />

@@ -10,9 +10,10 @@ const app = express();
 
 // Middleware setup
 const corsOptions = {
-    origin: 'http://localhost:3000', // Your frontend URL
-    methods: ['GET', 'POST'], // Allowed methods
-    credentials: true, // Allow cookies to be sent with requests
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+    allowedHeaders: ['Content-Type', 'Authorization'], // Add any custom headers here
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -22,7 +23,7 @@ app.use(express.json());
 // Router imports
 const categoryRouter = require("./routes/category");
 const productRouter = require("./routes/product");
-const cartRouter = require("./routes/cart");
+const cartRouter = require("./routes/Cart");
 const userRouter = require("./routes/user");
 const checkoutRouter = require("./routes/checkout");
 const orderPaymentRouter = require("./routes/orderpayment");
@@ -30,7 +31,7 @@ const orderPaymentRouter = require("./routes/orderpayment");
 // Mounting routers
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
-app.use("/api/cart", cartRouter);
+app.use("/api/Cart", cartRouter);
 app.use("/api/user", userRouter);
 app.use("/api/checkout", checkoutRouter);
 app.use("/api/orderpayment", orderPaymentRouter);

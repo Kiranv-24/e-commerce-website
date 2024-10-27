@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 import HomeProducts from "./HomeProducts";
 import NewProducts from './NewProducts';
 import Footer from "./Footer";
+
 const Home = () => {
     return (
         <>

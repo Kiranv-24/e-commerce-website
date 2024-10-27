@@ -18,7 +18,7 @@ const AccountButton = () => {
         // Clear login state from localStorage
         localStorage.removeItem("isLoggedIn");
         setIsLoggedIn(false);
-
+        localStorage.removeItem("username");
         // Redirect to login page
         history("/login");
     };
