@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MicrosoftSurfacePro from "../../assets/images/MicrosoftSurfacePro.png";
 import "../../Css-files/Cart.css";
-import { fetchDataFromApi, deleteData } from "../../api"; 
+import { fetchDataFromApi, deleteData } from "../../api";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
@@ -16,7 +16,7 @@ const Cart = () => {
       console.error("Username not found");
       return;
     }
-    
+
     fetchDataFromApi(`/api/Cart/${username}`) // Include username in API call
       .then((res) => {
         if (res && res.cartitems && res.cartitems.length > 0) {
@@ -54,8 +54,6 @@ const Cart = () => {
 
   const handleRemoveItem = async (index) => {
     const itemId = cartItems[index]._id; // Use the correct identifier
-    const id=cartItems.id;
-    console.log(id);
     try {
       await deleteData(`/api/Cart/${username}/${itemId}`); // Update the API call to use username and itemId
       const updatedCartItems = cartItems.filter((_, i) => i !== index);
@@ -67,30 +65,36 @@ const Cart = () => {
     }
   };
 
+  const handleRemoveAllItems = async () => {
+    try {
+      // Use Promise.all to delete each item by its unique ID
+      await Promise.all(
+        cartItems.map((item) => deleteData(`/api/Cart/${username}/${item._id}`))
+      );
+      // Clear state after successful deletion of all items
+      setCartItems([]);
+      setQuantities([]);
+    } catch (error) {
+      console.error("Failed to remove all items from cart:", error);
+    }
+  };
 
-const handleRemoveAllItems = async () => {
-  try {
-    // Use Promise.all to delete each item by its unique ID
-    await Promise.all(
-      cartItems.map(item => deleteData(`/api/Cart/${username}/${item._id}`))
-    );
-    // Clear state after successful deletion of all items
-    setCartItems([]);
-    setQuantities([]);
-  } catch (error) {
-    console.error("Failed to remove all items from cart:", error);
-  }
-};
-
-
-  const orderDetails = () => {
-    navigate("/Checkout", {
+const orderDetails = () => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  if (!isLoggedIn) {
+    alert("Please login to proceed to checkout.");
+    navigate("/login");
+  } else {
+    navigate(`/Checkout?ref=nav_cart`, {
       state: {
         cartItems: cartItems,
         quantities: quantities,
       },
     });
-  };
+  }
+};
+
+
 
   return (
     <section className="Cart-section">

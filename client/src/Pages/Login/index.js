@@ -30,9 +30,9 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
-     if (formfields.email) {
-          localStorage.setItem("username", formfields.email);
-        }
+    if (formfields.email) {
+      localStorage.setItem("username", formfields.email);
+    }
     e.preventDefault();
     setIsLoading(true); // Start loading indicator
     if (formfields.email === "") {
@@ -54,9 +54,8 @@ const Login = () => {
       } else {
         setAlert({ open: true, error: false, msg: "User Login Successful" });
         localStorage.setItem("isLoggedIn", "true");
-   
+
         // Store username in local storage if available
-        
 
         setTimeout(() => {
           window.location.replace("/");
