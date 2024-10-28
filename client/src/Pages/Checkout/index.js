@@ -59,7 +59,7 @@ const Checkout = () => {
             setData(res.order);
             setFormFields((prevFields) => ({
               ...prevFields,
-              ...res.order.orderDetails, // Populate form fields with fetched data
+              ...res.order.orderDetails,
             }));
           }
         }
@@ -110,27 +110,12 @@ const Checkout = () => {
   );
 
   const handleUpdateUserDetails = async () => {
+    if (!validateForm()) return;
+
     try {
-      const shippingDetails = cartItems.map((item, index) => {
-        const quantity = quantities[index] || 0; // Get quantity or default to 0
-        const subtotal = item.price * quantity; // Calculate subtotal
-        const shipping = item.shipping || 10; // Default shipping fee
+      const shippingDetails = createShippingDetails();
 
-        return {
-          id: item._id,
-          name: item.name,
-          price: item.price,
-          quantity: quantity,
-          subtotal: subtotal,
-          total: subtotal + shipping, // Calculate total as subtotal + shipping
-          shipping: shipping, // Add shipping to the object if necessary
-        };
-      });
-
-      // Check if shippingDetails is an array
-      if (!Array.isArray(shippingDetails) || shippingDetails.length === 0) {
-        throw new Error("Shipping details are not valid.");
-      }
+      if (!validateShippingDetails(shippingDetails)) return;
 
       const orderDetails = {
         fullname: formFields.fullname,
@@ -142,8 +127,7 @@ const Checkout = () => {
         city: formFields.city,
         email: formFields.email,
       };
-      console.log(shippingDetails);
-      console.log(orderDetails);
+
       const response = await editData(`/api/checkout/${username}`, {
         username: username,
         orderDetails,
@@ -151,39 +135,22 @@ const Checkout = () => {
       });
 
       if (response.success) {
-        alert("Updated succesfully");
+        alert("Updated successfully");
       } else {
         alert("Failed to update " + response.message);
-        console.error("Order creation error:", response);
       }
     } catch (error) {
-      console.error("error:", error);
       alert("An error occurred while updating. Please try again.");
     }
   };
 
   const handleConfirmPayment = async () => {
+    if (!validateForm()) return;
+
     try {
-      const shippingDetails = cartItems.map((item, index) => {
-        const quantity = quantities[index] || 0; // Get quantity or default to 0
-        const subtotal = item.price * quantity; // Calculate subtotal
-        const shipping = item.shipping || 10; // Default shipping fee
+      const shippingDetails = createShippingDetails();
 
-        return {
-          id: item._id,
-          name: item.name,
-          price: item.price,
-          quantity: quantity,
-          subtotal: subtotal,
-          total: subtotal + shipping, // Calculate total as subtotal + shipping
-          shipping: shipping, // Add shipping to the object if necessary
-        };
-      });
-
-      // Check if shippingDetails is an array
-      if (!Array.isArray(shippingDetails) || shippingDetails.length === 0) {
-        throw new Error("Shipping details are not valid.");
-      }
+      if (!validateShippingDetails(shippingDetails)) return;
 
       const orderDetails = {
         fullname: formFields.fullname,
@@ -195,8 +162,7 @@ const Checkout = () => {
         city: formFields.city,
         email: formFields.email,
       };
-      console.log(shippingDetails);
-      console.log(orderDetails);
+
       const response = await postData("/api/checkout/create", {
         username: username,
         orderDetails,
@@ -208,10 +174,8 @@ const Checkout = () => {
         navigate("/OrderSummary");
       } else {
         alert("Failed to place the order: " + response.message);
-        console.error("Order creation error:", response);
       }
     } catch (error) {
-      console.error("Payment error:", error);
       alert("An error occurred while placing the order. Please try again.");
     }
   };
@@ -230,6 +194,51 @@ const Checkout = () => {
     setCartItems(newCartItems);
     setQuantities(newQuantities);
   };
+
+  const validateForm = () => {
+    const requiredFields = [
+      "fullname",
+      "lastname",
+      "phone",
+      "address",
+      "country",
+      "state",
+      "city",
+      "email",
+    ];
+    for (let field of requiredFields) {
+      if (!formFields[field]) {
+        alert(`Please fill in the ${field} field.`);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const validateShippingDetails = (shippingDetails) => {
+    if (!Array.isArray(shippingDetails) || shippingDetails.length === 0) {
+      alert("Please add at least one item to the shipping details.");
+      return false;
+    }
+    return true;
+  };
+
+  const createShippingDetails = () =>
+    cartItems.map((item, index) => {
+      const quantity = quantities[index] || 0;
+      const subtotal = item.price * quantity;
+      const shipping = item.shipping || 10;
+
+      return {
+        id: item._id,
+        name: item.name,
+        price: item.price,
+        quantity,
+        subtotal,
+        total: subtotal + shipping,
+        shipping,
+      };
+    });
 
   return (
     <div className="checkout-container">

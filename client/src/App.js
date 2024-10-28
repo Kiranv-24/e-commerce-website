@@ -12,19 +12,21 @@ import Mycontext from "./Mycontext/index.js"; // Corrected import
 import Signup from "./Pages/Signup/index.js";
 import Checkout from "./Pages/Checkout/index.js";
 import OrderSummary from "./Pages/OrderSummary/index.js";
+import SuccessfulPayment from "./Pages/SuccessfulPayment/index.js";
+import OrderHistory from "./Pages/OrderHistory";
 function App() {
   const [issetHeaderFooter, setisHeaderFooter] = useState(true);
   const [alertBox, setAlertBox] = useState({
-        open: false,
-        error: false,
-        msg: "",
-        severity: "success",
-    });
+    open: false,
+    error: false,
+    msg: "",
+    severity: "success",
+  });
   const values = {
     issetHeaderFooter,
     setisHeaderFooter,
     setAlertBox,
-    alertBox
+    alertBox,
   };
 
   return (
@@ -39,6 +41,9 @@ function App() {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Checkout" element={<Checkout />} />
           <Route path="/OrderSummary" element={<OrderSummary />} />
+         <Route path="/payment/complete" element={<SuccessfulPayment />} />
+         <Route path="OrderHistory/:username" element={<OrderHistory />} />
+
         </Routes>
         {issetHeaderFooter && <Footer />}
       </Mycontext.Provider>

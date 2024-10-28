@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { VscAccount } from "react-icons/vsc";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-
+import {OrderHistory} from "../../"
+const username=localStorage.getItem("username");
 const AccountButton = () => {
     const [isHovered, setIsHovered] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,7 +23,9 @@ const AccountButton = () => {
         // Redirect to login page
         history("/login");
     };
-
+   const orderHistory=()=>{
+    history(`/OrderHistory/${username}`)
+   }
   
     return (
         <div className="col-sm-1 d-flex align-items-center part3">
@@ -46,7 +49,7 @@ const AccountButton = () => {
                                     
                                 </li>
                                 </button>
-                <button className="btn btn-link p-0 w-100">
+                <button className="btn btn-link p-0 w-100" onClick={orderHistory}>
                     <li  className="w-100">
                                     
                                         Orders

@@ -1,0 +1,80 @@
+.order-history {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  h2 {
+    color: #1a1a1a;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+  }
+  
+  .order-table th, .order-table td {
+    padding: 12px 16px;
+    text-align: left;
+  }
+  
+  .order-table th {
+    color: #6c757d;
+    font-weight: 600;
+  }
+  
+  .order-table tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+  
+  .product-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .product-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
+  .status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .status.delivered {
+    background-color: #28a745;
+  }
+  
+  .status.shipping {
+    background-color: #6f42c1;
+  }
+  
+  .status.pending {
+    background-color: #ffc107;
+  }
+  
+
+  
+  .invoice-button {
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .invoice-button:hover {
+    background-color: #5a32a3;
+  }
+  

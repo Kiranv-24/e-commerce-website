@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Css-files/OrderSummary.css";
-import { fetchDataFromApi } from "../../api";
+import { fetchDataFromApi, postData } from "../../api";
 import { loadStripe } from "@stripe/stripe-js";
+
+const username = localStorage.getItem("username");
 
 const OrderSummary = () => {
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ const OrderSummary = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    
     const fetchOrderDetails = async () => {
       try {
         const res = await fetchDataFromApi("/api/checkout/");
@@ -42,51 +45,55 @@ const OrderSummary = () => {
     });
   };
 
-const handlePayment = async () => {
-  const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-  if (!stripe) {
-    console.error("Stripe not initialized.");
-    return;
-  }
-
-//   const userData = JSON.parse(localStorage.getItem("user"));
-//   const userId = userData ? userData.userId : 123;
-
-  const Products = shippingDetails.map((item) => ({
-    productTitle: item.name,
-    price: item.subtotal,
-    quantity: item.quantity,
-  }));
-   console.log("Products to be sent:", Products);
-  const body = {
-    products: Products,
-    // userId: userId,
-  };
-
-
+  const handlePayment = async () => {
+    const stripe = await loadStripe(
+      process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+    );
    
-   const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/orderpayment/create-checkout-session`, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-    
-});
+    if (!stripe) {
+      console.error("Stripe not initialized.");
+      return;
+    }
 
-  
+    const Products = shippingDetails.map((item) => ({
+      productTitle: item.name,
+      quantity: item.quantity,
+    }));
 
-const session = await response.json();
-    console.log("Session response:", session);
+    const body = {
+      products: Products,
+      username: username,
+      orderDetails,
+      shippingDetails,
+    };
 
-    
-      const result = await stripe.redirectToCheckout({ sessionId: session.id });
-      if(result.error){
-        console.log(result.error);
+    try {
+      
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/api/orderpayment/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      //  console.log("lkkdkasdk",response);
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
       }
-};
 
-
+      const session = await response.json();
+      const result = await stripe.redirectToCheckout({ sessionId: session.id });
+      await postData("/api/orderpayment/weebook");
+      if (result.error) {
+        console.error(result.error);
+      }
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -106,10 +113,18 @@ const session = await response.json();
 
       <div className="shipping-info">
         <h3 className="order-summary-subtitle">Shipping Information</h3>
-        <p><strong>Name:</strong> {orderDetails.fullname} {orderDetails.lastname}</p>
-        <p><strong>Phone:</strong> {orderDetails.phone}</p>
-        <p><strong>Address:</strong> {orderDetails.address}</p>
-        <p><strong>Email:</strong> {orderDetails.email}</p>
+        <p>
+          <strong>Name:</strong> {orderDetails.fullname} {orderDetails.lastname}
+        </p>
+        <p>
+          <strong>Phone:</strong> {orderDetails.phone}
+        </p>
+        <p>
+          <strong>Address:</strong> {orderDetails.address}
+        </p>
+        <p>
+          <strong>Email:</strong> {orderDetails.email}
+        </p>
       </div>
 
       <div className="order-details">
@@ -125,8 +140,8 @@ const session = await response.json();
             </tr>
           </thead>
           <tbody>
-            {shippingDetails.map((item) => (
-              <tr key={item.id}>
+            {shippingDetails.map((item, index) => (
+              <tr key={index}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>
                 <td>₹{item.subtotal.toFixed(2)}</td>
@@ -140,7 +155,12 @@ const session = await response.json();
 
       <div className="order-summary">
         <h3 className="order-summary-subtitle">Total Summary</h3>
-        <p><strong>Total Amount:</strong> ₹{shippingDetails.reduce((acc, item) => acc + item.total, 0).toFixed(2)}</p>
+        <p>
+          <strong>Total Amount:</strong> ₹
+          {shippingDetails
+            .reduce((acc, item) => acc + item.total, 0)
+            .toFixed(2)}
+        </p>
       </div>
 
       <div className="edit-order">
@@ -150,7 +170,10 @@ const session = await response.json();
       </div>
 
       <div className="payment-container">
-        <button className="order-summary-button pay-button" onClick={handlePayment}>
+        <button
+          className="order-summary-button pay-button"
+          onClick={handlePayment}
+        >
           Click Here to Pay via Stripe
         </button>
       </div>

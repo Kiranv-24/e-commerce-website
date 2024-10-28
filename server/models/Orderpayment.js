@@ -1,24 +1,34 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-  orderDetails: {
-    fullname: String,
-    lastname: String,
-    phone: String,
-    address: String,
-    email: String,
+  username: {
+    type: String,
+    required: true,
   },
-  shippingDetails: [
+  orders: [
     {
-      name: String,
-      quantity: Number,
-      subtotal: Number,
-      shipping: Number,
-      total: Number,
+      orderId: String,
+      orderDetails: {
+        fullname: String,
+        lastname: String,
+        phone: String,
+        address: String,
+        email: String,
+      },
+      shippingDetails: [
+        {
+          name: String,
+          quantity: Number,
+          subtotal: Number,
+          shipping: Number,
+          total: Number,
+        },
+      ],
+      paymentStatus: { type: String, default: "pending" },
+      date: { type: Date, default: Date.now }, // Automatically sets the date
+      time: { type: String, default: () => new Date().toLocaleTimeString() } // Sets the current time
     },
   ],
-  paymentStatus: { type: String, default: "pending" },
-  stripeSessionId: String,
 });
 
 module.exports = mongoose.model("Order", orderSchema);

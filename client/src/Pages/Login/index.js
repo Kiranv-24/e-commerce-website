@@ -198,7 +198,7 @@ const Login = () => {
           </Button>
           <div className="text-center">
             <p>
-              Not a member? <a href="#!">Register</a>
+              Not a member? <a href="/signup">Register</a>
             </p>
             <p>or sign up with:</p>
             <button type="button" className="btn btn-link btn-floating mx-1">
