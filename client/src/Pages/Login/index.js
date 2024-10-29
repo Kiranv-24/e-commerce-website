@@ -4,8 +4,9 @@ import "../../Css-files/Login.css";
 import Loginbg from "../../assets/images/Login-bg.jpg";
 import { postData } from "../../api";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress, Button, Alert, Collapse } from "@mui/material";
-
+import { CircularProgress, Button } from "@mui/material";
+import toast, { Toaster } from 'react-hot-toast';
+import ForgetPassword from "../ForgetPassword";
 const Login = () => {
   const history = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -15,11 +16,6 @@ const Login = () => {
     email: "",
     password: "",
     isAdmin: false,
-  });
-  const [alert, setAlert] = useState({
-    open: false,
-    error: false,
-    msg: "",
   });
 
   const onChangeInput = (e) => {
@@ -35,13 +31,18 @@ const Login = () => {
     }
     e.preventDefault();
     setIsLoading(true); // Start loading indicator
+
     if (formfields.email === "") {
-      setAlert({ open: true, error: true, msg: "Email cannot be empty" });
+      toast.error("Please fill the email", {
+        style: { fontSize: "18px" },
+      });
       setIsLoading(false); // Stop loading indicator
       return;
     }
     if (formfields.password === "") {
-      setAlert({ open: true, error: true, msg: "Password cannot be empty" });
+      toast.error("Please fill the password", {
+        style: { fontSize: "18px" },
+      });
       setIsLoading(false); // Stop loading indicator
       return;
     }
@@ -50,22 +51,22 @@ const Login = () => {
       const res = await postData("/api/user/Login", formfields);
       console.log(res);
       if (res && res.message) {
-        setAlert({ open: true, error: true, msg: res.message });
+        toast.error("username or passowrd is wrong", {
+          style: { fontSize: "18px" },
+        });
       } else {
-        setAlert({ open: true, error: false, msg: "User Login Successful" });
+        toast.success("User Login Successful", {
+          style: { fontSize: "18px" },
+        });
         localStorage.setItem("isLoggedIn", "true");
-
-        // Store username in local storage if available
-
+        
         setTimeout(() => {
           window.location.replace("/");
         }, 1000);
       }
     } catch (error) {
-      setAlert({
-        open: true,
-        error: true,
-        msg: "An error occurred during login.",
+      toast.error("An error occurred during login.", {
+        style: { fontSize: "18px" },
       });
     } finally {
       setIsLoading(false); // Stop loading indicator
@@ -106,37 +107,21 @@ const Login = () => {
 
   return (
     <section className="section" style={{ backgroundImage: `url(${Loginbg})` }}>
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          style: {
+            fontSize: "18px", 
+            padding: "16px",
+            borderRadius: "8px",
+            maxWidth: "400px",
+          },
+        }}
+      />
       <div className="welcome-message">
         <h1 ref={welcomeTextRef}></h1>
       </div>
       <div className="container Login-container">
-        <div
-          className={`alert-container ${
-            alert.open ? "alert-slide-in-active" : "alert-slide-in"
-          }`}
-        >
-          <Collapse in={alert.open}>
-            <Alert
-              severity={alert.error ? "error" : "success"}
-              action={
-                <Button
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setAlert({ ...alert, open: false });
-                  }}
-                >
-                  Close
-                </Button>
-              }
-              sx={{ mb: 2 }}
-              onExited={() => setAlert({ ...alert, open: false })} // Handle closure
-            >
-              {alert.msg}
-            </Alert>
-          </Collapse>
-        </div>
-
         <form>
           <div className="form-outline mb-4">
             <input
@@ -180,7 +165,7 @@ const Login = () => {
               </div>
             </div>
             <div className="col">
-              <a href="#!">Forgot password?</a>
+              <a href='/ForgetPassword'>Forgot password?</a>
             </div>
           </div>
           <Button

@@ -14,6 +14,8 @@ import Checkout from "./Pages/Checkout/index.js";
 import OrderSummary from "./Pages/OrderSummary/index.js";
 import SuccessfulPayment from "./Pages/SuccessfulPayment/index.js";
 import OrderHistory from "./Pages/OrderHistory";
+import ForgetPassword from "./Pages/ForgetPassword";
+import ChangePassword from "./Pages/ChangePassword";
 function App() {
   const [issetHeaderFooter, setisHeaderFooter] = useState(true);
   const [alertBox, setAlertBox] = useState({
@@ -31,6 +33,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    
       <Mycontext.Provider value={values}>
         {issetHeaderFooter && <Header />}
         <Routes>
@@ -43,6 +46,8 @@ function App() {
           <Route path="/OrderSummary" element={<OrderSummary />} />
          <Route path="/payment/complete" element={<SuccessfulPayment />} />
          <Route path="OrderHistory/:username" element={<OrderHistory />} />
+         <Route path="ForgetPassword" element={<ForgetPassword />} />
+         <Route path="ChangePassword/:username" element={<ChangePassword />} />
 
         </Routes>
         {issetHeaderFooter && <Footer />}

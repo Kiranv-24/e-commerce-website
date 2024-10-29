@@ -127,7 +127,10 @@ const OrderHistory = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (orders.length === 0) return <div>No orders found.</div>;
+  if (!Array.isArray(orders)) {
+    return <div>No orders available</div>; // Fallback UI
+  }
+
 
   return (
     <div className="order-history">

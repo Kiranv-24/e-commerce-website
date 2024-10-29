@@ -1,6 +1,7 @@
 .order-history {
     padding: 20px;
     background-color: #f9f9f9;
+    flex: 1;
   }
   
   h2 {
@@ -77,4 +78,8 @@
   .invoice-button:hover {
     background-color: #5a32a3;
   }
-  
+  .footer {
+    position: fixed !important;
+    left: 0 !important;
+    bottom: 0 !important;
+  }

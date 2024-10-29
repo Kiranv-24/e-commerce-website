@@ -111,3 +111,7 @@ h1 {
     transition: color 0.3s ease;
 }
 
+.toaster-class {
+    margin-top: 40px !important;
+    z-index: 99999 !important; 
+}
