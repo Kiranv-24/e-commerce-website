@@ -16,6 +16,8 @@ import SuccessfulPayment from "./Pages/SuccessfulPayment/index.js";
 import OrderHistory from "./Pages/OrderHistory";
 import ForgetPassword from "./Pages/ForgetPassword";
 import ChangePassword from "./Pages/ChangePassword";
+import Chatbot from "../src/Components/Chatbot";
+import AIassistance from "../src/Components/Aiassistance";
 function App() {
   const [issetHeaderFooter, setisHeaderFooter] = useState(true);
   const [alertBox, setAlertBox] = useState({
@@ -33,7 +35,8 @@ function App() {
 
   return (
     <BrowserRouter>
-    
+    {/* <AIassistance/> */}
+        <Chatbot/>
       <Mycontext.Provider value={values}>
         {issetHeaderFooter && <Header />}
         <Routes>

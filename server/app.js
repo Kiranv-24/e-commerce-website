@@ -28,6 +28,7 @@ const userRouter = require("./routes/user");
 const checkoutRouter = require("./routes/checkout");
 const orderPaymentRouter = require("./routes/orderpayment");
 const OrderHistoryRouter = require("./routes/OrderHistory");
+const AIassistance= require("./routes/AIassistance");
 
 // Mounting routers
 app.use("/api/category", categoryRouter);
@@ -37,6 +38,7 @@ app.use("/api/user", userRouter);
 app.use("/api/checkout", checkoutRouter);
 app.use("/api/orderpayment", orderPaymentRouter);
 app.use("/api/OrderHistory", OrderHistoryRouter);
+app.use("/api", AIassistance);
 
 // Error Handling Middleware for Unauthorized Errors
 app.use((err, req, res, next) => {
