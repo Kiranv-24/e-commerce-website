@@ -35,6 +35,7 @@ router.post("/add", async (req, res) => {
         quantity: quantity || 1,
         price: product.price,
         images: product.images,
+        id:productId
       });
       await cart.save();
       res

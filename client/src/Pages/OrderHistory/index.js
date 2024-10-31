@@ -3,7 +3,7 @@ import "../../Css-files/OrderHistory.css";
 import { fetchDataFromApi } from "../../api";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-
+import { CircularProgress, Button, TextField } from "@mui/material";
 // Add a font with support for the Rupee symbol
 // const addRupeeFont = () => {
 //   // Only add this if you need the font; otherwise, you can skip this part
@@ -97,7 +97,9 @@ const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+   const goBack = () => {
+     window.location.replace("/");
+  };
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -134,6 +136,7 @@ const OrderHistory = () => {
 
   return (
     <div className="order-history">
+      <Button className="back-button" onClick={goBack}>Go Back</Button>
       <h2>Order History</h2>
       <table className="order-table">
         <thead>

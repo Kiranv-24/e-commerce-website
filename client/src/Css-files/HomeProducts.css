@@ -14,7 +14,7 @@
 .Homeproducts {
     margin-top: 50px;
     height: 400px;
-    margin-left: 70px;
+   
   }
   
   .Homeproducts-container {
@@ -24,8 +24,9 @@
   .banner img {
     cursor: pointer;
     width: 300px;
-    height: 400px;
+    height: 300px;
     border-radius: 10px;
+    margin-top: 47px;
   }
   
   .tagline {
@@ -155,6 +156,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid #e0e0e0;
   }
   
   .ProductItem img {
@@ -307,4 +309,98 @@
   .ProductItem .actions button:hover{
     background-color: rgb(113, 167, 228);
   }
+  @media (max-width: 1117px) {
+    .banner img {
+      display: none; /* Hides the banner image */
+    }
   
+    .Info-Block {
+      width: 100%; /* Ensures the slider takes the full width */
+      margin: 0; /* Removes any default margin */
+      padding: 0; /* Removes any default padding */
+    }
+  
+    .slider-container {
+      width: 100%; /* Sets the container to full width */
+      overflow: hidden; /* Prevents overflow */
+    }
+  
+    .swiper-container {
+      display: flex;
+      flex-direction: column; /* Stack slides vertically */
+      align-items: center; /* Center align the slides */
+      margin-right: 20px;
+    }
+    .swiper-wrapper{
+      margin-right: 2px;
+    }
+    .swiper-slide {
+      width: 100%; 
+      height:100px; 
+      margin: 10px 0; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      
+    }
+    .swiper-slide h1,h2,h3,h4,h5,h6{
+      font-size: 16px;
+    }
+  
+    /* Optional: Adjust image sizes for mobile view */
+    .ProductItem img {
+      width: 90%; /* Adjust image size to fit mobile */
+      max-height: 200px; /* Set max height for images */
+      object-fit: contain; /* Maintain aspect ratio */
+    }
+  }
+  @media (max-width: 700px) {
+    /* Set the Homeproducts-container to a column layout */
+    .Homeproducts-container {
+        display: flex;
+        flex-direction: column; /* Stack products vertically */
+        margin-left: 0 !important; /* Remove left margin */
+        width: 100%; /* Ensure full width for the container */
+    }
+
+    /* Each product item will take the full width */
+    .ProductItem {
+        width: 100%; /* Set to full width for list view */
+        margin-top: 20px; /* Add margin between items */
+        display: flex; /* Flex display for product items */
+        align-items: center; /* Center align items vertically */
+        justify-content: space-between; /* Space between items */
+        padding: 10px; /* Add padding for better spacing */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow */
+        border: 1px solid #e0e0e0; /* Optional: add a border for clarity */
+        background-color: #ffffff; /* Background color for product items */
+        margin-left: 10px;
+        justify-content: center;
+      
+    }
+
+   .ProductItem img{
+    margin-right: 10px !important;
+   }
+    .ProductItem .info {
+        font-size: 14px; /* Adjust font size for better readability */
+    }
+
+    .ProductItem .actions {
+        display: none; /* Hide actions if not needed in list view */
+    }
+    .swiper-wrapper{
+      display: flex !important;
+      align-items: center !important;
+    }
+
+.Info-Block-2{
+  margin-left: 20px;
+}
+.ProductItem .imgWrapper{
+  margin-right: 10px;
+}
+ 
+}
+
+

@@ -7,15 +7,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap");
 
-body {
-    font-family: "Lato", "Roboto", sans-serif;
-    background-color: #f5f5f5;
-}
 body, h1, h2, h3, h4, h5, h6, p {
-  
-    z-index: 1000; /* Set a high z-index */
-   
+    z-index: 1000;
 }
+
 .Cart-section {
     margin-top: 40px;
     padding: 0 40px;
@@ -50,7 +45,7 @@ body, h1, h2, h3, h4, h5, h6, p {
     border-collapse: collapse;
     background-color: white;
     border-radius: 10px;
-    overflow: hidden; /* Prevents overflow of rounded corners */
+    overflow: hidden;
 }
 
 .Table tr {
@@ -58,7 +53,12 @@ body, h1, h2, h3, h4, h5, h6, p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 936px;;
+}
+
+@media (min-width: 1469px) {
+    .Table tr {
+        width: 939px !important; /* Ensure table does not exceed 939px */
+    }
 }
 
 .Table td {
@@ -73,8 +73,8 @@ body, h1, h2, h3, h4, h5, h6, p {
 }
 
 .CartimgWrapper .imgWrapper {
-    width: 120px;
-    height: 120px;
+    width: 100px; /* Adjusted width for better responsiveness */
+    height: 100px; /* Adjusted height for better responsiveness */
     background-color: white !important;
     margin-right: 20px;
     border-radius: 10px;
@@ -82,12 +82,17 @@ body, h1, h2, h3, h4, h5, h6, p {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow to image wrapper */
-    transition: transform 0.3s ease; /* Hover effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.CartimgWrapper img {
+    width: 100%; /* Make the image take full width */
+    height: auto; /* Maintain aspect ratio */
 }
 
 .CartimgWrapper .imgWrapper:hover {
-    transform: scale(1.05); /* Slight zoom effect on hover */
+    transform: scale(1.05);
 }
 
 .Description {
@@ -101,11 +106,11 @@ body, h1, h2, h3, h4, h5, h6, p {
 
 .Description h4 {
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #333;
     margin-bottom: 5px;
     white-space: normal;
-    word-break: break-word;
+  
 }
 
 .Description p {
@@ -126,13 +131,13 @@ body, h1, h2, h3, h4, h5, h6, p {
     border: 1px solid #ddd;
     border-radius: 5px;
     margin: 0 5px;
-    font-size: 1rem; /* Increase font size for better readability */
-    transition: border-color 0.3s ease; /* Smooth border color change */
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
 }
 
 .quantity-column input:focus {
-    border-color: #007bff; /* Blue border on focus */
-    outline: none; /* Remove default outline */
+    border-color: #007bff;
+    outline: none;
 }
 
 .price-column {
@@ -150,11 +155,11 @@ body, h1, h2, h3, h4, h5, h6, p {
     width: 100%;
     max-width: 350px;
     margin-left: 20px;
-    transition: transform 0.3s ease; /* Smooth transform for hover */
+    transition: transform 0.3s ease;
 }
 
 .summary-section:hover {
-    transform: translateY(-2px); /* Slight lift effect on hover */
+    transform: translateY(-2px);
 }
 
 .summary-section h4 {
@@ -180,52 +185,33 @@ body, h1, h2, h3, h4, h5, h6, p {
     font-size: 1.1rem;
     border-radius: 5px;
     width: 100%;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Added transition for shadow */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .checkout-btn:hover {
     background-color: #ddb347;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .remove-btn {
-    background-color: #e74c3c; /* Red color for remove button */
-    color: white;
+    color: black;
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
     font-size: 1rem;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition for scaling */
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .remove-btn:hover {
-    background-color: #c0392b; /* Darker red on hover */
-    transform: scale(1.05); /* Slight zoom effect on hover */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .row-section {
-        flex-direction: column;
-    }
-
-    .CartimgWrapper .imgWrapper {
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-
-    .summary-section {
-        max-width: 100%;
-        margin-left: 0;
-        margin-top: 20px;
-    }
+    background-color: #c0392b;
+    transform: scale(1.05);
 }
 
 .remove-all-btn {
-    background-color: #e74c3c; /* Red color for Remove All button */
+    background-color: #e74c3c;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -233,11 +219,99 @@ body, h1, h2, h3, h4, h5, h6, p {
     cursor: pointer;
     font-weight: 600;
     font-size: 1rem;
-    margin-bottom: 20px; /* Space between the button and the table */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition for scaling */
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.back-button {
+    background-color: #007bff; /* Primary color for the button */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 10px 15px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-weight: 600; /* Font weight */
+    font-size: 1rem; /* Font size */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
+    margin-bottom: 20px; /* Space below the button */
 }
 
+.back-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Scale effect on hover */
+}
 .remove-all-btn:hover {
-    background-color: #c0392b; /* Darker red on hover */
-    transform: scale(1.05); /* Slight zoom effect on hover */
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .Cart-section {
+        padding: 0 10px;
+    }
+
+    .row-section {
+        flex-direction: column; /* Stack items vertically */
+    }
+
+    .CartimgWrapper .imgWrapper {
+        width: 80px; /* Smaller size on mobile */
+        height: 80px; /* Smaller size on mobile */
+        margin-right: 10px; /* Reduced margin on mobile */
+    }
+
+    .summary-section {
+        max-width: 100%;
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .Table td {
+        padding: 10px;
+        flex-direction: column; /* Adjust table cell layout */
+        text-align: center; /* Center-align text in table cells */
+    }
+
+    .checkout-btn,
+    .remove-all-btn {
+        margin-top: 10px; /* Space between buttons */
+    }
+
+    .flex-buttons {
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+    }
+
+    .CartimgWrapper h1, h2, h3, h4, h5, h6, p {
+        font-size: 0.8rem !important; /* Adjust font size for mobile */
+    }
+
+    .remove-btn {
+        display: block; /* Show the original remove button on mobile */
+        margin: 10px auto; /* Center align the button */
+        color: white; /* Text color */
+        padding: 8px 12px; /* Padding for the button */
+        border-radius: 5px; /* Rounded corners */
+        font-weight: 600; /* Font weight */
+        font-size: 1rem; /* Font size */
+        transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
+    }
+    
+    .remove-btn:hover {
+        background-color: #c0392b; /* Darker red on hover */
+        transform: scale(1.05); /* Scale effect on hover */
+    }
+
+    .delete-icon {
+        display: none; /* Hide the delete icon on mobile */
+    }
+    
+    .Description p {
+        display: none; /* Keep the description hidden */
+    }
+    .Shopping-Cart{
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+
+    } 
 }

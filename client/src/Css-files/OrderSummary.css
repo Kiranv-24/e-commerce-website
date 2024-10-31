@@ -20,7 +20,7 @@
 }
 
 .shipping-info,
-.order-details,
+.order-details-2,
 .order-summary {
     margin: 1.5rem 0;
     padding: 20px;
@@ -104,3 +104,78 @@
     margin-top: 2rem; /* Space above the payment section */
     text-align: center; /* Center the payment button */
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .order-summary-title {
+        font-size: 2rem; /* Decrease font size on smaller screens */
+    }
+
+    .order-summary-subtitle {
+        font-size: 1.5rem; /* Decrease font size */
+    }
+
+    .shipping-info,
+    .order-details-2,
+    .order-summary {
+        padding: 15px; /* Decrease padding for mobile */
+    }
+
+    .order-summary-button {
+        font-size: 0.9rem; /* Decrease font size */
+        padding: 10px 15px; /* Adjust padding */
+    }
+
+    .edit-order {
+        width: 100%; /* Make edit button full width on mobile */
+        margin: 1rem 0; /* Adjust margin */
+    }
+
+    .order-summary-table th,
+    .order-summary-table td {
+        padding: 10px; /* Adjust padding for table cells */
+    }
+
+    .order-summary-table {
+        margin-top: 1rem; /* Adjust margin on top for table */
+    }
+}
+
+@media (max-width: 480px) {
+    .order-summary-title {
+        font-size: 1.75rem;
+    }
+
+    .shipping-info,
+    .order-details-2,
+    .order-summary {
+        margin: 1rem 0;
+    }
+
+    .order-summary-table {
+        font-size: 0.7rem;
+        border-collapse: separate; /* Removes full border effect on mobile */
+    }
+
+    .order-summary-table th,
+    .order-summary-table td {
+        padding: 8px 10px;
+        border: none; /* Remove border for mobile */
+    }
+
+    .order-summary-table th {
+        background-color: transparent; /* Remove background color for headers */
+        color: #2d3748;
+        font-weight: bold;
+    }
+
+    .order-summary-table td {
+        background-color: transparent;
+    }
+
+    .order-summary-button {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+}
+

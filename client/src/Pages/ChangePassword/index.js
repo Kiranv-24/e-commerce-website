@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { editData } from "../../api";
 // const username =req.params.username;
-
+ const username = localStorage.getItem("username");
 const ChangePassword = () => {
-      const { username } = useParams(); 
-    // console.log(username);
+      // const { username } = useParams(); 
+    console.log(username);
   const [formFields, setFormFields] = useState({
     password: "",
     confirmPassword: "",
@@ -43,8 +43,13 @@ const ChangePassword = () => {
         password: formFields.password,
       });
       console.log("Password changed:", response);
+      localStorage.removeItem("username");
+      // setUsername("");
       setSuccess(true);
       setFormFields({ password: "", confirmPassword: "" }); // Clear fields on success
+       setTimeout(() => {
+           window.location.replace("/Login");
+        }, 2000);
     } catch (err) {
       console.error("Error changing password:", err);
       setError("Failed to change password. Please try again.");

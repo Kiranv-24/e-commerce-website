@@ -12,28 +12,29 @@ import ItemDetailsPage from "../../Components/ItemDetailsPage";
 const SwiperSlider = () => {
   const [open, setOpen] = useState(false);
   const [proData, setProData] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null); // To store clicked product details
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [swiperKey, setSwiperKey] = useState(0); // To refresh Swiper on data reload
   const navigate = useNavigate();
 
   const ProductDetails1 = (product) => {
-    // console.log(product._id)
-    setSelectedProduct(product); // Set the clicked product as selected
-    setOpen(true); // Open the modal
+    setSelectedProduct(product);
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false); // Close the modal
-    setSelectedProduct(null); // Reset selected product
+    setOpen(false);
+    setSelectedProduct(null);
   };
 
   const ProductDetails = (id) => {
-    navigate(`/product/${id}`); // Navigate to product detail page with product ID
+    navigate(`/product/${id}`);
   };
 
   useEffect(() => {
     fetchDataFromApi("/api/product/").then((res) => {
       if (res && res.length > 0) {
         setProData(res);
+        setSwiperKey(prevKey => prevKey + 1); // Update swiperKey to refresh Swiper
       }
     });
   }, []);
@@ -41,46 +42,46 @@ const SwiperSlider = () => {
   return (
     <div className="Product_row">
       <Swiper
+        key={swiperKey} // Force Swiper to re-render
         slidesPerView={proData.length < 6 ? proData.length : 5}
         spaceBetween={0}
         navigation={true}
         modules={[Navigation]}
         className="mySwiper"
+        breakpoints={{
+          320: { slidesPerView: 1 },
+          480: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
+          1280: { slidesPerView: 5 },
+        }}
       >
         {proData?.map((product, index) => (
           <SwiperSlide key={index}>
             <div className="item ProductItem">
               <button className="imgWrapper">
                 <span className="badge badge-primary zindex-1000">28%</span>
-
                 <div className="actions">
-                  <Button onClick={() => ProductDetails1(product)}>
+                  <Button onClick={() => ProductDetails(product._id)} >
                     <AiOutlineFullscreen />
                   </Button>
                   <Button>
                     <FcLike />
                   </Button>
                 </div>
-
                 <img
-                  onClick={() => ProductDetails(product._id)} // Pass the product ID
+                  onClick={() => ProductDetails(product._id)}
                   src={product.images[0] || "fallbackImageURL"}
                   className="w-100"
                   alt={product.name}
                   style={{ objectFit: "contain", maxHeight: "200px" }}
                 />
                 <h5>{product.name}</h5>
-
-                <h6
-                  className={
-                    product.countofstocks > 0 ? "text-success" : "text-danger"
-                  }
-                >
+                <h6 className={product.countofstocks > 0 ? "text-success" : "text-danger"}>
                   {product.countofstocks > 0
                     ? `In Stock (${product.countofstocks})`
                     : "Out of Stock"}
                 </h6>
-
                 <Rating
                   name="read-only"
                   value={product.rating || 0}
@@ -94,7 +95,6 @@ const SwiperSlider = () => {
         ))}
       </Swiper>
 
-      {/* Render ItemDetailsPage as a modal */}
       {open && (
         <ItemDetailsPage product={selectedProduct} onClose={handleClose} />
       )}

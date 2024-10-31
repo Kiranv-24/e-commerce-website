@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "../../Css-files/OrderSummary.css";
 import { fetchDataFromApi, postData } from "../../api";
 import { loadStripe } from "@stripe/stripe-js";
-
+import toast from "react-hot-toast";
+import { CircularProgress, Button, TextField } from "@mui/material";
 const username = localStorage.getItem("username");
 
 const OrderSummary = () => {
@@ -17,13 +18,15 @@ const OrderSummary = () => {
     
     const fetchOrderDetails = async () => {
       try {
-        const res = await fetchDataFromApi("/api/checkout/");
-        if (res && res.success && res.orders.length > 0) {
-          const order = res.orders[0];
-          setOrderDetails(order.orderDetails);
-          setShippingDetails(order.shippingDetails || []);
+        const res = await fetchDataFromApi(`/api/checkout/${username}`);
+        if (res && res.success&&res.order) {
+          // const order = res.orders[0];
+          // console.log(res);
+          setOrderDetails(res.order.orderDetails);
+          setShippingDetails(res.order.shippingDetails || []);
         } else {
-          setError("Failed to load order details.");
+          toast.err("Failed to load order details.");
+
         }
       } catch (err) {
         setError("Error fetching order details: " + err.message);
@@ -36,7 +39,7 @@ const OrderSummary = () => {
   }, []);
 
   const handleEditOrder = () => {
-    navigate("/checkout", {
+    navigate(`/Checkout?ref=nav_cart`, {
       state: {
         formFields: orderDetails,
         cartItems: shippingDetails,
@@ -106,9 +109,12 @@ const OrderSummary = () => {
   if (!orderDetails || shippingDetails.length === 0) {
     return <div>No order details available.</div>;
   }
-
+const goBack = () => {
+   handleEditOrder();
+  };
   return (
     <div className="order-summary-container">
+       <Button className="back-button" onClick={goBack}>Go Back</Button>
       <h2 className="order-summary-title">Order Summary</h2>
 
       <div className="shipping-info">
@@ -127,7 +133,7 @@ const OrderSummary = () => {
         </p>
       </div>
 
-      <div className="order-details">
+      <div className="order-details-2">
         <h3 className="order-summary-subtitle">Order Details</h3>
         <table className="order-summary-table">
           <thead>

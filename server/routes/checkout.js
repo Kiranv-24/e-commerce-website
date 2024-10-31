@@ -2,7 +2,6 @@ const { Checkout } = require("../models/Checkout");
 const express = require("express");
 const router = express.Router();
 
-// Create an order summary
 router.post("/create", async (req, res) => {
   const { username, orderDetails, shippingDetails } = req.body;
 
@@ -24,10 +23,42 @@ router.post("/create", async (req, res) => {
   try {
     // Check if an order with the specified username already exists
     const existingOrder = await Checkout.findOne({ username });
+
     if (existingOrder) {
-      return res
-        .status(200)
-        .json({ success: true, message: "Order already exists" });
+      // Iterate over the incoming shipping details
+      for (const newItem of shippingDetails) {
+        const existingItem = existingOrder.shippingDetails.find(
+          (item) => item.name === newItem.name
+        );
+
+        if (existingItem) {
+          // If the product exists, increase its quantity
+          if(existingItem.quantity!=newItem.quantity){
+          existingItem.quantity = newItem.quantity;
+          existingItem.subtotal = newItem.subtotal; // Adjust subtotal
+          existingItem.total = newItem.total;
+           // Adjust total
+        }} else {
+          // If the product does not exist, append it to the existing order
+          existingOrder.shippingDetails.push({
+            id: newItem.id,
+            name: newItem.name,
+              price:newItem.price,
+            subtotal: newItem.subtotal,
+            shipping: newItem.shipping || 10,
+            total: newItem.total,
+            quantity: newItem.quantity,
+          });
+        }
+      }
+
+      // Save the updated order
+      await existingOrder.save();
+      return res.status(200).json({
+        success: true,
+        message: "Order updated successfully",
+        order: existingOrder,
+      });
     }
 
     // Create a new order summary if no existing order is found
@@ -37,6 +68,7 @@ router.post("/create", async (req, res) => {
       shippingDetails: shippingDetails.map((item) => ({
         id: item.id,
         name: item.name,
+          price:item.price,
         subtotal: item.subtotal,
         shipping: item.shipping || 10,
         total: item.total,
@@ -57,6 +89,7 @@ router.post("/create", async (req, res) => {
     });
   }
 });
+
 
 // Get all orders
 router.get("/", async (req, res) => {
@@ -113,6 +146,7 @@ router.put("/:username", async (req, res) => {
   }
 
   try {
+    console.log(shippingDetails);
     const updatedOrder = await Checkout.findOneAndUpdate(
       { username },
       {
@@ -120,6 +154,7 @@ router.put("/:username", async (req, res) => {
         shippingDetails: shippingDetails.map((item) => ({
           id: item.id,
           images: item.images,
+          price:item.price,
           subtotal: item.subtotal,
           shipping: item.shipping || 10,
           total: item.total,
@@ -165,6 +200,26 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An error occurred while deleting the order.",
+    });
+  }
+});
+router.delete("/delete/:username", async (req, res) => {
+  try {
+    const { username } = req.params; // Extract userId from the URL parameters
+    const result = await Checkout.deleteMany({ username: username }); // Delete all orders for the user
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No orders found for this user." });
+    }
+
+    res.status(200).json({ success: true, message: "Orders deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting orders:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while deleting the orders.",
     });
   }
 });

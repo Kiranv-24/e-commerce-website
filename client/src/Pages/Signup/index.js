@@ -1,53 +1,50 @@
 import { useContext, useEffect, useState } from "react";
 import Mycontext from "../../Mycontext";
 import "../../Css-files/Login.css";
-import Loginbg from "../../assets/images/Login-bg.jpg";
-import { postData, sendOtp, verifyOtp } from "../../api";
+import { postData, sendOtp } from "../../api";
 import { useNavigate, Link } from "react-router-dom";
-import { CircularProgress, Button } from "@mui/material";
+import { CircularProgress, Button, TextField } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+import "../../Css-files/signup.css";
 
 const Signup = () => {
   const context = useContext(Mycontext);
   const [isLoading, setIsLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
-  const history = useNavigate();
+  const navigate = useNavigate();
 
-  const [formfields, setFormfields] = useState({
+  const [formFields, setFormFields] = useState({
     name: "",
     email: "",
     password: "",
-    confirmpassword: "",
+    confirmPassword: "",
     isAdmin: false,
   });
 
-  // Handle input changes
-  const onChangeInput = (e) => {
-    setFormfields((prevFields) => ({
+  const handleInputChange = (e) => {
+    setFormFields((prevFields) => ({
       ...prevFields,
       [e.target.name]: e.target.value,
     }));
   };
 
-  // Form validation
   const validateForm = () => {
-    const { email, password, confirmpassword } = formfields;
+    const { email, password, confirmPassword } = formFields;
     if (!email.includes("@")) {
       return "Please enter a valid email.";
     }
     if (password.length < 6) {
       return "Password must be at least 6 characters.";
     }
-    if (password !== confirmpassword) {
+    if (password !== confirmPassword) {
       return "Passwords do not match.";
     }
     return null; // No validation errors
   };
 
-  // Send OTP
-  const onSendOtp = async () => {
-    const response = await sendOtp("/api/user/sendOtp", formfields.email);
+  const handleSendOtp = async () => {
+    const response = await sendOtp("/api/user/sendOtp", formFields.email);
     if (response?.success) {
       toast.success("OTP sent to your email");
       setIsOtpSent(true);
@@ -55,166 +52,140 @@ const Signup = () => {
       toast.error("Failed to send OTP");
     }
   };
-  // console.log("ishklsk");
-  // Verify OTP and create account
-  const onVerifyOtp = async (e) => {
-  e.preventDefault();
-  if (!otp) {
-    toast.error("Please enter the OTP");
-    return;
-  }
 
-  const response = await postData("api/user/verifyOtp", {
-    email: formfields.email,
-    otp,
-  });
-
-  if (response?.success) {
-    const createAccountResponse = await postData("api/user/signup", formfields);
-    console.log("createAccountResponse:", createAccountResponse); // Log the full response
-
-    if (createAccountResponse?.success) {
-      toast.success("Account created successfully. Login to continue");
-
-      // Delay navigation for the success toast to appear
-      setTimeout(() => {
-        history("/Login");
-      }, 2000);
-    } else {
-      toast.error(createAccountResponse.message || 'Failed to create account');
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    if (!otp) {
+      toast.error("Please enter the OTP");
+      return;
     }
-  } else {
-    toast.error("Invalid OTP");
-  }
-};
 
+    const response = await postData("api/user/verifyOtp", {
+      email: formFields.email,
+      otp,
+    });
 
-  const onSignupSubmit = async (e) => {
+    if (response?.success) {
+      const createAccountResponse = await postData("api/user/signup", formFields);
+      if (createAccountResponse?.success) {
+        toast.success("Account created successfully. Login to continue");
+        setTimeout(() => {
+          navigate("/Login");
+        }, 2000);
+      } else {
+        toast.error(createAccountResponse.message || 'Failed to create account');
+      }
+    } else {
+      toast.error("Invalid OTP");
+    }
+  };
+
+  const handleSignupSubmit = async (e) => {
     e.preventDefault(); // Prevent form reload
     const validationError = validateForm();
     if (validationError) {
       toast.error(validationError);
       return;
     }
-    onSendOtp();
+    handleSendOtp();
   };
-
+  const goBack = () => {
+     window.location.replace("/");
+  };
   useEffect(() => {
     if (context && typeof context.setisHeaderFooter === "function") {
       context.setisHeaderFooter(true);
     }
+    // Add class to body for the signup page
+    document.body.classList.add("signup-page");
+
+    return () => {
+      // Remove class when component unmounts
+      document.body.classList.remove("signup-page");
+    };
   }, [context]);
 
   return (
-    <section
-      className="section"
-      style={{
-        backgroundImage: `url(${Loginbg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          style: {
-            zIndex: 99999,
-            top: "20%",
-          },
-        }}
-      />
-      <div className="container Login-container">
-        <form
-          className="signup-form"
-          onSubmit={isOtpSent ? onVerifyOtp : onSignupSubmit}
-        >
-          {/* Name */}
-          <div className="form-outline mb-4">
-            <input
+    <section className="signup-section">
+      <div className="signup-container">
+        <form className="signup-form" onSubmit={isOtpSent ? handleVerifyOtp : handleSignupSubmit}>
+          <div className="form-field">
+            <TextField
               type="text"
-              id="formName"
-              className="form-control"
+              id="inputName"
+              className="input-control"
               name="name"
-              onChange={onChangeInput}
-              value={formfields.name}
+              variant="outlined"
+              onChange={handleInputChange}
+              value={formFields.name}
               required
+              label="Full Name"
             />
-            <label className="form-label" htmlFor="formName">
-              Full Name
-            </label>
           </div>
 
-          {/* Email */}
-          <div className="form-outline mb-4">
-            <input
+          <div className="form-field">
+            <TextField
               type="email"
-              id="formEmail"
-              className="form-control"
+              id="inputEmail"
+              className="input-control"
               name="email"
               required
-              onChange={onChangeInput}
-              value={formfields.email}
+              onChange={handleInputChange}
+              value={formFields.email}
+              variant="outlined"
+              label="Email Address"
             />
-            <label className="form-label" htmlFor="formEmail">
-              Email Address
-            </label>
           </div>
 
-          {/* Password */}
-          <div className="form-outline mb-4">
-            <input
+          <div className="form-field">
+            <TextField
               type="password"
-              id="formPassword"
-              className="form-control"
+              id="inputPassword"
+              className="input-control"
               name="password"
               required
-              onChange={onChangeInput}
-              value={formfields.password}
+              onChange={handleInputChange}
+              value={formFields.password}
+              variant="outlined"
+              label="Password"
             />
-            <label className="form-label" htmlFor="formPassword">
-              Password
-            </label>
           </div>
 
-          {/* Confirm Password */}
-          <div className="form-outline mb-4">
-            <input
+          <div className="form-field">
+            <TextField
               type="password"
-              id="formConfirmPassword"
-              className="form-control"
-              name="confirmpassword"
+              id="inputConfirmPassword"
+              className="input-control"
+              name="confirmPassword"
               required
-              onChange={onChangeInput}
-              value={formfields.confirmpassword}
+              onChange={handleInputChange}
+              value={formFields.confirmPassword}
+              variant="outlined"
+              label="Confirm Password"
             />
-            <label className="form-label" htmlFor="formConfirmPassword">
-              Confirm Password
-            </label>
           </div>
 
-          {/* OTP Field - shown only if OTP is sent */}
           {isOtpSent && (
-            <div className="form-outline mb-4">
-              <input
+            <div className="form-field">
+              <TextField
                 type="text"
-                id="formOtp"
-                className="form-control"
+                id="inputOtp"
+                className="input-control"
                 name="otp"
                 required
                 onChange={(e) => setOtp(e.target.value)}
                 value={otp}
+                variant="outlined"
+                label="Enter OTP"
               />
-              <label className="form-label" htmlFor="formOtp">
-                Enter OTP
-              </label>
             </div>
           )}
 
-          {/* Sign-up button */}
           <Button
             type="submit"
-            className="btn btn-primary btn-block mb-4"
+            className="submit-button"
+            variant="contained"
+            color="primary"
             style={{
               position: "relative",
               display: "flex",
@@ -222,22 +193,14 @@ const Signup = () => {
               alignItems: "center",
             }}
           >
-            {isLoading ? (
-              <CircularProgress size={24} />
-            ) : isOtpSent ? (
-              "Verify OTP"
-            ) : (
-              "Send OTP"
-            )}
+            {isLoading ? <CircularProgress size={24} /> : isOtpSent ? "Verify OTP" : "Send OTP"}
           </Button>
 
-          {/* Social sign-up buttons */}
           <div className="text-center">
             <p>
               Already have an account? <Link to="/Login">Sign in</Link>
             </p>
-            <p>or sign up with:</p>
-            {/* Social icons can be added here */}
+             <Button className="back-button" onClick={goBack}>Go Back</Button>
           </div>
         </form>
       </div>

@@ -1,13 +1,16 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
 import Mycontext from "../../Mycontext";
-import "../../Css-files/Login.css";
-import Loginbg from "../../assets/images/Login-bg.jpg";
 import { postData } from "../../api";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress, Button } from "@mui/material";
+import { CircularProgress, Button, TextField } from "@mui/material";
 import toast, { Toaster } from 'react-hot-toast';
-import ForgetPassword from "../ForgetPassword";
-const Login = () => {
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { firebaseApp } from "../../firebase";
+
+const auth = getAuth();
+const googleProvider = new GoogleAuthProvider();
+
+const Login = ({ setUsername }) => {
   const history = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const context = useContext(Mycontext);
@@ -25,183 +28,137 @@ const Login = () => {
     }));
   };
 
-  const handleLogin = async (e) => {
-    if (formfields.email) {
-      localStorage.setItem("username", formfields.email);
-    }
-    e.preventDefault();
-    setIsLoading(true); // Start loading indicator
+  const goBack = () => {
+     window.location.replace("/");
+  };
 
-    if (formfields.email === "") {
-      toast.error("Please fill the email", {
-        style: { fontSize: "18px" },
-      });
-      setIsLoading(false); // Stop loading indicator
-      return;
+  const signInWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      const fields = {
+        name: user.providerData[0].displayName,
+        email: user.providerData[0].email,
+        password: null,
+      };
+      const res = await postData("api/user/authWithGoogle", fields);
+      if (!res.error) {
+        localStorage.setItem("token", res.token);
+        toast.success("User Login Successful");
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("username", user.providerData[0].email);
+        setTimeout(() => {
+          window.location.replace("/");
+        }, 1000);
+      } else {
+        toast.error("Google Login Failed");
+      }
+    } catch (error) {
+      toast.error(`Google Login Error: ${error.message}`);
     }
-    if (formfields.password === "") {
-      toast.error("Please fill the password", {
-        style: { fontSize: "18px" },
-      });
-      setIsLoading(false); // Stop loading indicator
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    if (!formfields.email || !formfields.password) {
+      toast.error("Please fill out all fields");
+      setIsLoading(false);
       return;
     }
 
     try {
       const res = await postData("/api/user/Login", formfields);
-      console.log(res);
       if (res && res.message) {
-        toast.error("username or passowrd is wrong", {
-          style: { fontSize: "18px" },
-        });
+        toast.error("Username or password is incorrect");
       } else {
-        toast.success("User Login Successful", {
-          style: { fontSize: "18px" },
-        });
+        toast.success("User Login Successful");
         localStorage.setItem("isLoggedIn", "true");
-        
+        localStorage.setItem("username", formfields.email);
+        setUsername(formfields.email);
         setTimeout(() => {
           window.location.replace("/");
         }, 1000);
       }
-    } catch (error) {
-      toast.error("An error occurred during login.", {
-        style: { fontSize: "18px" },
-      });
+    } catch {
+      toast.error("An error occurred during login.");
     } finally {
-      setIsLoading(false); // Stop loading indicator
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    const text = ["WELCOME TO THE BEST", "EXPERIENCE, ASAD!"];
-    let lineIndex = 0;
-    let letterIndex = 0;
-
-    const interval = setInterval(() => {
-      const currentLine = text[lineIndex];
-      const currentLetters = currentLine.slice(0, letterIndex);
-
-      if (welcomeTextRef.current) {
-        welcomeTextRef.current.innerHTML =
-          text.slice(0, lineIndex).join("<br>") + `<br>${currentLetters}`;
-      }
-
-      letterIndex++;
-      if (letterIndex > currentLine.length) {
-        letterIndex = 0;
-        lineIndex++;
-      }
-
-      if (lineIndex >= text.length) {
-        clearInterval(interval);
-      }
-    }, 150);
-
-    return () => clearInterval(interval);
-  }, []);
+  const navigateToForgotPassword = () => {
+    history("/ForgetPassword");
+  };
 
   useEffect(() => {
     context.setisHeaderFooter(true);
+    document.body.classList.add("signup-page");
+
+    return () => {
+      document.body.classList.remove("signup-page");
+    };
   }, [context]);
 
   return (
-    <section className="section" style={{ backgroundImage: `url(${Loginbg})` }}>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          style: {
-            fontSize: "18px", 
-            padding: "16px",
-            borderRadius: "8px",
-            maxWidth: "400px",
-          },
-        }}
-      />
-      <div className="welcome-message">
-        <h1 ref={welcomeTextRef}></h1>
-      </div>
-      <div className="container Login-container">
-        <form>
+    <div className="login-wrapper">
+      <div className="Login-container">
+        <div className="welcome-message">
+          <h1 ref={welcomeTextRef}>Welcome Back!</h1>
+        </div>
+       
+        <form onSubmit={handleLogin}>
           <div className="form-outline mb-4">
-            <input
+            <TextField
+              label="Email Address"
               type="email"
-              id="formEmail"
-              className="form-control"
               name="email"
+              variant="outlined"
+              fullWidth
               onChange={onChangeInput}
               value={formfields.email}
+              required
+              className="mb-4 textfield"
             />
-            <label className="form-label" htmlFor="formEmail">
-              Email Address
-            </label>
           </div>
-          <div className="form-outline mb-4">
-            <input
+          <div className="form-outline mb-">
+            <TextField
+              label="Password"
               type="password"
-              id="form2Example2"
-              className="form-control"
               name="password"
+              variant="outlined"
+              fullWidth
               onChange={onChangeInput}
               value={formfields.password}
+              required
+              className="mb-4 textfield"
             />
-            <label className="form-label" htmlFor="form2Example2">
-              Password
-            </label>
-          </div>
-          <div className="row mb-4">
-            <div className="col d-flex justify-content-center">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="form2Example31"
-                  defaultChecked
-                />
-                <label className="form-check-label" htmlFor="form2Example31">
-                  {" "}
-                  Remember me{" "}
-                </label>
-              </div>
-            </div>
-            <div className="col">
-              <a href='/ForgetPassword'>Forgot password?</a>
-            </div>
           </div>
           <Button
-            type="Submit"
-            className="btn btn-primary btn-block mb-4"
-            style={{
-              position: "relative",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            type="submit"
+            className="Submit"
+            disabled={isLoading}
             onClick={handleLogin}
           >
             {isLoading ? <CircularProgress size={24} /> : "Sign in"}
           </Button>
           <div className="text-center">
-            <p>
-              Not a member? <a href="/signup">Register</a>
-            </p>
-            <p>or sign up with:</p>
-            <button type="button" className="btn btn-link btn-floating mx-1">
-              <i className="fab fa-facebook-f"></i>
-            </button>
-            <button type="button" className="btn btn-link btn-floating mx-1">
+            <p>Not a member? <a href="/signup">Register</a></p>
+            <p>Forgot your password? <span onClick={navigateToForgotPassword} style={{ color: 'blue', cursor: 'pointer' }}>Reset it here</span></p>
+            <p>or sign in with:</p>
+            <Button
+              className="loginWithGoogle mt-2"
+              variant="outlined"
+              onClick={signInWithGoogle}
+            >
               <i className="fab fa-google"></i>
-            </button>
-            <button type="button" className="btn btn-link btn-floating mx-1">
-              <i className="fab fa-twitter"></i>
-            </button>
-            <button type="button" className="btn btn-link btn-floating mx-1">
-              <i className="fab fa-github"></i>
-            </button>
+            </Button>
+             <Button className="back-button" onClick={goBack}>Go Back</Button>
           </div>
         </form>
       </div>
-    </section>
+      <Toaster />
+    </div>
   );
 };
 

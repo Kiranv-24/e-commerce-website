@@ -4,7 +4,9 @@ import Autosuggest from "react-autosuggest";
 import TextField from "@mui/material/TextField";
 import "../../Css-files/Checkout.css";
 import { fetchDataFromApi, postData, editData } from "../../api";
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import { CircularProgress, Button } from "@mui/material";
+import { Toaster, toast } from 'react-hot-toast';
 const username = localStorage.getItem("username");
 
 const countries = [
@@ -21,11 +23,12 @@ const countries = [
 ];
 
 const Checkout = () => {
+ 
   const navigate = useNavigate();
   const { state } = useLocation();
   const initialCartItems = state?.cartItems || [];
   const initialQuantities = state?.quantities || [];
-
+console.log("initial",initialCartItems);
   const [formFields, setFormFields] = useState({
     username: "",
     fullname: "",
@@ -61,6 +64,7 @@ const Checkout = () => {
               ...prevFields,
               ...res.order.orderDetails,
             }));
+            
           }
         }
       } catch (error) {
@@ -135,12 +139,12 @@ const Checkout = () => {
       });
 
       if (response.success) {
-        alert("Updated successfully");
+         toast.success("Updated successfully");
       } else {
-        alert("Failed to update " + response.message);
+         toast.error("Failed to update " + response.message);
       }
     } catch (error) {
-      alert("An error occurred while updating. Please try again.");
+       toast.error("An error occurred while updating. Please try again.");
     }
   };
 
@@ -170,13 +174,13 @@ const Checkout = () => {
       });
 
       if (response.success) {
-        alert("Order placed successfully!");
+         toast.success("Order placed successfully!");
         navigate("/OrderSummary");
       } else {
-        alert("Failed to place the order: " + response.message);
+         toast.error("Failed to place the order: " + response.message);
       }
     } catch (error) {
-      alert("An error occurred while placing the order. Please try again.");
+       toast.error("An error occurred while placing the order. Please try again.");
     }
   };
 
@@ -208,7 +212,7 @@ const Checkout = () => {
     ];
     for (let field of requiredFields) {
       if (!formFields[field]) {
-        alert(`Please fill in the ${field} field.`);
+         toast.error(`Please fill in the ${field} field.`);
         return false;
       }
     }
@@ -217,14 +221,16 @@ const Checkout = () => {
 
   const validateShippingDetails = (shippingDetails) => {
     if (!Array.isArray(shippingDetails) || shippingDetails.length === 0) {
-      alert("Please add at least one item to the shipping details.");
+       toast.error("Please add at least one item to the shipping details.");
       return false;
     }
     return true;
   };
 
   const createShippingDetails = () =>
+
     cartItems.map((item, index) => {
+      console.log(item.price);
       const quantity = quantities[index] || 0;
       const subtotal = item.price * quantity;
       const shipping = item.shipping || 10;
@@ -239,9 +245,12 @@ const Checkout = () => {
         shipping,
       };
     });
-
+const goBack = () => {
+     window.location.replace("/cart");
+  };
   return (
     <div className="checkout-container">
+       <Button className="back-button" onClick={goBack}>Go Back</Button>
       <h2>Checkout</h2>
       <div className="checkout-content">
         <div className="form-section">
@@ -337,7 +346,7 @@ const Checkout = () => {
           )}
         </div>
 
-        <div className="order-details">
+        <div className="order-details-1">
           <h3>Order details</h3>
           <div className="order-summary">
             <div className="order-item">
@@ -351,7 +360,7 @@ const Checkout = () => {
             {cartItems.map((item, index) => (
               <div className="order-item" key={item._id}>
                 <p>{item.name}</p>
-                <p>
+                <p className="qr-button">
                   <input
                     type="number"
                     min="0"
@@ -365,7 +374,7 @@ const Checkout = () => {
                     className="remove-button"
                     onClick={() => handleRemoveItem(index)}
                   >
-                    Remove
+                    <DeleteIcon/>
                   </button>
                 </p>
                 <p>₹{item.price * quantities[index]}</p>

@@ -7,13 +7,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import "../../Css-files/ProductDetails.css";
 import CartIcon from "../../Components/Headers/Cart-icon";
- const username = localStorage.getItem("username");
+import { Toaster, toast } from 'react-hot-toast'; // Import Toaster and toast
+
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [proData, setProData] = useState(null);
-  const { id } = useParams(); // Get the product ID from the URL
+  const { id } = useParams();
   const navigate = useNavigate();
-  const username = localStorage.getItem("username"); // Get username from localStorage
+  const username = localStorage.getItem("username");
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const incrementQuantity = () => {
     setQuantity((prev) => prev + 1);
@@ -25,6 +27,22 @@ const ProductDetail = () => {
     }
   };
 
+  const handleQuantityChange = (event) => {
+    const value = event.target.value;
+
+    // Ensure only positive integers are allowed
+    if (value === "" || /^[1-9]\d*$/.test(value)) {
+      setQuantity(value === "" ? "" : parseInt(value));
+    }
+  };
+
+  const handleBlur = () => {
+    // Reset quantity to 1 if input is empty
+    if (quantity === "" || quantity < 1) {
+      setQuantity(1);
+    }
+  };
+
   useEffect(() => {
     fetchDataFromApi(`/api/product/${id}`).then((res) => {
       if (res) {
@@ -33,25 +51,30 @@ const ProductDetail = () => {
     });
   }, [id]);
 
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const addToCart = async () => {
-   
-
-
     if (!username) {
-      alert("Login to your account");
-      navigate("/login"); // Redirect to login if not logged in
+      toast.error("Login to your account"); // Show toast notification
+      navigate("/login");
       return;
     }
-
+    
     const cartItem = {
       productId: id,
       quantity: quantity,
-      username // Include the username for the cart item
+      username,
     };
 
     const response = await postData("/api/cart/add", cartItem);
-    if (response.message) {
-      alert(response.message);
+    if (response) {
+      toast.success("Item added to cart"); // Show success toast notification
     }
     <CartIcon />;
   };
@@ -62,15 +85,20 @@ const ProductDetail = () => {
 
   return (
     <div className="dialog-content">
+      
       <div className="ProductDetail">
         <div className="ProductDetail-image">
-          <InnerImageZoom
-            src={proData.images[0]}
-            zoomSrc={proData.images[0]}
-            zoomScale={1.5}
-            zoomType="hover"
-            className="ProductDetail-image"
-          />
+          {windowWidth < 768 ? (
+            <img src={proData.images[0]} alt={proData.name} style={{ maxWidth: "80%", borderRadius: "10px" }} />
+          ) : (
+            <InnerImageZoom
+              src={proData.images[0]}
+              zoomSrc={proData.images[0]}
+              zoomScale={1.5}
+              zoomType="hover"
+              className="ProductDetail-image"
+            />
+          )}
         </div>
         <div className="detailBox">
           <h4>{proData.name}</h4>
@@ -79,7 +107,7 @@ const ProductDetail = () => {
             <Button
               className="action-btn"
               style={{ color: "black" }}
-              onClick={addToCart} // Call the addToCart function
+              onClick={addToCart}
             >
               ADD TO CART
             </Button>
@@ -93,7 +121,8 @@ const ProductDetail = () => {
               <input
                 type="text"
                 value={quantity}
-                readOnly
+                onChange={handleQuantityChange}
+                onBlur={handleBlur}  // Call handleBlur when the input loses focus
                 className="quantity-input"
               />
               <Button className="quantity-btn" onClick={incrementQuantity}>

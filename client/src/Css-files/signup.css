@@ -1,0 +1,110 @@
+body.signup-page {
+    overflow: hidden; /* Prevent scrolling only on signup page */
+}
+
+.signup-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+    background: linear-gradient(135deg, #f0f4f8, #c9d6ff);
+}
+
+.signup-container {
+    padding: 20px 15px; /* Reduced padding for mobile */
+    margin: 0;
+    background-color: #ffffff;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    width: 100%;
+    max-width: 400px; /* Maximum width for larger screens */
+    margin-bottom: 100px;
+    padding-top: 52px;
+}
+
+.form-field {
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-control {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.input-control:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.input-label {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    transition: 0.2s;
+    color: #999;
+}
+
+.input-control:focus + .input-label,
+.input-control:not(:placeholder-shown) + .input-label {
+    top: -8px;
+    left: 10px;
+    font-size: 0.8rem;
+    color: #007bff;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-center p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.text-center a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.text-center a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+@media (max-width: 600px) {
+    .signup-container {
+        margin-bottom: 300px;
+        width: 90%;
+        padding-top: 40px; /* Adjust for smaller screens */
+    }
+}

@@ -3,21 +3,22 @@ import MicrosoftSurfacePro from "../../assets/images/MicrosoftSurfacePro.png";
 import "../../Css-files/Cart.css";
 import { fetchDataFromApi, deleteData } from "../../api";
 import { useNavigate } from "react-router-dom";
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Toaster, toast } from 'react-hot-toast';
+import { CircularProgress, Button, TextField } from "@mui/material";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState([]);
   const navigate = useNavigate();
-  const username = localStorage.getItem("username"); // Get username from local storage
+  const username = localStorage.getItem("username");
 
-  // Fetch cart items from API
   useEffect(() => {
     if (!username) {
       console.error("Username not found");
       return;
     }
 
-    fetchDataFromApi(`/api/Cart/${username}`) // Include username in API call
+    fetchDataFromApi(`/api/Cart/${username}`)
       .then((res) => {
         if (res && res.cartitems && res.cartitems.length > 0) {
           setCartItems(res.cartitems);
@@ -53,13 +54,14 @@ const Cart = () => {
   );
 
   const handleRemoveItem = async (index) => {
-    const itemId = cartItems[index]._id; // Use the correct identifier
+    const itemId = cartItems[index]._id;
     try {
-      await deleteData(`/api/Cart/${username}/${itemId}`); // Update the API call to use username and itemId
+      await deleteData(`/api/Cart/${username}/${itemId}`);
       const updatedCartItems = cartItems.filter((_, i) => i !== index);
       const updatedQuantities = quantities.filter((_, i) => i !== index);
       setCartItems(updatedCartItems);
       setQuantities(updatedQuantities);
+      toast.success("Item removed from cart!");
     } catch (error) {
       console.error("Failed to remove item from cart:", error);
     }
@@ -67,38 +69,40 @@ const Cart = () => {
 
   const handleRemoveAllItems = async () => {
     try {
-      // Use Promise.all to delete each item by its unique ID
       await Promise.all(
         cartItems.map((item) => deleteData(`/api/Cart/${username}/${item._id}`))
       );
-      // Clear state after successful deletion of all items
       setCartItems([]);
       setQuantities([]);
+      toast.success("All items removed from cart!");
     } catch (error) {
       console.error("Failed to remove all items from cart:", error);
     }
   };
 
-const orderDetails = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  if (!isLoggedIn) {
-    alert("Please login to proceed to checkout.");
-    navigate("/login");
-  } else {
-    navigate(`/Checkout?ref=nav_cart`, {
-      state: {
-        cartItems: cartItems,
-        quantities: quantities,
-      },
-    });
-  }
-};
-
-
-
+  const orderDetails = () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (!isLoggedIn) {
+      alert("Please login to proceed to checkout.");
+      navigate("/login");
+    } else {
+      navigate(`/Checkout?ref=nav_cart`, {
+        state: {
+          cartItems: cartItems,
+          quantities: quantities,
+        },
+      });
+      toast.success("Proceeding to checkout!");
+    }
+  };
+const goBack = () => {
+     window.location.replace("/");
+  };
   return (
     <section className="Cart-section">
-      <div className="row row-section">
+     <Button className="back-button" onClick={goBack}>Go Back</Button>
+      <div className="row row-section row-section-cart ">
+        
         <div className="col-md-8 Shopping-Cart">
           <h4 className="hd">Shopping Cart</h4>
           <button className="remove-all-btn" onClick={handleRemoveAllItems}>
@@ -144,7 +148,7 @@ const orderDetails = () => {
                         className="remove-btn"
                         onClick={() => handleRemoveItem(index)}
                       >
-                        Remove
+                        <DeleteIcon style={{ fontSize: "1.2rem", color: "#e74c3c" }} />
                       </button>
                     </td>
                   </tr>
@@ -154,7 +158,6 @@ const orderDetails = () => {
           </div>
         </div>
 
-        {/* Summary Section */}
         <div className="col-md-3 summary-section">
           <h4>Order Summary</h4>
           <div className="summary-content">

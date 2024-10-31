@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postData } from "../../api";
-import "../../Css-files/PaymentAccepted.css";
+import { postData,deleteData } from "../../api";
 
+import "../../Css-files/PaymentAccepted.css";
+const username=localStorage.getItem("username");
 const SuccessfulPayment = () => {
   const [orderDetails, setOrderDetails] = useState(null);
   const [error, setError] = useState(null);
@@ -24,7 +25,10 @@ const SuccessfulPayment = () => {
         const response = await postData(
           `/api/orderpayment/payment/complete?session_id=${sessionId}`
         );
+        
+        // Set order details after payment is successful
         setOrderDetails(response.order);
+        clearCheckoutItems();       
       } catch (error) {
         setError("Failed to fetch order details. Please try again.");
       }
@@ -32,6 +36,15 @@ const SuccessfulPayment = () => {
 
     fetchPaymentData();
   }, []);
+
+const clearCheckoutItems = async () => {
+  try {
+    await deleteData(`/api/checkout/delete/${username}`); // Use username directly in the URL
+  } catch (error) {
+    console.error("Failed to clear checkout items:", error);
+  }
+};
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -50,6 +63,7 @@ const SuccessfulPayment = () => {
       <div className="success-message">
         <h1>Payment Accepted Successfully!</h1>
         <p>Redirecting to your order page in {countdown} seconds...</p>
+        {error && <p className="error-message">{error}</p>}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import "../../Css-files/ForgetPassword.css";
 import { postData } from "../../api";
 import toast from "react-hot-toast";
 
-const ForgetPassword = () => {
+const ForgetPassword = ({setUsername}) => {
   const history = useNavigate();
   const [formFields, setFormFields] = useState({
     username: "",
@@ -68,8 +68,9 @@ const ForgetPassword = () => {
 
       if (response?.success) {
         toast.success("OTP verified successfully!");
+        localStorage.setItem("username", formFields.username);
         setTimeout(() => {
-          history(`/ChangePassword/${formFields.username}`);
+           window.location.replace("/ChangePassword");
         }, 2000);
 
         setFormFields({ username: "", otp: "" });

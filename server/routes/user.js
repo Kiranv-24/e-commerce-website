@@ -229,6 +229,42 @@ console.log(storedOtp);
   }
 });
 
+router.post('/authWithGoogle', async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const existingUser = await User.findOne({ email: email });
+    
+    if (!existingUser) {
+      const newUser = await User.create({
+        name: name,
+        email: email,
+        password: password,
+      });
+      const token = jwt.sign(
+        { email: newUser.email, id: newUser._id },
+        process.env.JSON_WEB_TOKEN_SECRET_KEY
+      );
+      return res.status(200).send({
+        user: newUser,
+        token: token,
+        msg: "User Login Successful",
+      });
+    } else {
+      const token = jwt.sign(
+        { email: existingUser.email, id: existingUser._id },
+        process.env.JSON_WEB_TOKEN_SECRET_KEY
+      );
+      return res.status(200).send({
+        user: existingUser,
+        token: token,
+        msg: "User Login Successful",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ msg: "An error occurred during authentication." });
+  }
+});
 
 
 

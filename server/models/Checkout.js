@@ -20,6 +20,7 @@ const CheckoutSchema = mongoose.Schema(
           ref: "Product",
           required: true,
         },
+        price:{type:Number, required:true},
         images: [{ type: String }],
         subtotal: { type: Number, required: true },
         shipping: { type: Number, required: true, default: 10 }, // Default shipping fee
