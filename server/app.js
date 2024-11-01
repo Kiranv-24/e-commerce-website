@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware setup
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.CLIENT_BASE_URL,
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'], // Add any custom headers here
     credentials: true,
