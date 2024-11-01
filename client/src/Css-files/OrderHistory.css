@@ -8,6 +8,7 @@ h2 {
   color: #1a1a1a;
   font-size: 1.8rem;
   font-weight: 600;
+  margin-bottom: 15px;
 }
 
 .order-table {
@@ -69,9 +70,12 @@ h2 {
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: 8px 12px;
   font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .invoice-button:hover {
@@ -79,55 +83,54 @@ h2 {
 }
 
 .footer {
-  position: fixed !important;
-  left: 0 !important;
-  bottom: 0 !important;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: white; /* Ensure footer is visible */
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .order-history {
-    padding: 15px;
-  }
 
+
+@media (max-width: 480px) {
   h2 {
-    font-size: 1.5rem;
-  }
-
-  .order-table {
-    display: block; /* Enable block display for mobile */
-    overflow-x: auto; /* Allow horizontal scroll if needed */
-  }
-
-  .order-table th, .order-table td {
-    padding: 10px 8px;
-    display: block; /* Stack items vertically */
-    width: auto; /* Reset width */
-    box-sizing: border-box; /* Include padding in width */
+      font-size: 1.2rem;
   }
 
   .order-table tr {
-    margin-bottom: 15px; /* Add space between order items */
-    border-bottom: 1px solid #ddd; /* Optional: Add a border for better separation */
+      display: flex;
+      flex-direction: column;
+      width: 100% !important;
+  }
+
+  /* Remove first table row */
+  .order-table tr:first-child {
+      display: none;
+  }
+
+  .order-table th, .order-table td {
+      padding: 8px 6px;
   }
 
   .product-info img {
-    width: 40px; /* Smaller image size on mobile */
-    height: 40px;
+      width: 35px; 
+      height: 35px;
   }
 
   .status {
-    font-size: 0.8rem;
+      font-size: 0.7rem;
   }
 
   .invoice-button {
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    width: 100%; /* Full width for buttons on mobile */
-    margin-top: 10px; /* Add some spacing */
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 6px;
+      font-size: 0.8rem;
+      width: 300px;
   }
 
-  .footer {
-    position: relative; /* Change footer to be relative on mobile */
+  .order-table {
+      margin-top: 10px; /* More spacing for clarity */
   }
 }

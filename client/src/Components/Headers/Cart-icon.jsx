@@ -1,38 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { IoIosCart } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom"; 
 import { fetchDataFromApi } from "../../api";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import MyContext from "../../Mycontext/index.js";
 const Alert = React.forwardRef((props, ref) => (
     <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 ));
 
 const CartIcon = () => {
-  const [cartCount, setCartCount] = useState(0);
+  // const [cartCount, setCartCount] = useState(0);
+  const { cartCount } = useContext(MyContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const username = localStorage.getItem("username");
   const navigate = useNavigate(); 
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      if (!username) return;
+  // useEffect(() => {
+  //   const fetchCartItems = async () => {
+  //     if (!username) return;
 
-      try {
-        const res = await fetchDataFromApi(`/api/Cart/${username}`);
-        if (res && res.cartitems && res.cartitems.length > 0) {
-          setCartCount(res.cartitems.length);
-        }
-      } catch (error) {
-        console.error("Failed to fetch cart items:", error);
-      }
-    };
+  //     try {
+  //       const res = await fetchDataFromApi(`/api/Cart/${username}`);
+  //       if (res && res.cartitems && res.cartitems.length > 0) {
+  //         setCartCount(res.cartitems.length);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch cart items:", error);
+  //     }
+  //   };
 
-    fetchCartItems();
-  }, [username]);
+  //   fetchCartItems();
+  // }, [username]);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;

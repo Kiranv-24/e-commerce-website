@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Button } from "@mui/material";
 import InnerImageZoom from "react-inner-image-zoom";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import { fetchDataFromApi, postData } from "../../api";
+import { fetchDataFromApi, postData,deleteData } from "../../api";
 import { useParams, useNavigate } from "react-router-dom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import "../../Css-files/ProductDetails.css";
 import CartIcon from "../../Components/Headers/Cart-icon";
-import { Toaster, toast } from 'react-hot-toast'; // Import Toaster and toast
+import { Toaster, toast } from 'react-hot-toast'; 
+import MyContext from "../../Mycontext/index.js";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
+  const { setCartCount,cartCount } = useContext(MyContext);
   const [proData, setProData] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,14 +32,14 @@ const ProductDetail = () => {
   const handleQuantityChange = (event) => {
     const value = event.target.value;
 
-    // Ensure only positive integers are allowed
+    
     if (value === "" || /^[1-9]\d*$/.test(value)) {
       setQuantity(value === "" ? "" : parseInt(value));
     }
   };
 
   const handleBlur = () => {
-    // Reset quantity to 1 if input is empty
+   
     if (quantity === "" || quantity < 1) {
       setQuantity(1);
     }
@@ -61,7 +63,7 @@ const ProductDetail = () => {
 
   const addToCart = async () => {
     if (!username) {
-      toast.error("Login to your account"); // Show toast notification
+      toast.error("Login to your account"); 
       navigate("/login");
       return;
     }
@@ -74,7 +76,10 @@ const ProductDetail = () => {
 
     const response = await postData("/api/cart/add", cartItem);
     if (response) {
-      toast.success("Item added to cart"); // Show success toast notification
+      const res=await fetchDataFromApi(`/api/cart/${username}`);
+      setCartCount(res.cartitems.length);
+
+      toast.success("Item added to cart"); 
     }
     <CartIcon />;
   };
@@ -82,10 +87,50 @@ const ProductDetail = () => {
   if (!proData) {
     return <div>Loading...</div>;
   }
+ const goBack = () => {
+     window.location.replace("/");
+  };
+const buyNow = async () => {
+  if (!username) {
+    toast.error("Login to your account");
+    navigate("/login");
+    return;
+  }
+
+  try {
+   
+    await addToCart(); 
+      const result=await fetchDataFromApi(`/api/cart/${username}`);
+      setCartCount(result.cartitems.length);
+   
+    const res = await fetchDataFromApi(`/api/Cart/${username}`); 
+      // console.log(res);
+   
+    const response = await deleteData(`/api/checkout/clear-shipping/${username}`);
+    
+    // console.log(response.status);
+    if (response.success) {
+      navigate(`/Checkout?ref=nav_cart`, {
+        state: {
+          cartItems: res.cartitems, 
+          quantities: [1]
+        },
+      });
+    }
+  } catch (error) {
+    toast.error("Error in sending data", error);
+  }
+};
+
+
 
   return (
     <div className="dialog-content">
-      
+      <div className="go-back-button-container">
+  <Button onClick={goBack} className="go-back-button">
+    Go Back
+  </Button>
+</div>
       <div className="ProductDetail">
         <div className="ProductDetail-image">
           {windowWidth < 768 ? (
@@ -111,7 +156,7 @@ const ProductDetail = () => {
             >
               ADD TO CART
             </Button>
-            <Button className="buy-now" style={{ color: "black" }}>
+            <Button className="buy-now" style={{ color: "black" }} onClick={buyNow}>
               BUY NOW
             </Button>
             <div className="quantity-group">
@@ -122,7 +167,7 @@ const ProductDetail = () => {
                 type="text"
                 value={quantity}
                 onChange={handleQuantityChange}
-                onBlur={handleBlur}  // Call handleBlur when the input loses focus
+                onBlur={handleBlur} 
                 className="quantity-input"
               />
               <Button className="quantity-btn" onClick={incrementQuantity}>

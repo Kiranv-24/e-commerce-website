@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import MicrosoftSurfacePro from "../../assets/images/MicrosoftSurfacePro.png";
 import "../../Css-files/Cart.css";
 import { fetchDataFromApi, deleteData } from "../../api";
@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Toaster, toast } from 'react-hot-toast';
 import { CircularProgress, Button, TextField } from "@mui/material";
+
+import MyContext from "../../Mycontext/index.js";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState([]);
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
-
+  const {setCartCount} =useContext(MyContext)
   useEffect(() => {
     if (!username) {
       console.error("Username not found");
@@ -61,6 +63,8 @@ const Cart = () => {
       const updatedQuantities = quantities.filter((_, i) => i !== index);
       setCartItems(updatedCartItems);
       setQuantities(updatedQuantities);
+      
+      setCartCount(updatedCartItems.length);
       toast.success("Item removed from cart!");
     } catch (error) {
       console.error("Failed to remove item from cart:", error);
@@ -74,6 +78,7 @@ const Cart = () => {
       );
       setCartItems([]);
       setQuantities([]);
+       setCartCount(0);
       toast.success("All items removed from cart!");
     } catch (error) {
       console.error("Failed to remove all items from cart:", error);
@@ -86,6 +91,11 @@ const Cart = () => {
       alert("Please login to proceed to checkout.");
       navigate("/login");
     } else {
+      if(cartItems.length==0){
+        toast.error("Add item to cart");
+        return;
+      }
+
       navigate(`/Checkout?ref=nav_cart`, {
         state: {
           cartItems: cartItems,
@@ -98,6 +108,7 @@ const Cart = () => {
 const goBack = () => {
      window.location.replace("/");
   };
+  
   return (
     <section className="Cart-section">
      <Button className="back-button" onClick={goBack}>Go Back</Button>

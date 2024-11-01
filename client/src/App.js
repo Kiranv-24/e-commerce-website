@@ -8,7 +8,7 @@ import Footer from "./Pages/Home/Footer";
 import Cart from "./Pages/Cart/index.js";
 import Login from "./Pages/Login/index.js";
 import { useState } from "react";
-import Mycontext from "./Mycontext/index.js"; // Corrected import
+import Mycontext from "./Mycontext/index.js"; 
 import Signup from "./Pages/Signup/index.js";
 import Checkout from "./Pages/Checkout/index.js";
 import OrderSummary from "./Pages/OrderSummary/index.js";
@@ -17,24 +17,34 @@ import OrderHistory from "./Pages/OrderHistory";
 import ForgetPassword from "./Pages/ForgetPassword";
 import ChangePassword from "./Pages/ChangePassword";
 import Chatbot from "../src/Components/Chatbot";
+import Account from "./Pages/Account/index.js";
 import AIassistance from "../src/Components/Aiassistance";
 import { Toaster } from "react-hot-toast";
+import NotFound from "./Pages/NotFount";
 // import '../'
 
 function App() {
   const [issetHeaderFooter, setisHeaderFooter] = useState(true);
   const [username, setUsername] = useState(null);
+   const [productquery, setProductQuery] = useState("");
+ const [cartCount, setCartCount] = useState(0);
   const [alertBox, setAlertBox] = useState({
     open: false,
     error: false,
     msg: "",
     severity: "success",
+    
   });
   const values = {
     issetHeaderFooter,
     setisHeaderFooter,
     setAlertBox,
     alertBox,
+    productquery,
+    setProductQuery,
+    cartCount,
+    setCartCount
+
   };
 
   return (
@@ -64,7 +74,8 @@ function App() {
                 <Route path="/OrderHistory" element={<OrderHistory username={username} />} />
                 <Route path="/ForgetPassword" element={<ForgetPassword setUsername={setUsername} />} />
                 <Route path="/ChangePassword" element={<ChangePassword username={username} />} />
-
+                <Route path="/Account" element={<Account />} />
+                <Route path="*" element={<NotFound />} />
         </Routes>
         {issetHeaderFooter && <Footer />}
       </Mycontext.Provider>

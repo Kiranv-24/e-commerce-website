@@ -1,42 +1,114 @@
-import React, { useState } from "react";
 import Dialog from '@mui/material/Dialog';
-import { Button } from "@mui/material"; 
 import { MdClose } from 'react-icons/md';
-import InnerImageZoom from 'react-inner-image-zoom';
-import "../../Css-files/ProductDetails.css";
+import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import InnerImageZoom from "react-inner-image-zoom";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-import { useParams } from "react-router-dom";
-import { fetchDataFromApi, postData } from "../../api";
+import { fetchDataFromApi, postData,deleteData } from "../../api";
+import { useParams, useNavigate } from "react-router-dom";
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+import "../../Css-files/ProductDetails.css";
+import CartIcon from "../../Components/Headers/Cart-icon";
+import { Toaster, toast } from 'react-hot-toast';
+import MyContext from "../../Mycontext/index.js";
+import { useContext } from 'react';
 const ItemDetailsPage = ({ product, onClose }) => {
-    const [quantity, setQuantity] = useState(1); 
-  const id  = product._id;
-  console.log(id);
+    const [quantity, setQuantity] = useState(1);
+    const [proData, setProData] = useState(null);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const username = localStorage.getItem("username");
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const {setCartCount}=useContext(MyContext)
+    useEffect(() => {
+        setProData(product);
+    }, [product]); 
+ 
     const incrementQuantity = () => {
-        setQuantity(prev => prev + 1);
+        setQuantity((prev) => prev + 1);
     };
 
     const decrementQuantity = () => {
         if (quantity > 1) {
-            setQuantity(prev => prev - 1);
+            setQuantity((prev) => prev - 1);
         }
     };
-    const addToCart = async () => {
-    const cartItem = {
-      productId: id, // Include the product ID
-      quantity: quantity,
+
+    const handleQuantityChange = (event) => {
+        const value = event.target.value;
+        if (value === "" || /^[1-9]\d*$/.test(value)) {
+            setQuantity(value === "" ? "" : parseInt(value));
+        }
     };
-  console.log(id);
-    const response = await postData("/api/cart/add", cartItem); // Make sure this endpoint is correct
 
-    if (response.message) {
-      alert(response.message); // Show a message based on the response
+    const handleBlur = () => {
+        if (quantity === "" || quantity < 1) {
+            setQuantity(1);
+        }
+    };
+
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    const addToCart = async () => {
+        if (!username) {
+            toast.error("Login to your account");
+            navigate("/login");
+            return;
+        }
+
+        const cartItem = {
+            productId: product._id,
+            quantity: quantity,
+            username,
+        };
+   
+        const response = await postData("/api/cart/add", cartItem);
+      
+        if (response) {
+            const result=await fetchDataFromApi(`/api/cart/${username}`);
+           setCartCount(result.cartitems.length);
+            toast.success("Item added to cart");
+        }
+    };
+const buyNow = async () => {
+  if (!username) {
+    toast.error("Login to your account");
+    navigate("/login");
+    return;
+  }
+
+  try {
+   
+    await addToCart(); 
+ const result=await fetchDataFromApi(`/api/cart/${username}`);
+      setCartCount(result.cartitems.length);
+   
+    const res = await fetchDataFromApi(`/api/Cart/${username}`); 
+     
+     
+    const response = await deleteData(`/api/checkout/clear-shipping/${username}`);
+ 
+    if (response.success) {
+      navigate(`/Checkout?ref=nav_cart`, {
+        state: {
+          cartItems: res.cartitems, 
+          quantities: [1]
+        },
+      });
     }
-    // <CartIcon />;
-  };
+  } catch (error) {
+    toast.error("Error in sending data", error);
+  }
+};
 
-    if (!product) {
-        return null;  // If no product is passed, don't render anything
+    if (!proData) {
+        return <div>Loading...</div>;
     }
 
     return (
@@ -48,23 +120,27 @@ const ItemDetailsPage = ({ product, onClose }) => {
                 <div className="ProductDetail">
                     <div className="ProductDetail-image">
                         <InnerImageZoom
-                            src={product.images[0]}  // Dynamic product image
-                            zoomSrc={product.images[0]} 
-                            alt={product.name}
-                            zoomScale={2}  
-                            zoomType="hover"  
+                            src={proData.images[0]}
+                            zoomSrc={proData.images[0]}
+                            alt={proData.name}
+                            zoomScale={2}
+                            zoomType="hover"
                         />
                     </div>
                     <div className="detailBox">
-                        <h4>{product.name}</h4>
-                        <h4 className="Price-tag">₹{product.price}</h4>
+                        <h4>{proData.name}</h4>
+                        <h4 className="Price-tag">₹{proData.price}</h4>
                         <div className="button-group">
-                           <Button
-                              className="action-btn"
-                              style={{ color: "black" }}
-                              onClick={addToCart} // Call the addToCart function
-                            >ADD TO CART</Button>
-                            <Button className="buy-now" style={{ color: "black" }}>BUY NOW</Button>
+                            <Button
+                                className="action-btn"
+                                style={{ color: "black" }}
+                                onClick={addToCart}
+                            >
+                                ADD TO CART
+                            </Button>
+                            <Button className="buy-now" style={{ color: "black" }}
+                            onClick={buyNow}
+                            >BUY NOW</Button>
                             <div className="quantity-group">
                                 <Button className="quantity-btn" onClick={decrementQuantity}><FaMinus /></Button>
                                 <input type="text" value={quantity} readOnly className="quantity-input" />
@@ -72,8 +148,8 @@ const ItemDetailsPage = ({ product, onClose }) => {
                             </div>
                         </div>
                         <ul className="product-specs">
-                            {product.specifications &&
-                                Object.entries(product.specifications).map(([key, value]) => (
+                            {proData.specifications &&
+                                Object.entries(proData.specifications).map(([key, value]) => (
                                     <li key={key}><strong>{key}:</strong> {value}</li>
                                 ))
                             }

@@ -1,4 +1,4 @@
-/* Reset styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +10,7 @@ body {
   background-color: rgba(232, 214, 214, 0.363);
 }
 
-/* Header Wrapper */
+
 .headerWrapper {
   width: 100%;
   padding-top: 5px;
@@ -36,7 +36,7 @@ body {
   max-width: 120px;
 }
 
-/* Welcome Title */
+
 .welcome-title {
   font-weight: bold;
   color: #333;
@@ -47,7 +47,7 @@ body {
   color: #8ebff3;
 }
 
-/* Header Search */
+
 .headerSearch {
   width: 100%;
   height: 45px;
@@ -110,14 +110,14 @@ body {
   background-color: rgba(150, 240, 230, 0.8);
   transform: scale(0.95);
 }
-/* Increased SVG Icon Size */
+
 .circle svg {
   font-size: 24px;
   width: 24px;
   height: 24px;
 }
 
-/* Cart Count Badge */
+
 .cart-count {
   position: absolute;
   top: -5px;
@@ -134,27 +134,27 @@ body {
   font-weight: 700;
 }
 
-/* Dropdown Menu */
+
 .Dropdown {
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 150%;
+  left: -48px;
+
   width: 250px;
   padding: 10px;
   background-color: white;
   border-radius: 20px;
   z-index: 100;
   border: 1px solid rgba(128, 0, 128, 0.3);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+
+  transform: translateY(-10px);  
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s; 
 }
 
 .part3:hover .Dropdown {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+
 }
 
 .Dropdown ul {
@@ -174,22 +174,16 @@ body {
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
+} 
 
-.Dropdown li:hover {
-  background-color: rgba(230, 230, 255, 0.6);
-}
 
-.Dropdown li:last-child {
-  border-bottom: none;
-}
 
-/* Responsive Styles for Mobile Layout */
+
 @media (max-width: 772px) {
-  /* Header Layout */
+
   .headerWrapper {
     display: flex;
-    justify-content: space-between; /* Changed to space-between for better alignment */
+    justify-content: space-between; 
     align-items: center;
     padding: 10px 15px;
     gap: 8px;
@@ -201,18 +195,18 @@ body {
     display: none;
   }
 
-  /* Logo styling */
+
   .logoWrapper {
     flex: 0 0 auto;
     text-align: left;
   }
 
   .logoWrapper img {
-    max-width: 80px; /* Adjusted logo size for better responsiveness */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 80px;
+    height: auto;
   }
 
-  /* Search Icon for Mobile */
+
   .headerSearch input{
     padding-left: 0px;
   }
@@ -225,7 +219,7 @@ body {
 .circle{
   background-color: white !important;
 }
-  /* Circular Buttons for Account & Cart */
+ 
   .account-button,
   .cart-button {
     flex: 0 0 40px;
@@ -255,7 +249,7 @@ body {
   .account-button svg.Arrow{
     display: none;
   }
-  /* Adjusted Cart Count Badge */
+
   .cart-count {
     top: -4px;
     right: -4px;
@@ -263,7 +257,7 @@ body {
     height: 16px;
     font-size: 10px;
   }
-  
+ 
   .Dropdown li{
     display: flex;
     justify-content: space-evenly;
@@ -271,24 +265,20 @@ body {
    height: 30px;
    font-size: 12px;
   }
-    .Dropdown{
- 
+  .Dropdown {
     position: fixed;
     top: 70px;
-    left: 50%;
+    left: 70%;
     transform: translateX(-50%);
-    opacity: 0;
-    visibility: hidden;
-  
-    max-width: 200px; /* Limit max width */
+    width: 170px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    background: white; /* Added background for dropdown */
   }
 
   .Dropdown.show {
     opacity: 1;
     visibility: visible;
   }
+ 
 }
 

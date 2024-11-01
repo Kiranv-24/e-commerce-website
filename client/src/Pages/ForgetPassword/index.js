@@ -33,9 +33,9 @@ const ForgetPassword = ({setUsername}) => {
         throw new Error("Please fill in all fields.");
       }
 
-      console.log("Form submitted:", formFields);
+   
       const response = await postData("/api/user/sendOtp", { email: formFields.username });
-      console.log(response);
+   
 
       if (response?.success) {
         toast.success("OTP sent successfully!");
@@ -128,7 +128,7 @@ const ForgetPassword = ({setUsername}) => {
         onClose={() => setError("")}
         message={error}
       />
-      {/* Snackbar for success messages */}
+   
       <Snackbar
         open={success}
         autoHideDuration={6000}

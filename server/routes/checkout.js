@@ -5,7 +5,7 @@ const router = express.Router();
 router.post("/create", async (req, res) => {
   const { username, orderDetails, shippingDetails } = req.body;
 
-  // Validate required fields
+
   if (
     !username ||
     !orderDetails ||
@@ -21,25 +21,25 @@ router.post("/create", async (req, res) => {
   }
 
   try {
-    // Check if an order with the specified username already exists
+    
     const existingOrder = await Checkout.findOne({ username });
 
     if (existingOrder) {
-      // Iterate over the incoming shipping details
+  
       for (const newItem of shippingDetails) {
         const existingItem = existingOrder.shippingDetails.find(
           (item) => item.name === newItem.name
         );
 
         if (existingItem) {
-          // If the product exists, increase its quantity
+        
           if(existingItem.quantity!=newItem.quantity){
           existingItem.quantity = newItem.quantity;
-          existingItem.subtotal = newItem.subtotal; // Adjust subtotal
+          existingItem.subtotal = newItem.subtotal;
           existingItem.total = newItem.total;
-           // Adjust total
+          
         }} else {
-          // If the product does not exist, append it to the existing order
+         
           existingOrder.shippingDetails.push({
             id: newItem.id,
             name: newItem.name,
@@ -52,7 +52,7 @@ router.post("/create", async (req, res) => {
         }
       }
 
-      // Save the updated order
+     
       await existingOrder.save();
       return res.status(200).json({
         success: true,
@@ -61,7 +61,7 @@ router.post("/create", async (req, res) => {
       });
     }
 
-    // Create a new order summary if no existing order is found
+  
     const newOrder = await Checkout.create({
       username,
       orderDetails,
@@ -91,7 +91,7 @@ router.post("/create", async (req, res) => {
 });
 
 
-// Get all orders
+
 router.get("/", async (req, res) => {
   try {
     const orders = await Checkout.find();
@@ -111,7 +111,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a specific order by username
 router.get("/:username", async (req, res) => {
   try {
     const order = await Checkout.findOne({ username: req.params.username });
@@ -127,7 +126,7 @@ router.get("/:username", async (req, res) => {
   }
 });
 
-// Update an order by username
+
 router.put("/:username", async (req, res) => {
   const { orderDetails, shippingDetails } = req.body;
   const { username } = req.params;
@@ -146,7 +145,7 @@ router.put("/:username", async (req, res) => {
   }
 
   try {
-    console.log(shippingDetails);
+    // console.log(shippingDetails);
     const updatedOrder = await Checkout.findOneAndUpdate(
       { username },
       {
@@ -185,7 +184,7 @@ router.put("/:username", async (req, res) => {
   }
 });
 
-// Delete an order by ID
+
 router.delete("/:id", async (req, res) => {
   try {
     const order = await Checkout.findByIdAndDelete(req.params.id);
@@ -205,8 +204,8 @@ router.delete("/:id", async (req, res) => {
 });
 router.delete("/delete/:username", async (req, res) => {
   try {
-    const { username } = req.params; // Extract userId from the URL parameters
-    const result = await Checkout.deleteMany({ username: username }); // Delete all orders for the user
+    const { username } = req.params; 
+    const result = await Checkout.deleteMany({ username: username });
 
     if (result.deletedCount === 0) {
       return res
@@ -223,5 +222,25 @@ router.delete("/delete/:username", async (req, res) => {
     });
   }
 });
+router.delete("/clear-shipping/:username", async (req, res) => {
+  const { username } = req.params;
 
+  try {
+  
+    const updatedUser = await Checkout.findOneAndUpdate(
+      { username },
+      { $set: { shippingDetails: [] } }, 
+      { new: true }
+    );
+    
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Shipping details cleared successfully" });
+  } catch (error) {
+    console.error("Error clearing shipping details:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 module.exports = router;

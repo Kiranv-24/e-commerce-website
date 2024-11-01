@@ -3,9 +3,9 @@ const { Product } = require("../models/product");
 const express = require("express");
 const router = express.Router();
 
-// POST to add or update a product in the cart
+
 router.post("/add", async (req, res) => {
-  const { username, productId, quantity } = req.body; // Get username from request body
+  const { username, productId, quantity } = req.body; 
   try {
     if (!username)
       return res.status(401).json({ message: "Login to your account" });
@@ -20,7 +20,7 @@ router.post("/add", async (req, res) => {
     );
 
     if (existingCart && itemIndex >= 0) {
-      // If item exists, update quantity
+     
       existingCart.cartitems[itemIndex].quantity += quantity || 1;
       await existingCart.save();
       res.status(200).json({
@@ -28,7 +28,7 @@ router.post("/add", async (req, res) => {
         cart: existingCart,
       });
     } else {
-      // If item or cart does not exist, add to the cart
+      
       const cart = existingCart || new Cart({ username, cartitems: [] });
       cart.cartitems.push({
         name: product.name,
@@ -48,7 +48,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// GET all items in the cart
+
 router.get("/", async (req, res) => {
   try {
     const userCart = await Cart.findOne({ username });
@@ -68,7 +68,7 @@ router.get("/:username", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-// PUT to update the quantity of a specific cart item
+
 router.put("/updateQuantity", async (req, res) => {
   const { username, productName, quantity } = req.body;
 
@@ -102,22 +102,21 @@ router.delete("/:username/:productId", async (req, res) => {
   const { username, productId } = req.params;
 
   try {
-    // Find the user's cart
+
     const userCart = await Cart.findOne({ username });
 
     if (!userCart) {
-      console.log("No cart found for this user.");
+      // console.log("No cart found for this user.");
       return res.status(404).send("Cart not found");
     }
 
-    // Pull the item using the correct id field
+
     const updatedCart = await Cart.findOneAndUpdate(
       { username: username },
-      { $pull: { cartitems: { _id: productId } } }, // Change to match the _id field
+      { $pull: { cartitems: { _id: productId } } },
       { new: true }
     );
 
-    // Check if the cart was updated
     if (!updatedCart) {
       return res.status(404).send("Product not found in cart");
     }

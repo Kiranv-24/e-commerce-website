@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
    
   },
   password: {
-    type: String, // Corrected type to String
+    type: String,
    
   },
 });

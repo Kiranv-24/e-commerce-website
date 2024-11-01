@@ -11,7 +11,7 @@ router.post("/create-checkout-session", async (req, res) => {
     price_data: {
       currency: "inr",
       product_data: { name: product.productTitle },
-      unit_amount: 5000, // Ensure this is dynamic if needed
+      unit_amount: 5000, 
     },
     quantity: product.quantity,
   }));
@@ -27,7 +27,7 @@ router.post("/create-checkout-session", async (req, res) => {
         username,
         orderDetails: JSON.stringify(orderDetails),
         shippingDetails: JSON.stringify(shippingDetails),
-        billingDetails: JSON.stringify(orderDetails), // Assuming orderDetails contain billing info
+        billingDetails: JSON.stringify(orderDetails),
       },
       success_url: `${process.env.CLIENT_BASE_URL}/payment/complete?session_id={CHECKOUT_SESSION_ID}`,
     });
@@ -97,7 +97,7 @@ router.get("/cancel", (req, res) => {
   res.redirect("/");
 });
 
-// Webhook for Stripe to confirm payment
+
 router.post(
   "/webhook",
   express.raw({ type: "application/json" }),
@@ -109,29 +109,28 @@ router.post(
         sig,
         process.env.STRIPE_WEBHOOK_SECRET
       );
-      console.log("Received webhook event:", event);
+      // console.log("Received webhook event:", event);
 
       if (event.type === "checkout.session.completed") {
         const session = event.data.object;
 
-        // Parse metadata
+  
         const username = session.metadata.username;
         const orderDetails = JSON.parse(session.metadata.orderDetails);
         const shippingDetails = JSON.parse(session.metadata.shippingDetails);
         const billingDetails = JSON.parse(session.metadata.billingDetails);
 
-        // Create a new order in the database
         const newOrder = await Order.create({
           username,
           orderDetails,
-          billingDetails, // Ensure this is correctly structured
+          billingDetails,
           shippingDetails,
           paymentStatus: "paid",
           stripeSessionId: session.id,
         });
 
-        // await newOrder.save(); // Save the new order
-        console.log("Order saved:", newOrder); // Log saved order for debugging
+
+        // console.log("Order saved:", newOrder); 
         res.json({ received: true });
       } else {
         res.json({ received: true });

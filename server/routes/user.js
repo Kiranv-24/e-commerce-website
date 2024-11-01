@@ -8,67 +8,67 @@ const sendEmail = require("../Utils/sendEmail");
 const crypto = require('crypto');
 require("dotenv").config();
 const cookieOptions = {
-  maxAge: 7 * 24 * 60 * 60 * 1000, // Save cookie for 7 days
+  maxAge: 7 * 24 * 60 * 60 * 1000, 
   httpOnly: true,
 };
 
 
 router.get("/", async (req, res) => {
   try {
-    const users = await User.find().select("-password"); // Exclude password from response
+    const users = await User.find().select("-password");
     res.status(200).json({ success: true, users });
   } catch (error) {
-    console.log("Error fetching all users:", error);
+    // console.log("Error fetching all users:", error);
     res.status(500).json({ success: false, message: "Something went wrong" });
   }
 });
 
 
-// Get a user by ID
-router.get("/:id", async (req, res) => {
+
+router.get("/:username", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select("-password"); // Exclude password from response
+
+    const user = await User.findOne({ email: req.params.username }).select("-password"); 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
     res.status(200).json({ success: true, user });
   } catch (error) {
-    console.log("Error fetching user by ID:", error);
+    // console.log("Error fetching user by username:", error);
     res.status(500).json({ success: false, message: "Something went wrong" });
   }
 });
-// Signup route
+
+
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
-  console.log("Password:", password);
+  // console.log("Password:", password);
 
   try {
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
+      const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ success: false, msg: "User already exists" });
     }
 
 
 
-    // Hash the password
+
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Create the user
+ 
     const result = await User.create({
       name,
       email,
       password: hashedPassword,
     });
 
-    // Create a JWT token
     const token = jwt.sign(
       { email: result.email, id: result._id },
       process.env.JSON_WEB_TOKEN_SECRET_KEY || "default_secret_key",
-      { expiresIn: '1h' } // Optional: Set expiration time for the token
+      { expiresIn: '1h' } 
     );
 
-    // Respond with user data and token
+
     res.status(201).json({
       success: true,
       user: result,
@@ -81,7 +81,7 @@ router.post("/signup", async (req, res) => {
 });
 
 
-// Login route
+
 router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -103,12 +103,12 @@ router.post("/Login", async (req, res) => {
       msg: "User authenticated",
     });
   } catch (error) {
-    console.log("Error during login:", error);
+    // console.log("Error during login:", error);
     res.status(500).json({ msg: "Something went wrong" });
   }
 });
 
-// Delete user by ID
+
 router.delete("/:id", async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -117,23 +117,23 @@ router.delete("/:id", async (req, res) => {
     }
     return res.status(404).json({ success: false, message: "User not found" });
   } catch (err) {
-    console.log("Error deleting user:", err);
+    // console.log("Error deleting user:", err);
     return res.status(500).json({ success: false, error: err });
   }
 });
 
-// Get user count
+
 router.get("/get/count", async (req, res) => {
   try {
     const userCount = await User.countDocuments();
     res.status(200).json({ userCount });
   } catch (error) {
-    console.log("Error fetching user count:", error);
+    // console.log("Error fetching user count:", error);
     res.status(500).json({ success: false });
   }
 });
 
-// Update user by ID
+
 router.put("/:username", async (req, res) => {
   const {password} = req.body;
   const username=req.params.username;
@@ -163,7 +163,7 @@ router.put("/:username", async (req, res) => {
     }
     res.status(200).json(user);
   } catch (error) {
-    console.log("Error updating user:", error);
+    // console.log("Error updating user:", error);
     res.status(500).json({ msg: "Something went wrong" });
   }
 });
@@ -171,14 +171,14 @@ router.put("/:username", async (req, res) => {
 router.post("/sendOtp", async (req, res) => {
   const { email } = req.body;
 
-  // Check if the email is provided
+
   if (!email) {
     return res.status(400).json({ success: false, message: "Email is required" });
   }
 
-  // Generate a random 6-digit OTP and set expiry (e.g., 5 minutes from now)
+ 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); 
 
   try {
     const newOtp = new Otp({
@@ -215,7 +215,7 @@ router.post("/verifyOtp", async (req, res) => {
     if (!storedOtp) {
       return res.status(400).json({ success: false, message: 'Invalid OTP' });
     }
-console.log(storedOtp);
+// console.log(storedOtp);
     if (storedOtp.expiresAt < new Date()) {
       return res.status(400).json({ success: false, message: 'OTP has expired' });
     }

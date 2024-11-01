@@ -28,7 +28,7 @@ const Checkout = () => {
   const { state } = useLocation();
   const initialCartItems = state?.cartItems || [];
   const initialQuantities = state?.quantities || [];
-console.log("initial",initialCartItems);
+
   const [formFields, setFormFields] = useState({
     username: "",
     fullname: "",
@@ -230,7 +230,7 @@ console.log("initial",initialCartItems);
   const createShippingDetails = () =>
 
     cartItems.map((item, index) => {
-      console.log(item.price);
+     
       const quantity = quantities[index] || 0;
       const subtotal = item.price * quantity;
       const shipping = item.shipping || 10;
@@ -261,7 +261,7 @@ const goBack = () => {
               variant="outlined"
               fullWidth
               name="username"
-              value={formFields.username} // Make sure this is directly tied to formFields
+              value={formFields.username} 
               onChange={onChangeInput}
             />
             <TextField
@@ -269,7 +269,7 @@ const goBack = () => {
               variant="outlined"
               fullWidth
               name="fullname"
-              value={formFields.fullname} // Make sure this is directly tied to formFields
+              value={formFields.fullname}
               onChange={onChangeInput}
             />
             <TextField
@@ -277,7 +277,7 @@ const goBack = () => {
               variant="outlined"
               fullWidth
               name="lastname"
-              value={formFields.lastname} // Make sure this is directly tied to formFields
+              value={formFields.lastname}
               onChange={onChangeInput}
             />
           </div>
@@ -287,7 +287,7 @@ const goBack = () => {
             fullWidth
             margin="normal"
             name="phone"
-            value={formFields.phone} // Make sure this is directly tied to formFields
+            value={formFields.phone} 
             onChange={onChangeInput}
           />
           <TextField
@@ -296,7 +296,7 @@ const goBack = () => {
             fullWidth
             margin="normal"
             name="address"
-            value={formFields.address} // Make sure this is directly tied to formFields
+            value={formFields.address} 
             onChange={onChangeInput}
           />
           <div className="input-group">
@@ -308,7 +308,7 @@ const goBack = () => {
               renderSuggestion={(suggestion) => <div>{suggestion}</div>}
               inputProps={{
                 placeholder: "Country",
-                value: formFields.country, // Make sure this is directly tied to formFields
+                value: formFields.country, 
                 onChange: onChangeCountry,
               }}
             />
@@ -317,7 +317,7 @@ const goBack = () => {
               variant="outlined"
               fullWidth
               name="city"
-              value={formFields.city} // Make sure this is directly tied to formFields
+              value={formFields.city}
               onChange={onChangeInput}
             />
           </div>
@@ -327,7 +327,7 @@ const goBack = () => {
             fullWidth
             margin="normal"
             name="state"
-            value={formFields.state} // Make sure this is directly tied to formFields
+            value={formFields.state} 
             onChange={onChangeInput}
           />
           <TextField
@@ -336,7 +336,7 @@ const goBack = () => {
             fullWidth
             margin="normal"
             name="email"
-            value={formFields.email} // Make sure this is directly tied to formFields
+            value={formFields.email}
             onChange={onChangeInput}
           />
           {hasData && (

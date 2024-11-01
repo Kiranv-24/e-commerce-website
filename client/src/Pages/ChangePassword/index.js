@@ -6,7 +6,7 @@ import { editData } from "../../api";
  const username = localStorage.getItem("username");
 const ChangePassword = () => {
       // const { username } = useParams(); 
-    console.log(username);
+   
   const [formFields, setFormFields] = useState({
     password: "",
     confirmPassword: "",
@@ -42,11 +42,11 @@ const ChangePassword = () => {
       const response = await editData(`/api/user/${username}`, {
         password: formFields.password,
       });
-      console.log("Password changed:", response);
+    
       localStorage.removeItem("username");
       // setUsername("");
       setSuccess(true);
-      setFormFields({ password: "", confirmPassword: "" }); // Clear fields on success
+      setFormFields({ password: "", confirmPassword: "" });
        setTimeout(() => {
            window.location.replace("/Login");
         }, 2000);
@@ -84,14 +84,14 @@ const ChangePassword = () => {
           </Button>
         </form>
       </div>
-      {/* Snackbar for error messages */}
+
       <Snackbar
         open={!!error}
         autoHideDuration={2000}
         onClose={() => setError("")}
         message={error}
       />
-      {/* Snackbar for success messages */}
+
       <Snackbar
         open={success}
         autoHideDuration={2000}

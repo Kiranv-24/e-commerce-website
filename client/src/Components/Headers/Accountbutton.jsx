@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { VscAccount } from "react-icons/vsc";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
-const username=localStorage.getItem("username");
+import "../../Css-files/Account.css";
+
 const AccountButton = () => {
     const [isHovered, setIsHovered] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [loadingToastId, setLoadingToastId] = useState(null);
+    const dropdownRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
+    const username = localStorage.getItem("username");
 
     useEffect(() => {
         const loggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -17,7 +21,6 @@ const AccountButton = () => {
     }, []);
 
     useEffect(() => {
-        // Dismiss the loading toast when the location changes
         if (loadingToastId) {
             toast.dismiss(loadingToastId);
             toast.success("Action completed!");
@@ -38,7 +41,6 @@ const AccountButton = () => {
     const handleLogout = () => {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("username");
-        // setUsername("");
         setIsLoggedIn(false);
         handleNavigation("/login", "Logging out...");
     };
@@ -55,49 +57,74 @@ const AccountButton = () => {
         handleNavigation("/Login", "Navigating to Login...");
     };
 
+    const handleAccountNavigation = () => {
+        handleNavigation("/Account", "Navigating to Account...");
+    };
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target) && !event.target.closest('.account-button')) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownRef]);
     return (
         <div className="col-sm-1 d-flex align-items-center part3">
             <div className="part3">
                 <button
                     className='circle d-flex justify-content-evenly account-button position-relative'
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                    onClick={toggleDropdown}
+                    
                 >
                     <VscAccount />
-                    {isHovered ? <IoMdArrowDropup className="Arrow" /> : <IoMdArrowDropdown className="Arrow" />}
+                    { isDropdownOpen ? <IoMdArrowDropup className="Arrow" /> : <IoMdArrowDropdown className="Arrow" />}
                 </button>
             </div>
-            <div className='Dropdown'>
-                {isLoggedIn ? (
-                    <ul style={{ height: "auto" }}>
-                        <button className="btn btn-link p-0 w-100">
-                            <li className="w-100">Account</li>
-                        </button>
-                        <button className="btn btn-link p-0 w-100" onClick={orderHistory}>
-                            <li className="w-100">Orders</li>
-                        </button>
-                        <button className="btn btn-link p-0 w-100" onClick={handleLogout}>
-                            <li className="w-100">Logout</li>
-                        </button>
-                    </ul>
-                ) : (
-                    <ul>
-                        <button className="btn btn-link p-0 w-100" onClick={handleSignupNavigation}>
-                            <Link to="/Signup" className="no-underline" style={{ textDecoration: "none" }}>
-                                <li>
-                                    New Customer? 
-                                    <b style={{ color: "#0202aa", fontWeight: 700 }}> Signup</b>
-                                </li>
-                            </Link>
-                        </button>
-                        <button className="btn btn-link p-0 w-100" onClick={handleLoginNavigation}>
-                            <Link to="/Login" className="no-underline">
-                                <li>Login</li>
-                            </Link>
-                        </button>
-                    </ul>
-                )}
-            </div>
+            {isDropdownOpen&& (
+                <div className='Dropdown'
+                
+                
+                ref={dropdownRef}
+                >
+                    {isLoggedIn ? (
+                        <ul style={{ height: "auto" }}>
+                            <button className="btn btn-link p-0 w-100 " onClick={handleAccountNavigation}>
+                                <li className="w-100">Account</li>
+                            </button>
+                            <button className="btn btn-link p-0 w-100" onClick={orderHistory}>
+                                <li className="w-100">Orders</li>
+                            </button>
+                            <button className="btn btn-link p-0 w-100" onClick={handleLogout}>
+                                <li className="w-100">Logout</li>
+                            </button>
+                        </ul>
+                    ) : (
+                        <ul>
+                            <button className="btn btn-link p-0 w-100" onClick={handleSignupNavigation}>
+                                <Link to="/Signup" className="no-underline" style={{ textDecoration: "none" }}>
+                                    <li>
+                                        New Customer? 
+                                        <b style={{ color: "#0202aa", fontWeight: 700 }}> Signup</b>
+                                    </li>
+                                </Link>
+                            </button>
+                            <button className="btn btn-link p-0 w-100" onClick={handleLoginNavigation}>
+                                <Link to="/Login" className="no-underline">
+                                    <li>Login</li>
+                                </Link>
+                            </button>
+                        </ul>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
