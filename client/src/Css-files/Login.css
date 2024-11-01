@@ -4,7 +4,7 @@
     align-items: center;
     height: 100vh;
     background: linear-gradient(135deg, #f0f4f8, #c9d6ff);
-    overflow: hidden; /* Prevent scrolling in wrapper */
+    overflow: hidden; 
 }
 
 .Login-container {
@@ -21,8 +21,9 @@
     width: 100%;
     max-width: 400px;
     margin-bottom: 50px;
-    overflow: hidden; /* Ensure no scrolling within container */
-    max-height: 90vh; /* Limit height to prevent overflow */
+    overflow: hidden;
+    max-height: 90vh; 
+    margin-top: 10px;
 }
 
 .welcome-message h1 {
@@ -97,32 +98,32 @@ footer {
 }
 
 .back-button {
-    margin-top: 10px; /* Space above the button */
-    background-color: #6c757d; /* A neutral background color */
-    color: white; /* Text color */
-    border: none; /* Remove default border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 15px; /* Padding for the button */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions for hover effects */
-    font-size: 1rem; /* Font size */
-    cursor: pointer; /* Pointer cursor on hover */
+    margin-top: 10px; 
+    background-color: #6c757d; 
+    color: white;
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 15px; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    font-size: 1rem; 
+    cursor: pointer; 
 }
 
 .back-button:hover {
-    background-color: #5a6268; /* Darker shade on hover */
-    transform: translateY(-2px); /* Lift effect on hover */
+    background-color: #5a6268; 
+    transform: translateY(-2px); 
 }
 
 
 
 
 
-/* Media Queries for Responsiveness */
+
 @media (max-width: 480px) {
     .Login-container {
-        /* padding: 20px 15px; */
+        margin-top: 10px;
         width: 90%;
-        margin-bottom: 300px !important;
+        /* margin-bottom: 300px !important; */
     }
 
     .welcome-message h1 {

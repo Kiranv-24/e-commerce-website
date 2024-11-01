@@ -6,6 +6,8 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import MyContext from "../../Mycontext/index.js";
+import {toast,Toaster} from "react-hot-toast";
+const username=localStorage.getItem("username");
 const Alert = React.forwardRef((props, ref) => (
     <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 ));
@@ -35,19 +37,17 @@ const CartIcon = () => {
   //   fetchCartItems();
   // }, [username]);
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSnackbarOpen(false);
-    
-
-    setTimeout(() => {
-      navigate("/cart");
-    }, 200); 
-  };
 
   const handleCartClick = () => {
-    setSnackbarMessage("Cart opened successfully");
-    setSnackbarOpen(true);
+    
+    if(username){
+      toast.success("Cart opened successfully");
+      window.location.replace("/cart");
+    }
+    else{
+      toast.error("Please Login to continue..");
+     navigate("/Login")
+    }
   };
 
   return (
@@ -56,7 +56,7 @@ const CartIcon = () => {
         <button 
           className="circle cart-button" 
           onClick={handleCartClick}
-          onMouseEnter={() => setSnackbarMessage("Hovering over cart")}
+          // onMouseEnter={() => setSnackbarMessage("Hovering over cart")}
         >
           <IoIosCart />
           {cartCount > 0 && (
@@ -65,11 +65,7 @@ const CartIcon = () => {
         </button>
       </div>
 
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="success" action={<CircularProgress size={20} color="inherit" />}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      
     </div>
   );
 };
