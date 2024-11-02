@@ -8,11 +8,11 @@ dotenv.config();
 
 const app = express();
 
-// Middleware setup
+
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.CLIENT_BASE_URL,
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
-    allowedHeaders: ['Content-Type', 'Authorization'], // Add any custom headers here
+    allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials: true,
 };
 
@@ -20,7 +20,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json());
 
-// Router imports
+
 const categoryRouter = require("./routes/category");
 const productRouter = require("./routes/product");
 const cartRouter = require("./routes/Cart");
@@ -30,7 +30,7 @@ const orderPaymentRouter = require("./routes/orderpayment");
 const OrderHistoryRouter = require("./routes/OrderHistory");
 const AIassistance= require("./routes/AIassistance");
 
-// Mounting routers
+
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api/Cart", cartRouter);
@@ -40,7 +40,6 @@ app.use("/api/orderpayment", orderPaymentRouter);
 app.use("/api/OrderHistory", OrderHistoryRouter);
 app.use("/api", AIassistance);
 
-// Error Handling Middleware for Unauthorized Errors
 app.use((err, req, res, next) => {
   if (err.name === "UnauthorizedError") {
     return res.status(401).json({ message: "Invalid token" });
@@ -48,7 +47,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-// MongoDB connection
+
 mongoose
   .connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
@@ -57,7 +56,7 @@ mongoose
   .then(() => {
     console.log("Database connection is ready....");
 
-    // Start the server
+
     app.listen(process.env.PORT, () => {
       console.log(`Server is running at http://localhost:${process.env.PORT}`);
     });
@@ -66,7 +65,6 @@ mongoose
     console.log("Database connection error:", err);
   });
 
-// 404 Not Found handler
 app.use((req, res) => {
   res.status(404).send("404 Not Found");
 });
