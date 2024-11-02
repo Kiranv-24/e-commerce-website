@@ -92,7 +92,7 @@ h2 {
 
 
 
-/* @media (max-width: 480px) {
+@media (max-width: 480px) {
   h2 {
       font-size: 1.2rem;
   }
@@ -101,9 +101,9 @@ h2 {
       display: flex;
       flex-direction: column;
       width: 100% !important;
-  }
+  }}
 
-
+/* 
   .order-table tr:first-child {
       display: none;
   }
@@ -133,4 +133,4 @@ h2 {
   .order-table {
       margin-top: 10px; 
   }
-} */
+}  */
