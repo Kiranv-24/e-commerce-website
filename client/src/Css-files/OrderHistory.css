@@ -92,11 +92,11 @@ h2 {
 
 
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   h2 {
       font-size: 1.2rem;
   }
-
+ 
   .order-table tr {
       display: flex;
       flex-direction: column;
@@ -133,4 +133,4 @@ h2 {
   .order-table {
       margin-top: 10px; 
   }
-}
+} */
