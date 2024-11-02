@@ -104,9 +104,9 @@ h2 {
   }}
 
 
-  .order-table tr:first-child {
+  /* .order-table tr:first-child {
       display: none;
-  }
+  } */
 
   .order-table th, .order-table td {
       padding: 8px 6px;
