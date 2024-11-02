@@ -103,7 +103,7 @@ h2 {
       width: 100% !important;
   }}
 
-/* 
+
   .order-table tr:first-child {
       display: none;
   }
@@ -112,7 +112,7 @@ h2 {
       padding: 8px 6px;
   }
 
-  .product-info img {
+ /* .product-info img {
       width: 35px; 
       height: 35px;
   }
