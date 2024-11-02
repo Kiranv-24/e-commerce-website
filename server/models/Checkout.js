@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const CheckoutSchema = mongoose.Schema(
   {
-    username: { type: String, required: true }, // Added username field
+    username: { type: String, required: true }, 
     orderDetails: {
       fullname: { type: String, required: true },
       lastname: { type: String, required: true },
@@ -23,7 +23,7 @@ const CheckoutSchema = mongoose.Schema(
         price:{type:Number, required:true},
         images: [{ type: String }],
         subtotal: { type: Number, required: true },
-        shipping: { type: Number, required: true, default: 10 }, // Default shipping fee
+        shipping: { type: Number, required: true, default: 10 }, 
         total: { type: Number, required: true },
         name: { type: String, required: true },
         quantity: { type: Number, required: true },
@@ -33,5 +33,5 @@ const CheckoutSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-// Export the model
+
 exports.Checkout = mongoose.model("Checkout", CheckoutSchema);

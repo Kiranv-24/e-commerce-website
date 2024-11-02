@@ -42,7 +42,7 @@ const CartIcon = () => {
     
     if(username){
       toast.success("Cart opened successfully");
-      window.location.replace("/cart");
+      navigate("/cart")
     }
     else{
       toast.error("Please Login to continue..");

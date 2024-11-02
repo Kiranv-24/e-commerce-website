@@ -30,7 +30,7 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-    specifications: {  // Changed from specification to specifications
+    specifications: { 
         type: Object,
         required: true,
     },

@@ -7,7 +7,7 @@ const HomeProducts = () => {
  
   return (
     <section className="Homeproducts">
-      {/* <div className="container-fluid Homeproducts-container"> */}
+    
         <div className="row Main-Product-Row">
           <div className="col-md-2 cursor banner">
             <img src={Bannerbox} alt="Bannerbox" className="img-fluid" />

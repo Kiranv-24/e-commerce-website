@@ -1,141 +1,137 @@
 .login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #f0f4f8, #c9d6ff);
-    overflow: hidden; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #f0f4f8, #c9d6ff);
+  overflow: hidden !important;
 }
 
 .Login-container {
-    padding: 40px 30px;
-    background-color: #ffffff;
-    min-height: 450px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 50px;
-    overflow: hidden;
-    max-height: 90vh; 
-    margin-top: 10px;
+  padding: 40px 30px;
+  background-color: #ffffff;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 50px;
+  overflow: hidden;
+  max-height: 90vh;
+  margin-top: 10px;
 }
 
 .welcome-message h1 {
-    font-size: 2.2rem;
-    color: #3c3c3c;
-    margin-bottom: 20px;
-    font-weight: bold;
-    text-align: center;
+  font-size: 2.2rem;
+  color: #3c3c3c;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .form-outline {
-    width: 100%;
-    margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .Submit {
-    width: 100%;
-    padding: 14px;
-    font-size: 1.2rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  padding: 14px;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .Submit:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .loginWithGoogle {
-    margin-top: 20px;
-    width: 100%;
-    border: 2px solid #4285f4;
-    background-color: transparent;
-    color: #4285f4;
-    padding: 12px;
-    font-size: 1rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border-radius: 5px;
+  margin-top: 20px;
+  width: 100%;
+  border: 2px solid #4285f4;
+  background-color: transparent;
+  color: #4285f4;
+  padding: 12px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 5px;
 }
 
 .loginWithGoogle:hover {
-    background-color: #4285f4;
-    color: #ffffff;
+  background-color: #4285f4;
+  color: #ffffff;
 }
 
 .text-center {
-    text-align: center;
+  text-align: center;
 }
 
 .text-center p {
-    margin: 10px 0;
-    color: #555;
+  margin: 10px 0;
+  color: #555;
 }
 
 .text-center a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .text-center a:hover {
-    text-decoration: underline;
-    color: #0056b3;
+  text-decoration: underline;
+  color: #0056b3;
 }
 
 footer {
-    display: none;
+  display: none;
 }
 
 .back-button {
-    margin-top: 10px; 
-    background-color: #6c757d; 
-    color: white;
-    border: none; 
-    border-radius: 5px; 
-    padding: 10px 15px; 
-    transition: background-color 0.3s ease, transform 0.2s ease; 
-    font-size: 1rem; 
-    cursor: pointer; 
+  margin-top: 10px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .back-button:hover {
-    background-color: #5a6268; 
-    transform: translateY(-2px); 
+  background-color: #5a6268;
+  transform: translateY(-2px);
 }
 
-
-
-
-
-
 @media (max-width: 480px) {
-    .Login-container {
-        margin-top: 10px;
-        width: 90%;
-        /* margin-bottom: 300px !important; */
-    }
+  .Login-container {
+    margin-top: 10px;
+    width: 90%;
+    /* margin-bottom: 300px !important; */
+  }
 
-    .welcome-message h1 {
-        font-size: 1.8rem;
-    }
+  .welcome-message h1 {
+    font-size: 1.8rem;
+  }
 
-    .Submit, .loginWithGoogle {
-        padding: 12px;
-        font-size: 1rem;
-    }
-    .back-button {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-    }
+  .Submit,
+  .loginWithGoogle {
+    padding: 12px;
+    font-size: 1rem;
+  }
+  .back-button {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
 }

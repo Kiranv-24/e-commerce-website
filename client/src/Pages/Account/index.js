@@ -52,13 +52,8 @@ const goBack = () => {
   };
 
   return (
-    <div className="profile-page-container">
-      <button 
-        onClick={() => navigate(-1)} 
-        className="back-button"
-      >
-        Back
-      </button>
+    <div className="profile-page">
+     
       <div className="profile-card">
         <h2 className="text-2xl font-semibold text-center mb-4">Profile</h2>
         <div className="profile-info">
@@ -87,8 +82,16 @@ const goBack = () => {
         </div>
         <div className="edit-profile-button">
           <button>Save Changes</button>
+         
         </div>
+         
       </div>
+       <button 
+        onClick={() => navigate(-1)} 
+        className="back-button"
+      >
+        Back
+      </button>
     </div>
   );
 };

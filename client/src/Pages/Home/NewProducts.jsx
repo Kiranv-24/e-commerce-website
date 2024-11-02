@@ -3,7 +3,7 @@ import Boat from "../../assets/images/boat.jpg";
 const NewProducts=()=>{
     return (
         <section className='Homeproducts'>
-            {/* <div className='container Homeproducts-container'> */}
+           
                 <div className='row Main-Product-Row'>
                     <div className='col-md-2 cursor banner'>
                         <img src={Boat} alt='Bannerbox' className='img-fluid' />
@@ -22,7 +22,7 @@ const NewProducts=()=>{
                         <div className='Product_row'>
                            <SwiperSlider/>
                         </div>
-                    {/* </div> */}
+              
                     
                 </div>
             </div>

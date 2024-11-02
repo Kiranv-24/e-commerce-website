@@ -11,7 +11,7 @@ cloudinary.config({
     api_secret: process.env.cloudinary_Config_api_secret,
 });
 
-// GET all categories
+
 router.get('/', async (req, res) => {
     try {
         const categories = await Category.find();
@@ -21,20 +21,20 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET category by ID
+
 router.get("/:id", async (req, res) => {
     try {
         const category = await Category.findById(req.params.id);
         if (!category) {
             return res.status(404).json({ message: 'The category with the given ID was not found.' });
         }
-        return res.status(200).json(category); // Use status(200) with json
+        return res.status(200).json(category); 
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 
-// DELETE category by ID
+
 router.delete("/:id", async (req, res) => {
     try {
         const deletedCategory = await Category.findByIdAndDelete(req.params.id);
@@ -47,7 +47,7 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-// POST create a new category
+
 router.post('/create', async (req, res) => {
     const limit = pLimit(2);
     
@@ -72,7 +72,7 @@ router.post('/create', async (req, res) => {
         });
 
         const savedCategory = await category.save();
-        return res.status(201).json(savedCategory); // Use return to prevent further execution
+        return res.status(201).json(savedCategory); 
     } catch (err) {
         return res.status(500).json({
             error: err.message || "An error occurred while creating the category.",

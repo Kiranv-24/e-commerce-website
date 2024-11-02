@@ -49,7 +49,7 @@ function App() {
 
   return (
     <BrowserRouter>
-    {/* <AIassistance/> */}
+ 
         <Chatbot/>
          <Toaster
         position="top-center"

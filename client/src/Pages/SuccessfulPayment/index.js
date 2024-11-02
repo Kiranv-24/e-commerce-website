@@ -26,7 +26,7 @@ const SuccessfulPayment = () => {
           `/api/orderpayment/payment/complete?session_id=${sessionId}`
         );
         
-        // Set order details after payment is successful
+       
         setOrderDetails(response.order);
         clearCheckoutItems();       
       } catch (error) {
@@ -39,7 +39,7 @@ const SuccessfulPayment = () => {
 
 const clearCheckoutItems = async () => {
   try {
-    await deleteData(`/api/checkout/delete/${username}`); // Use username directly in the URL
+    await deleteData(`/api/checkout/delete/${username}`); 
   } catch (error) {
     console.error("Failed to clear checkout items:", error);
   }

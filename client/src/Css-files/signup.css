@@ -1,17 +1,17 @@
 body.signup-page {
-    overflow: hidden; /* Prevent scrolling only on signup page */
+    overflow: hidden; 
 }
 
 .signup-section {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full height of the viewport */
+    height: 100vh; 
     background: linear-gradient(135deg, #f0f4f8, #c9d6ff);
 }
 
 .signup-container {
-    padding: 20px 15px; /* Reduced padding for mobile */
+    padding: 20px 15px;
     margin: 0;
     background-color: #ffffff;
     min-height: 450px;
@@ -23,7 +23,7 @@ body.signup-page {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease;
     width: 100%;
-    max-width: 400px; /* Maximum width for larger screens */
+    max-width: 400px; 
     margin-bottom: 100px;
     padding-top: 52px;
 }
@@ -98,13 +98,13 @@ body.signup-page {
 
 .text-center a:hover {
     text-decoration: underline;
-    color: #0056b3;
+    color: white;
 }
 
 @media (max-width: 600px) {
     .signup-container {
         margin-bottom: 300px;
         width: 90%;
-        padding-top: 40px; /* Adjust for smaller screens */
+        padding-top: 40px;
     }
 }

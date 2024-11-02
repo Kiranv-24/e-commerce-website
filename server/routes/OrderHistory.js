@@ -2,7 +2,7 @@ const express = require("express");
 const Order = require("../models/Orderpayment");
 const router = express.Router();
 
-// GET route to fetch order history for a specific user
+
 router.get("/orders/:username", async (req, res) => {
   try {
     const { username } = req.params;

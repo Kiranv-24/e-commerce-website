@@ -57,7 +57,7 @@ body, h1, h2, h3, h4, h5, h6, p {
 
 @media (min-width: 1469px) {
     .Table tr {
-        width: 939px !important; /* Ensure table does not exceed 939px */
+        width: 939px !important;
     }
 }
 
@@ -73,8 +73,8 @@ body, h1, h2, h3, h4, h5, h6, p {
 }
 
 .CartimgWrapper .imgWrapper {
-    width: 100px; /* Adjusted width for better responsiveness */
-    height: 100px; /* Adjusted height for better responsiveness */
+    width: 100px; 
+    height: 100px;
     background-color: white !important;
     margin-right: 20px;
     border-radius: 10px;
@@ -87,8 +87,8 @@ body, h1, h2, h3, h4, h5, h6, p {
 }
 
 .CartimgWrapper img {
-    width: 100%; /* Make the image take full width */
-    height: auto; /* Maintain aspect ratio */
+    width: 100%; 
+    height: auto; 
 }
 
 .CartimgWrapper .imgWrapper:hover {
@@ -223,21 +223,21 @@ body, h1, h2, h3, h4, h5, h6, p {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 .back-button {
-    background-color: #007bff; /* Primary color for the button */
-    color: white; /* Text color */
-    border: none; /* Remove border */
-    padding: 10px 15px; /* Padding */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-weight: 600; /* Font weight */
-    font-size: 1rem; /* Font size */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
-    margin-bottom: 20px; /* Space below the button */
+    background-color: #007bff; 
+    color: white; 
+    border: none;
+    padding: 10px 15px; 
+    border-radius: 5px; 
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    margin-bottom: 20px; 
 }
 
 .back-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-    transform: scale(1.05); /* Scale effect on hover */
+    background-color: #0056b3;
+    transform: scale(1.05);
 }
 .remove-all-btn:hover {
     background-color: #c0392b;
@@ -251,13 +251,13 @@ body, h1, h2, h3, h4, h5, h6, p {
     }
 
     .row-section {
-        flex-direction: column; /* Stack items vertically */
+        flex-direction: column; 
     }
 
     .CartimgWrapper .imgWrapper {
-        width: 80px; /* Smaller size on mobile */
-        height: 80px; /* Smaller size on mobile */
-        margin-right: 10px; /* Reduced margin on mobile */
+        width: 80px;
+        height: 80px; 
+        margin-right: 10px; 
     }
 
     .summary-section {
@@ -268,46 +268,46 @@ body, h1, h2, h3, h4, h5, h6, p {
 
     .Table td {
         padding: 10px;
-        flex-direction: column; /* Adjust table cell layout */
-        text-align: center; /* Center-align text in table cells */
+        flex-direction: column; 
+        text-align: center;
     }
 
     .checkout-btn,
     .remove-all-btn {
-        margin-top: 10px; /* Space between buttons */
+        margin-top: 10px;
     }
 
     .flex-buttons {
         display: flex;
-        flex-direction: column; /* Stack buttons vertically */
+        flex-direction: column; 
     }
 
     .CartimgWrapper h1, h2, h3, h4, h5, h6, p {
-        font-size: 0.8rem !important; /* Adjust font size for mobile */
+        font-size: 0.8rem !important; 
     }
 
     .remove-btn {
-        display: block; /* Show the original remove button on mobile */
-        margin: 10px auto; /* Center align the button */
-        color: white; /* Text color */
-        padding: 8px 12px; /* Padding for the button */
-        border-radius: 5px; /* Rounded corners */
-        font-weight: 600; /* Font weight */
-        font-size: 1rem; /* Font size */
-        transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
+        display: block;
+        margin: 10px auto; 
+        color: white; 
+        padding: 8px 12px; 
+        border-radius: 5px; 
+        font-weight: 600; 
+        font-size: 1rem; 
+        transition: background-color 0.3s ease, transform 0.3s ease;
     }
     
     .remove-btn:hover {
-        background-color: #c0392b; /* Darker red on hover */
-        transform: scale(1.05); /* Scale effect on hover */
+        background-color: #c0392b; 
+        transform: scale(1.05); 
     }
 
     .delete-icon {
-        display: none; /* Hide the delete icon on mobile */
+        display: none; 
     }
     
     .Description p {
-        display: none; /* Keep the description hidden */
+        display: none; 
     }
     .Shopping-Cart{
       padding-left: 0px !important;

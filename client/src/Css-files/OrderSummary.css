@@ -71,7 +71,7 @@
     font-size: 1rem;
     font-weight: bold;
     width: 100%;
-    margin-top: 1rem; /* Added margin for spacing between buttons */
+    margin-top: 1rem;
     transition: background-color 0.3s ease;
 }
 
@@ -89,55 +89,55 @@
 }
 
 .pay-button {
-    background-color: #4caf50; /* Green color for the payment button */
+    background-color: #4caf50; 
 }
 
 .pay-button:active {
-    background-color: #45a049; /* Darker green on active */
+    background-color: #45a049;
 }
 
 .pay-button:hover {
-    background-color: #66bb6a; /* Light green on hover */
+    background-color: #66bb6a; 
 }
 
 .payment-container {
-    margin-top: 2rem; /* Space above the payment section */
-    text-align: center; /* Center the payment button */
+    margin-top: 2rem; 
+    text-align: center;
 }
 
-/* Responsive Styles */
+
 @media (max-width: 768px) {
     .order-summary-title {
-        font-size: 2rem; /* Decrease font size on smaller screens */
+        font-size: 2rem; 
     }
 
     .order-summary-subtitle {
-        font-size: 1.5rem; /* Decrease font size */
+        font-size: 1.5rem;
     }
 
     .shipping-info,
     .order-details-2,
     .order-summary {
-        padding: 15px; /* Decrease padding for mobile */
+        padding: 15px; 
     }
 
     .order-summary-button {
-        font-size: 0.9rem; /* Decrease font size */
-        padding: 10px 15px; /* Adjust padding */
+        font-size: 0.9rem; 
+        padding: 10px 15px; 
     }
 
     .edit-order {
-        width: 100%; /* Make edit button full width on mobile */
-        margin: 1rem 0; /* Adjust margin */
+        width: 100%; 
+        margin: 1rem 0;
     }
 
     .order-summary-table th,
     .order-summary-table td {
-        padding: 10px; /* Adjust padding for table cells */
+        padding: 10px; 
     }
 
     .order-summary-table {
-        margin-top: 1rem; /* Adjust margin on top for table */
+        margin-top: 1rem;
     }
 }
 
@@ -154,17 +154,17 @@
 
     .order-summary-table {
         font-size: 0.7rem;
-        border-collapse: separate; /* Removes full border effect on mobile */
+        border-collapse: separate; 
     }
 
     .order-summary-table th,
     .order-summary-table td {
         padding: 8px 10px;
-        border: none; /* Remove border for mobile */
+        border: none; 
     }
 
     .order-summary-table th {
-        background-color: transparent; /* Remove background color for headers */
+        background-color: transparent; 
         color: #2d3748;
         font-weight: bold;
     }

@@ -6,14 +6,13 @@ const pLimit = require("p-limit");
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
-// Cloudinary Configuration
 cloudinary.config({
   cloud_name: process.env.cloudinary_Config_Cloud_Name,
   api_key: process.env.cloudinary_Config_api_key,
   api_secret: process.env.cloudinary_Config_api_secret,
 });
 
-// GET all products
+
 router.get("/", async (req, res) => {
   try {
     const productList = await Product.find();
@@ -23,7 +22,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET category by ID
+
 router.get("/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -32,14 +31,14 @@ router.get("/:id", async (req, res) => {
         .status(404)
         .json({ message: "The product with the given ID was not found." });
     }
-    return res.status(200).json(product); // Use status(200) with json
+    return res.status(200).json(product);
   } catch (error) {
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });
   }
 });
-// DELETE category by ID
+
 router.delete("/:id", async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
@@ -56,12 +55,11 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// POST to create a new product
-// POST to create a new product
+
 router.post("/create", async (req, res) => {
   const limit = pLimit(2);
 
-  // Array to hold the promises for image uploads
+
   const imagesToUpload = req.body.images.map((image) => {
     return limit(async () => {
       try {
@@ -69,7 +67,7 @@ router.post("/create", async (req, res) => {
         return result;
       } catch (uploadError) {
         console.error("Error uploading image:", uploadError);
-        throw new Error("Image upload failed"); // Rethrow to be caught in the main try-catch
+        throw new Error("Image upload failed"); 
       }
     });
   });
@@ -78,7 +76,7 @@ router.post("/create", async (req, res) => {
     const uploadStatus = await Promise.all(imagesToUpload);
     const imgurl = uploadStatus.map((item) => item.secure_url);
     
-    // Create a new product with the uploaded images
+
     let product = new Product({
       name: req.body.name,
       description: req.body.description,
@@ -90,7 +88,7 @@ router.post("/create", async (req, res) => {
       specifications:req.body.specifications
     });
 
-    // Save the product in the database
+
     product = await product.save();
     res.status(201).json(product);
   } catch (error) {

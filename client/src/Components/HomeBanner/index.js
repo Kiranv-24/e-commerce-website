@@ -2,10 +2,10 @@
 import Slider from "react-slick";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import BannerGif1 from "../../assets/images/scrollGif1.gif"; // Import your GIF here
-import BannerGif2 from "../../assets/images/scrollGif2.gif"; // Import your GIF here
+import BannerGif1 from "../../assets/images/scrollGif1.gif"; 
+import BannerGif2 from "../../assets/images/scrollGif2.gif";
 
-// Custom Next Arrow component
+
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
@@ -15,7 +15,7 @@ const NextArrow = (props) => {
   );
 };
 
-// Custom Prev Arrow component
+
 const PrevArrow = (props) => {
   const { onClick } = props;
   return (

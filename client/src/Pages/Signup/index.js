@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import Mycontext from "../../Mycontext";
 import "../../Css-files/Login.css";
-import { postData, sendOtp } from "../../api";
+import { fetchDataFromApi, postData, sendOtp } from "../../api";
 import { useNavigate, Link } from "react-router-dom";
 import { CircularProgress, Button, TextField } from "@mui/material";
-import toast, { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import "../../Css-files/signup.css";
 
 const Signup = () => {
@@ -30,19 +30,26 @@ const Signup = () => {
   };
 
   const validateForm = () => {
-    const { email, password, confirmPassword } = formFields;
-    if (!email.includes("@")) {
+    const { email, password, confirmPassword, name } = formFields;
+
+    if (!name.trim()) {
+      return "Name is required.";
+    }
+
+    if (!email.includes("@gmail.com")) {
       return "Please enter a valid email.";
     }
+
     if (password.length < 6) {
       return "Password must be at least 6 characters.";
     }
+
     if (password !== confirmPassword) {
       return "Passwords do not match.";
     }
-    return null; // No validation errors
-  };
 
+    return null;
+  };
   const handleSendOtp = async () => {
     const response = await sendOtp("/api/user/sendOtp", formFields.email);
     if (response?.success) {
@@ -66,14 +73,19 @@ const Signup = () => {
     });
 
     if (response?.success) {
-      const createAccountResponse = await postData("api/user/signup", formFields);
+      const createAccountResponse = await postData(
+        "api/user/signup",
+        formFields
+      );
       if (createAccountResponse?.success) {
         toast.success("Account created successfully. Login to continue");
         setTimeout(() => {
           navigate("/Login");
         }, 2000);
       } else {
-        toast.error(createAccountResponse.message || 'Failed to create account');
+        toast.error(
+          createAccountResponse.message || "Failed to create account"
+        );
       }
     } else {
       toast.error("Invalid OTP");
@@ -81,26 +93,32 @@ const Signup = () => {
   };
 
   const handleSignupSubmit = async (e) => {
-    e.preventDefault(); // Prevent form reload
+    e.preventDefault();
     const validationError = validateForm();
+    // console.log(validationError);
     if (validationError) {
       toast.error(validationError);
+      return;
+    }
+    const response = await fetchDataFromApi(`api/user/${formFields.email}`);
+    // console.log(response);
+    if (response) {
+      toast.error("User already exist");
       return;
     }
     handleSendOtp();
   };
   const goBack = () => {
-     window.location.replace("/");
+    window.location.replace("/");
   };
   useEffect(() => {
     if (context && typeof context.setisHeaderFooter === "function") {
       context.setisHeaderFooter(true);
     }
-    // Add class to body for the signup page
+
     document.body.classList.add("signup-page");
 
     return () => {
-      // Remove class when component unmounts
       document.body.classList.remove("signup-page");
     };
   }, [context]);
@@ -108,7 +126,10 @@ const Signup = () => {
   return (
     <section className="signup-section">
       <div className="signup-container">
-        <form className="signup-form" onSubmit={isOtpSent ? handleVerifyOtp : handleSignupSubmit}>
+        <form
+          className="signup-form"
+          onSubmit={isOtpSent ? handleVerifyOtp : handleSignupSubmit}
+        >
           <div className="form-field">
             <TextField
               type="text"
@@ -148,6 +169,7 @@ const Signup = () => {
               value={formFields.password}
               variant="outlined"
               label="Password"
+              autoComplete="new-password"
             />
           </div>
 
@@ -162,6 +184,7 @@ const Signup = () => {
               value={formFields.confirmPassword}
               variant="outlined"
               label="Confirm Password"
+              autoComplete="new-password"
             />
           </div>
 
@@ -192,15 +215,24 @@ const Signup = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
+            onClick={isOtpSent ? handleVerifyOtp : handleSignupSubmit}
           >
-            {isLoading ? <CircularProgress size={24} /> : isOtpSent ? "Verify OTP" : "Send OTP"}
+            {isLoading ? (
+              <CircularProgress size={24} />
+            ) : isOtpSent ? (
+              "Verify OTP"
+            ) : (
+              "Send OTP"
+            )}
           </Button>
 
           <div className="text-center">
             <p>
               Already have an account? <Link to="/Login">Sign in</Link>
             </p>
-             <Button className="back-button" onClick={goBack}>Go Back</Button>
+            <Button className="back-button" onClick={goBack}>
+              Go Back
+            </Button>
           </div>
         </form>
       </div>

@@ -37,8 +37,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  /* border-top-left-radius: 20px;
-  border-top-right-radius: 20px; */
+
 }
 
 .MobileCategory:active {
@@ -79,15 +78,15 @@
 
 @media (max-width: 768px) {
   .MobileWrapper {
-    flex: 1 1 120px; /* Further reduced width for smaller screens */
-    max-width: 120px; /* Further reduced max width */
+    flex: 1 1 120px; 
+    max-width: 120px; 
   }
 
   .category-img {
-    max-width: 120px; /* Adjusted max width */
+    max-width: 120px;
   }
 
   .MobileWrapper p {
-    font-size: 12px; /* Adjusted font size for better readability */
+    font-size: 12px;
   }
 }
