@@ -1,16 +1,16 @@
-import { useEffect,useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MyContext from "../../Mycontext/index.js";
 const NotFound = () => {
   const navigate = useNavigate();
-   const { setisHeaderFooter } = useContext(MyContext);
+  const { setisHeaderFooter } = useContext(MyContext);
   useEffect(() => {
-setisHeaderFooter(false);
+    setisHeaderFooter(false);
     const timer = setTimeout(() => {
-      window.location.href = "http://www.flipkart.com/http404.php";
+      window.location.href = "https://techmart-weld.vercel.app/";
     }, 3000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
