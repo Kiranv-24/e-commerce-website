@@ -223,9 +223,9 @@ router.delete("/clear-shipping/:username", async (req, res) => {
       { new: true }
     );
 
-    if (!updatedUser) {
-      return res.status(200).json({ message: "User not found" });
-    }
+    // if (!updatedUser) {
+    //  res.status(200).json({ message: "Shipping details cleared successfully" });
+    // }
 
     res.status(200).json({ message: "Shipping details cleared successfully" });
   } catch (error) {
