@@ -5,7 +5,6 @@ const router = express.Router();
 router.post("/create", async (req, res) => {
   const { username, orderDetails, shippingDetails } = req.body;
 
-
   if (
     !username ||
     !orderDetails ||
@@ -21,29 +20,25 @@ router.post("/create", async (req, res) => {
   }
 
   try {
-    
     const existingOrder = await Checkout.findOne({ username });
 
     if (existingOrder) {
-  
       for (const newItem of shippingDetails) {
         const existingItem = existingOrder.shippingDetails.find(
           (item) => item.name === newItem.name
         );
 
         if (existingItem) {
-        
-          if(existingItem.quantity!=newItem.quantity){
-          existingItem.quantity = newItem.quantity;
-          existingItem.subtotal = newItem.subtotal;
-          existingItem.total = newItem.total;
-          
-        }} else {
-         
+          if (existingItem.quantity != newItem.quantity) {
+            existingItem.quantity = newItem.quantity;
+            existingItem.subtotal = newItem.subtotal;
+            existingItem.total = newItem.total;
+          }
+        } else {
           existingOrder.shippingDetails.push({
             id: newItem.id,
             name: newItem.name,
-              price:newItem.price,
+            price: newItem.price,
             subtotal: newItem.subtotal,
             shipping: newItem.shipping || 10,
             total: newItem.total,
@@ -52,7 +47,6 @@ router.post("/create", async (req, res) => {
         }
       }
 
-     
       await existingOrder.save();
       return res.status(200).json({
         success: true,
@@ -61,14 +55,13 @@ router.post("/create", async (req, res) => {
       });
     }
 
-  
     const newOrder = await Checkout.create({
       username,
       orderDetails,
       shippingDetails: shippingDetails.map((item) => ({
         id: item.id,
         name: item.name,
-          price:item.price,
+        price: item.price,
         subtotal: item.subtotal,
         shipping: item.shipping || 10,
         total: item.total,
@@ -89,8 +82,6 @@ router.post("/create", async (req, res) => {
     });
   }
 });
-
-
 
 router.get("/", async (req, res) => {
   try {
@@ -126,7 +117,6 @@ router.get("/:username", async (req, res) => {
   }
 });
 
-
 router.put("/:username", async (req, res) => {
   const { orderDetails, shippingDetails } = req.body;
   const { username } = req.params;
@@ -153,7 +143,7 @@ router.put("/:username", async (req, res) => {
         shippingDetails: shippingDetails.map((item) => ({
           id: item.id,
           images: item.images,
-          price:item.price,
+          price: item.price,
           subtotal: item.subtotal,
           shipping: item.shipping || 10,
           total: item.total,
@@ -184,7 +174,6 @@ router.put("/:username", async (req, res) => {
   }
 });
 
-
 router.delete("/:id", async (req, res) => {
   try {
     const order = await Checkout.findByIdAndDelete(req.params.id);
@@ -204,7 +193,7 @@ router.delete("/:id", async (req, res) => {
 });
 router.delete("/delete/:username", async (req, res) => {
   try {
-    const { username } = req.params; 
+    const { username } = req.params;
     const result = await Checkout.deleteMany({ username: username });
 
     if (result.deletedCount === 0) {
@@ -213,7 +202,9 @@ router.delete("/delete/:username", async (req, res) => {
         .json({ success: false, message: "No orders found for this user." });
     }
 
-    res.status(200).json({ success: true, message: "Orders deleted successfully." });
+    res
+      .status(200)
+      .json({ success: true, message: "Orders deleted successfully." });
   } catch (error) {
     console.error("Error deleting orders:", error);
     res.status(500).json({
@@ -226,15 +217,14 @@ router.delete("/clear-shipping/:username", async (req, res) => {
   const { username } = req.params;
 
   try {
-  
     const updatedUser = await Checkout.findOneAndUpdate(
       { username },
-      { $set: { shippingDetails: [] } }, 
+      { $set: { shippingDetails: [] } },
       { new: true }
     );
-    
+
     if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(200).json({ message: "User not found" });
     }
 
     res.status(200).json({ message: "Shipping details cleared successfully" });
