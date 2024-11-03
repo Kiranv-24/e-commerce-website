@@ -101,8 +101,8 @@ const Signup = () => {
       return;
     }
     const response = await fetchDataFromApi(`api/user/${formFields.email}`);
-    // console.log(response);
-    if (response) {
+    // console.log(response.success);
+    if (response.success) {
       toast.error("User already exist");
       return;
     }

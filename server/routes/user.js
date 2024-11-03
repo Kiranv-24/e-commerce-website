@@ -30,7 +30,7 @@ router.get("/:username", async (req, res) => {
 
     const user = await User.findOne({ email: req.params.username }).select("-password"); 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.status(200).json({ success: false, message: "User not found" });
     }
     res.status(200).json({ success: true, user });
   } catch (error) {
