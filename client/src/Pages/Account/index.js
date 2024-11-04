@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../../Css-files/Account.css";
-import { fetchDataFromApi } from '../../api';
+import { fetchDataFromApi } from "../../api";
 
 const username = localStorage.getItem("username");
 
@@ -15,7 +15,7 @@ const Account = () => {
   useEffect(() => {
     fetchDataFromApi(`/api/user/${username}`)
       .then((response) => {
-        setUser(response.user); 
+        setUser(response.user);
         setPhone(response.user.phone || "");
       })
       .catch((error) => console.error("Error fetching user data:", error));
@@ -35,15 +35,16 @@ const Account = () => {
       setAddress("Geolocation not supported by your browser.");
     }
   }, []);
-const goBack = () => {
-     window.location.replace("/");
+  const goBack = () => {
+    navigate("/");
   };
   const fetchAddressFromCoordinates = async (lat, lng) => {
     try {
       const response = await axios.get(
         `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
       );
-      const locationAddress = response.data.display_name || "Address not available";
+      const locationAddress =
+        response.data.display_name || "Address not available";
       setAddress(locationAddress);
     } catch (error) {
       console.error("Error fetching address:", error);
@@ -53,7 +54,6 @@ const goBack = () => {
 
   return (
     <div className="profile-page">
-     
       <div className="profile-card">
         <h2 className="text-2xl font-semibold text-center mb-4">Profile</h2>
         <div className="profile-info">
@@ -82,14 +82,9 @@ const goBack = () => {
         </div>
         <div className="edit-profile-button">
           <button>Save Changes</button>
-         
         </div>
-         
       </div>
-       <button 
-        onClick={() => navigate(-1)} 
-        className="back-button"
-      >
+      <button onClick={() => navigate(-1)} className="back-button">
         Back
       </button>
     </div>

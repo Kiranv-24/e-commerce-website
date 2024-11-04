@@ -4,7 +4,7 @@ import { fetchDataFromApi } from "../../api";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { Button } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 const generateInvoicePDF = (order) => {
   try {
     const doc = new jsPDF();
@@ -20,10 +20,14 @@ const generateInvoicePDF = (order) => {
     doc.text("Street Address, Zip Code", 10, 60);
     doc.text("Phone Number", 10, 65);
     doc.text("Bill to:", 100, 50);
-    doc.text(`${order.orderDetails.fullname} ${order.orderDetails.lastname}`, 100, 55);
+    doc.text(
+      `${order.orderDetails.fullname} ${order.orderDetails.lastname}`,
+      100,
+      55
+    );
     doc.text(`${order.orderDetails.address}`, 100, 60);
     doc.text(`Phone: ${order.orderDetails.phone}`, 100, 65);
-    
+
     const numberOfProducts = order.shippingDetails.length;
     let fontSize = numberOfProducts > 5 ? 8 : numberOfProducts === 1 ? 12 : 10;
 
@@ -31,12 +35,12 @@ const generateInvoicePDF = (order) => {
     const tableData = order.shippingDetails.map((item) => [
       item.name,
       item.quantity,
-      `₹${(item.total / item.quantity).toFixed(2)}`, 
-      `₹${item.total.toFixed(2)}`
+      `₹${(item.total / item.quantity).toFixed(2)}`,
+      `₹${item.total.toFixed(2)}`,
     ]);
-    
+
     const tableHeaders = [["Item", "Quantity", "Rate", "Amount"]];
-    
+
     doc.autoTable({
       head: tableHeaders,
       body: tableData,
@@ -47,7 +51,9 @@ const generateInvoicePDF = (order) => {
     });
 
     const finalY = doc.lastAutoTable.finalY + 10;
-    const subtotal = order.shippingDetails.reduce((acc, item) => acc + item.total, 0).toFixed(2);
+    const subtotal = order.shippingDetails
+      .reduce((acc, item) => acc + item.total, 0)
+      .toFixed(2);
 
     doc.text("Subtotal:", 140, finalY);
     doc.text(`₹${subtotal}`, 180, finalY);
@@ -55,16 +61,20 @@ const generateInvoicePDF = (order) => {
     doc.text("₹0.00", 180, finalY + 10);
     doc.text("Paid:", 140, finalY + 30);
     doc.text(`₹${subtotal}`, 180, finalY + 30);
-    
+
     doc.setFillColor(60, 141, 188);
     doc.rect(140, finalY + 40, 50, 10, "F");
     doc.setTextColor(255, 255, 255);
     doc.text("Total", 145, finalY + 47);
     doc.text(`₹${subtotal}`, 180, finalY + 47);
-    
+
     doc.setFontSize(10);
     doc.text("Product Confirmation:", 10, finalY + 60);
-    doc.text("Thank you for your purchase! Your order will be processed shortly.", 10, finalY + 65);
+    doc.text(
+      "Thank you for your purchase! Your order will be processed shortly.",
+      10,
+      finalY + 65
+    );
     doc.setTextColor(0, 0, 0);
     doc.save(`invoice-${order.orderId}.pdf`);
   } catch (error) {
@@ -74,19 +84,22 @@ const generateInvoicePDF = (order) => {
 
 const OrderHistory = () => {
   const username = localStorage.getItem("username");
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedRows, setExpandedRows] = useState({});
 
   const goBack = () => {
-    window.location.replace("/");
+    navigate("/");
   };
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetchDataFromApi(`/api/OrderHistory/orders/${username}`);
+        const response = await fetchDataFromApi(
+          `/api/OrderHistory/orders/${username}`
+        );
         setOrders(response);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -118,12 +131,14 @@ const OrderHistory = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!Array.isArray(orders)) {
-    return <div>No orders available</div>; 
+    return <div>No orders available</div>;
   }
 
   return (
     <div className="order-history">
-      <Button className="back-button" onClick={goBack}>Go Back</Button>
+      <Button className="back-button" onClick={goBack}>
+        Go Back
+      </Button>
       <h2>Order History</h2>
       <table className="order-table">
         <thead>
@@ -142,9 +157,9 @@ const OrderHistory = () => {
               <tr>
                 <td>{standardizeOrderId(order.orderId)}</td>
                 <td>
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
+                  <Button
+                    variant="contained"
+                    color="primary"
                     onClick={() => toggleRow(order.orderId)}
                   >
                     View
@@ -152,11 +167,17 @@ const OrderHistory = () => {
                 </td>
                 <td>{new Date(order.date).toLocaleDateString()}</td>
                 <td>
-                  ₹{order.shippingDetails.reduce((acc, item) => acc + item.total, 0).toFixed(2)}
+                  ₹
+                  {order.shippingDetails
+                    .reduce((acc, item) => acc + item.total, 0)
+                    .toFixed(2)}
                 </td>
                 <td>{order.paymentStatus}</td>
                 <td>
-                  <button onClick={() => generateInvoicePDF(order)} className="invoice-button">
+                  <button
+                    onClick={() => generateInvoicePDF(order)}
+                    className="invoice-button"
+                  >
                     Download Invoice
                   </button>
                 </td>
@@ -167,7 +188,8 @@ const OrderHistory = () => {
                     <div>
                       {order.shippingDetails.map((item) => (
                         <div key={item.id} className="product-detail">
-                          <strong>{item.name}</strong> - Quantity: {item.quantity} - Price: ₹{item.total.toFixed(2)}
+                          <strong>{item.name}</strong> - Quantity:{" "}
+                          {item.quantity} - Price: ₹{item.total.toFixed(2)}
                         </div>
                       ))}
                     </div>

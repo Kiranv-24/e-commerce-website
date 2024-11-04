@@ -18,6 +18,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [addeditem, detaddeditem] = useState(null);
 
   const incrementQuantity = () => {
     setQuantity((prev) => prev + 1);
@@ -75,6 +76,7 @@ const ProductDetail = () => {
     const response = await postData("/api/cart/add", cartItem);
     if (response) {
       const res = await fetchDataFromApi(`/api/cart/${username}`);
+      localStorage.setItem("cartCount", res.cartitems.length);
       setCartCount(res.cartitems.length);
 
       toast.success("Item added to cart");
@@ -86,7 +88,7 @@ const ProductDetail = () => {
     return <div>Loading...</div>;
   }
   const goBack = () => {
-    window.location.replace("/");
+    navigate("/");
   };
   const buyNow = async () => {
     if (!username) {
@@ -98,24 +100,28 @@ const ProductDetail = () => {
     try {
       await addToCart();
       const result = await fetchDataFromApi(`/api/cart/${username}`);
+      localStorage.setItem("cartCount", result.cartitems.length);
       setCartCount(result.cartitems.length);
 
-      const res = await fetchDataFromApi(`/api/Cart/${username}`);
+      // const res = await fetchDataFromApi(`/api/Cart/${username}`);
       // console.log(res);
-
-      const response = await deleteData(
-        `/api/checkout/clear-shipping/${username}`
-      );
-
+      // console.log(cartItem);
+      await deleteData(`/api/checkout/clear-shipping/${username}`);
+      const cartitems = [
+        {
+          name: proData.name,
+          price: proData.price,
+        },
+      ];
       // console.log(response.status);
-      if (response.success) {
-        navigate(`/Checkout?ref=nav_cart`, {
-          state: {
-            cartItems: res.cartitems,
-            quantities: [1],
-          },
-        });
-      }
+      // if (response.success) {
+      navigate(`/Checkout?ref=nav_cart`, {
+        state: {
+          cartItems: cartitems,
+          quantities: [1],
+        },
+      });
+      // }
     } catch (error) {
       toast.error("Error in sending data", error);
     }

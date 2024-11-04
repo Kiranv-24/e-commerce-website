@@ -1,10 +1,10 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import MicrosoftSurfacePro from "../../assets/images/MicrosoftSurfacePro.png";
 import "../../Css-files/Cart.css";
 import { fetchDataFromApi, deleteData } from "../../api";
 import { useNavigate } from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Toaster, toast } from 'react-hot-toast';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Toaster, toast } from "react-hot-toast";
 import { CircularProgress, Button, TextField } from "@mui/material";
 
 import MyContext from "../../Mycontext/index.js";
@@ -13,7 +13,7 @@ const Cart = () => {
   const [quantities, setQuantities] = useState([]);
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
-  const {setCartCount} =useContext(MyContext)
+  const { setCartCount } = useContext(MyContext);
   useEffect(() => {
     if (!username) {
       console.error("Username not found");
@@ -63,7 +63,7 @@ const Cart = () => {
       const updatedQuantities = quantities.filter((_, i) => i !== index);
       setCartItems(updatedCartItems);
       setQuantities(updatedQuantities);
-      
+
       setCartCount(updatedCartItems.length);
       toast.success("Item removed from cart!");
     } catch (error) {
@@ -78,7 +78,7 @@ const Cart = () => {
       );
       setCartItems([]);
       setQuantities([]);
-       setCartCount(0);
+      setCartCount(0);
       toast.success("All items removed from cart!");
     } catch (error) {
       console.error("Failed to remove all items from cart:", error);
@@ -91,7 +91,7 @@ const Cart = () => {
       alert("Please login to proceed to checkout.");
       navigate("/login");
     } else {
-      if(cartItems.length==0){
+      if (cartItems.length == 0) {
         toast.error("Add item to cart");
         return;
       }
@@ -105,15 +105,16 @@ const Cart = () => {
       toast.success("Proceeding to checkout!");
     }
   };
-const goBack = () => {
-     window.location.replace("/");
+  const goBack = () => {
+    navigate("/");
   };
-  
+
   return (
     <section className="Cart-section">
-     <Button className="back-button" onClick={goBack}>Go Back</Button>
+      <Button className="back-button" onClick={goBack}>
+        Go Back
+      </Button>
       <div className="row row-section row-section-cart ">
-        
         <div className="col-md-8 Shopping-Cart">
           <h4 className="hd">Shopping Cart</h4>
           <button className="remove-all-btn" onClick={handleRemoveAllItems}>
@@ -159,7 +160,9 @@ const goBack = () => {
                         className="remove-btn"
                         onClick={() => handleRemoveItem(index)}
                       >
-                        <DeleteIcon style={{ fontSize: "1.2rem", color: "#e74c3c" }} />
+                        <DeleteIcon
+                          style={{ fontSize: "1.2rem", color: "#e74c3c" }}
+                        />
                       </button>
                     </td>
                   </tr>

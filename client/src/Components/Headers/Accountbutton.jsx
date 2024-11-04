@@ -39,8 +39,12 @@ const AccountButton = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
+    // localStorage.removeItem("isLoggedIn");
+    // localStorage.removeItem("username");
+    // localStorage.removeItem("cartCount");
+    // Clear all items from localStorage
+    localStorage.clear();
+
     setIsLoggedIn(false);
     handleNavigation("/login", "Logging out...");
   };

@@ -4,9 +4,9 @@ import Autosuggest from "react-autosuggest";
 import TextField from "@mui/material/TextField";
 import "../../Css-files/Checkout.css";
 import { fetchDataFromApi, postData, editData } from "../../api";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { CircularProgress, Button } from "@mui/material";
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster, toast } from "react-hot-toast";
 const username = localStorage.getItem("username");
 
 const countries = [
@@ -23,7 +23,6 @@ const countries = [
 ];
 
 const Checkout = () => {
- 
   const navigate = useNavigate();
   const { state } = useLocation();
   const initialCartItems = state?.cartItems || [];
@@ -46,7 +45,7 @@ const Checkout = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [hasData, setHasData] = useState(false);
   const [data, setData] = useState({});
-
+  console.log(initialCartItems);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -64,7 +63,6 @@ const Checkout = () => {
               ...prevFields,
               ...res.order.orderDetails,
             }));
-            
           }
         }
       } catch (error) {
@@ -139,12 +137,12 @@ const Checkout = () => {
       });
 
       if (response.success) {
-         toast.success("Updated successfully");
+        toast.success("Updated successfully");
       } else {
-         toast.error("Failed to update " + response.message);
+        toast.error("Failed to update " + response.message);
       }
     } catch (error) {
-       toast.error("An error occurred while updating. Please try again.");
+      toast.error("An error occurred while updating. Please try again.");
     }
   };
 
@@ -174,13 +172,15 @@ const Checkout = () => {
       });
 
       if (response.success) {
-         toast.success("Order placed successfully!");
+        toast.success("Order placed successfully!");
         navigate("/OrderSummary");
       } else {
-         toast.error("Failed to place the order: " + response.message);
+        toast.error("Failed to place the order: " + response.message);
       }
     } catch (error) {
-       toast.error("An error occurred while placing the order. Please try again.");
+      toast.error(
+        "An error occurred while placing the order. Please try again."
+      );
     }
   };
 
@@ -212,7 +212,7 @@ const Checkout = () => {
     ];
     for (let field of requiredFields) {
       if (!formFields[field]) {
-         toast.error(`Please fill in the ${field} field.`);
+        toast.error(`Please fill in the ${field} field.`);
         return false;
       }
     }
@@ -221,16 +221,14 @@ const Checkout = () => {
 
   const validateShippingDetails = (shippingDetails) => {
     if (!Array.isArray(shippingDetails) || shippingDetails.length === 0) {
-       toast.error("Please add at least one item to the shipping details.");
+      toast.error("Please add at least one item to the shipping details.");
       return false;
     }
     return true;
   };
 
   const createShippingDetails = () =>
-
     cartItems.map((item, index) => {
-     
       const quantity = quantities[index] || 0;
       const subtotal = item.price * quantity;
       const shipping = item.shipping || 10;
@@ -245,12 +243,14 @@ const Checkout = () => {
         shipping,
       };
     });
-const goBack = () => {
-     window.location.replace("/cart");
+  const goBack = () => {
+    navigate("/cart");
   };
   return (
     <div className="checkout-container">
-       <Button className="back-button" onClick={goBack}>Go Back</Button>
+      <Button className="back-button" onClick={goBack}>
+        Go Back
+      </Button>
       <h2>Checkout</h2>
       <div className="checkout-content">
         <div className="form-section">
@@ -261,7 +261,7 @@ const goBack = () => {
               variant="outlined"
               fullWidth
               name="username"
-              value={formFields.username} 
+              value={formFields.username}
               onChange={onChangeInput}
             />
             <TextField
@@ -287,7 +287,7 @@ const goBack = () => {
             fullWidth
             margin="normal"
             name="phone"
-            value={formFields.phone} 
+            value={formFields.phone}
             onChange={onChangeInput}
           />
           <TextField
@@ -296,7 +296,7 @@ const goBack = () => {
             fullWidth
             margin="normal"
             name="address"
-            value={formFields.address} 
+            value={formFields.address}
             onChange={onChangeInput}
           />
           <div className="input-group">
@@ -308,7 +308,7 @@ const goBack = () => {
               renderSuggestion={(suggestion) => <div>{suggestion}</div>}
               inputProps={{
                 placeholder: "Country",
-                value: formFields.country, 
+                value: formFields.country,
                 onChange: onChangeCountry,
               }}
             />
@@ -327,7 +327,7 @@ const goBack = () => {
             fullWidth
             margin="normal"
             name="state"
-            value={formFields.state} 
+            value={formFields.state}
             onChange={onChangeInput}
           />
           <TextField
@@ -374,7 +374,7 @@ const goBack = () => {
                     className="remove-button"
                     onClick={() => handleRemoveItem(index)}
                   >
-                    <DeleteIcon/>
+                    <DeleteIcon />
                   </button>
                 </p>
                 <p>₹{item.price * quantities[index]}</p>

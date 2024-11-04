@@ -109,7 +109,7 @@ const Signup = () => {
     handleSendOtp();
   };
   const goBack = () => {
-    window.location.replace("/");
+    navigate("/");
   };
   useEffect(() => {
     if (context && typeof context.setisHeaderFooter === "function") {

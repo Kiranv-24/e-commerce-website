@@ -3,7 +3,7 @@ import Mycontext from "../../Mycontext";
 import { postData } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress, Button, TextField } from "@mui/material";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
 
@@ -29,7 +29,7 @@ const Login = ({ setUsername }) => {
   };
 
   const goBack = () => {
-     window.location.replace("/");
+    history("/");
   };
 
   const signInWithGoogle = async () => {
@@ -48,7 +48,7 @@ const Login = ({ setUsername }) => {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", user.providerData[0].email);
         setTimeout(() => {
-          window.location.replace("/");
+          history("/");
         }, 1000);
       } else {
         toast.error("Google Login Failed");
@@ -88,7 +88,7 @@ const Login = ({ setUsername }) => {
   };
 
   const navigateToForgotPassword = () => {
-    history("/ForgetPassword");
+    window.location.replace("/ForgetPassword");
   };
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const Login = ({ setUsername }) => {
         <div className="welcome-message">
           <h1 ref={welcomeTextRef}>Welcome Back!</h1>
         </div>
-       
+
         <form onSubmit={handleLogin}>
           <div className="form-outline mb-4">
             <TextField
@@ -143,8 +143,18 @@ const Login = ({ setUsername }) => {
             {isLoading ? <CircularProgress size={24} /> : "Sign in"}
           </Button>
           <div className="text-center">
-            <p>Not a member? <a href="/signup">Register</a></p>
-            <p>Forgot your password? <span onClick={navigateToForgotPassword} style={{ color: 'blue', cursor: 'pointer' }}>Reset it here</span></p>
+            <p>
+              Not a member? <a href="/signup">Register</a>
+            </p>
+            <p>
+              Forgot your password?{" "}
+              <span
+                onClick={navigateToForgotPassword}
+                style={{ color: "blue", cursor: "pointer" }}
+              >
+                Reset it here
+              </span>
+            </p>
             <p>or sign in with:</p>
             <Button
               className="loginWithGoogle mt-2"
@@ -153,7 +163,9 @@ const Login = ({ setUsername }) => {
             >
               <i className="fab fa-google"></i>
             </Button>
-             <Button className="back-button" onClick={goBack}>Go Back</Button>
+            <Button className="back-button" onClick={goBack}>
+              Go Back
+            </Button>
           </div>
         </form>
       </div>
