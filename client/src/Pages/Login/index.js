@@ -48,7 +48,7 @@ const Login = ({ setUsername }) => {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", user.providerData[0].email);
         setTimeout(() => {
-          history("/");
+          window.location.href("/");
         }, 1000);
       } else {
         toast.error("Google Login Failed");
