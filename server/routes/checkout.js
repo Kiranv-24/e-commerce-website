@@ -27,7 +27,7 @@ router.post("/create", async (req, res) => {
         const existingItem = existingOrder.shippingDetails.find(
           (item) => item.name === newItem.name
         );
-
+        // console.log(existingOrder);
         if (existingItem) {
           if (existingItem.quantity != newItem.quantity) {
             existingItem.quantity = newItem.quantity;
@@ -54,7 +54,7 @@ router.post("/create", async (req, res) => {
         order: existingOrder,
       });
     }
-
+    console.log();
     const newOrder = await Checkout.create({
       username,
       orderDetails,
@@ -68,7 +68,7 @@ router.post("/create", async (req, res) => {
         quantity: item.quantity,
       })),
     });
-
+    // await newOrder.save();
     res.status(201).json({
       success: true,
       message: "Order created successfully",

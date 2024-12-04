@@ -16,7 +16,7 @@ const NotFound = () => {
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
       <h1>Page Not Found</h1>
-      <p>Redirecting to http://www.flipkart.com/http404.php</p>
+      <p>Redirecting to https://techmart-weld.vercel.app/</p>
     </div>
   );
 };

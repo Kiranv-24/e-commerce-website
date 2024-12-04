@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-
+// const product = require("./product");
 const CheckoutSchema = mongoose.Schema(
   {
-    username: { type: String, required: true }, 
+    username: { type: String, required: true },
     orderDetails: {
       fullname: { type: String, required: true },
       lastname: { type: String, required: true },
@@ -17,13 +17,13 @@ const CheckoutSchema = mongoose.Schema(
       {
         id: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
+          ref: "product",
+          // required: true,
         },
-        price:{type:Number, required:true},
+        price: { type: Number, required: true },
         images: [{ type: String }],
         subtotal: { type: Number, required: true },
-        shipping: { type: Number, required: true, default: 10 }, 
+        shipping: { type: Number, required: true, default: 10 },
         total: { type: Number, required: true },
         name: { type: String, required: true },
         quantity: { type: Number, required: true },
@@ -32,6 +32,5 @@ const CheckoutSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-
 
 exports.Checkout = mongoose.model("Checkout", CheckoutSchema);
